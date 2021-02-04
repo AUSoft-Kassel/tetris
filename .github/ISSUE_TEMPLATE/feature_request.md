@@ -1,8 +1,8 @@
 ---
 name: Feature request
 about: Suggest an idea for this project
-title: "[Tetris][FEAT] "
-labels: "Tetris Feature"
+title: "[FEAT] "
+labels: "Feature"
 assignees: ""
 ---
 

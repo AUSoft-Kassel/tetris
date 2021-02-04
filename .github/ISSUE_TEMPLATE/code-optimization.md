@@ -1,8 +1,8 @@
 ---
 name: Code optimization
 about: Suggest a change to the code
-title: "[Tetris][CODE] "
-labels: "Tetris Code"
+title: "[CODE] "
+labels: "Code"
 assignees: ""
 ---
 

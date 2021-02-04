@@ -1,8 +1,8 @@
 ---
 name: Bug report
 about: Help us kill the bugs
-title: "[tetris][BUG] "
-labels: "Tetris Bug"
+title: "[BUG] "
+labels: "Bug"
 assignees: ""
 ---
 

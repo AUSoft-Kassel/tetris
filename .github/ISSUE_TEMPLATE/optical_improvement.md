@@ -1,8 +1,8 @@
 ---
 name: Optical improvement
 about: Help us make this project more beautiful
-title: "[Tetris][OPTICS] "
-labels: "Tetris Optics"
+title: "[OPTICS] "
+labels: "Optics"
 assignees: ""
 ---
 

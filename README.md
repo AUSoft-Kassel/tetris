@@ -18,10 +18,9 @@ not change very much, can be resused in dozens of games and so on. Plus,
 developing these graphic assets is not part of the profession "Fachinformatik"
 and therefore of no benefit at all to our students.
 
-Buuuuut .... I discovered a tutorial ("how to program Tetris in Flutter") and
-that looked so incredibly shitty, that I accepted the challenge to make a better
-Tetris, without any ambitions to make it more beautiful than a game you can
-download for free in the app store. Plus, Tetris is quite a nice option to
+Buuuuut .... some students liked the idea and I accepted the challenge to make a
+decent Tetris clone, without any ambitions to make it more beautiful than a game
+you can download for free in the app store. Plus, Tetris is quite a nice option to
 talk about object oriented design because it is truly a game of objects ("falling
 from the sky, consisting of other objects, stopping to move when hitting an object
 and so on).

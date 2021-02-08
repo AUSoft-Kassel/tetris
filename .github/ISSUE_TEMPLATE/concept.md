@@ -1,7 +1,7 @@
 ---
 name: Conceptual suggestions
 about: Stuff we need to think about
-title: "[COCNEPT] "
+title: "[CONCEPT] "
 labels: "Concept"
 assignees: ""
 ---

@@ -6,7 +6,7 @@ void main() {
     final pos1 = Position(5, 10);
     final pos2 = Position(10, 2);
     expect(pos1.x, 5);
-    expect(pos2.x, 12);
+    expect(pos2.x, 10);
     expect(pos1.y, 10);
     expect(pos2.y, 2);
   });
@@ -25,7 +25,7 @@ void main() {
     expect(pos.yExact, 10.0);
   });
 
-  test('If provided with an exact y, integer y should be rounded d', () {
+  test('If provided with an exact y, integer y should be rounded', () {
     final pos1 = Position.exact(5, 9.6);
     expect(pos1.x, 5);
     expect(pos1.y, 10);

@@ -1,4 +1,7 @@
+import 'package:flutter/cupertino.dart';
+
 /// Description of the class which define our position
+@immutable
 class Position {
 /*-----------------------------------------------------------------------------\
 | Attributes                                                                   |
@@ -22,7 +25,7 @@ class Position {
   Position.exact(int x, double yExact)
       : _x = x,
         _yExact = yExact,
-        _y = yExact.toInt();
+        _y = yExact.round();
 
 /*-----------------------------------------------------------------------------\
 | Getters / Setters                                                            |
@@ -35,4 +38,10 @@ class Position {
 
   /// Describes in which column (including fractions of a column) the position is located
   double get yExact => _yExact;
+
+  @override
+  bool operator ==(Object o) => o is Position && o.y == _y && o.x == _x;
+
+  @override
+  int get hashCode => _x * 1000 + _y;
 }

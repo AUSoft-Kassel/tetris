@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tetris/models/positions.dart';
+import 'package:tetris/models/position.dart';
 
 void main() {
   test('Positions can be constructed and read', () {
@@ -11,18 +11,14 @@ void main() {
     expect(pos2.y, 2);
   });
 
-  test(
-      'Positions can be constructed with an integer y and return integer and double y',
-      () {
+  test('Positions can be constructed with an integer y and return integer and double y', () {
     final pos = Position(5, 10);
     expect(pos.x, 5);
     expect(pos.y, 10);
     expect(pos.yExact, 10.0);
   });
 
-  test(
-      'Positions can be constructed with a double y and return integer and double y',
-      () {
+  test('Positions can be constructed with a double y and return integer and double y', () {
     final pos = Position.exact(5, 10.0);
     expect(pos.x, 5);
     expect(pos.y, 10);
@@ -52,8 +48,7 @@ void main() {
     expect(pos1 == pos2, true);
   });
 
-  test('Two positions are equal when their rounded coordinates are the same',
-      () {
+  test('Two positions are equal when their rounded coordinates are the same', () {
     final pos1 = Position.exact(5, 3.4);
     final pos2 = Position.exact(5, 2.7);
     expect(pos1 == pos2, true);

@@ -5,7 +5,7 @@ void main() {
   test('Constants can be read and have the expected value', () {
     expect(Constants.numRows, 20);
     expect(Constants.numCols, 10);
-    expect(Constants.minSpeed, 10);
-    expect(Constants.maxSpeed, 10);
+    expect(Constants.minSpeed, 10.0);
+    expect(Constants.maxSpeed, 100.0);
   });
 }

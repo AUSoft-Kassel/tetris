@@ -1,10 +1,8 @@
-
-
-/// Class which descripts the static constants of our Screen
+/// Class which holds static data - more or less global variables
 abstract class Constants {
-  /// Descriptes the number of Rows
-  static const numRows= 20;
-  /// Descriptes the number of columns
-  static const numCols= 10;
+  /// The number of rows of a standard Tetris field
+  static const numRows = 20;
 
+  /// The number of columns of a standard Tetris field
+  static const numCols = 10;
 }

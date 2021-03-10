@@ -1,23 +1,23 @@
 /// Specific shapeforms
-enum Shapeform {
+enum ShapeForm {
   /// Shapeform o
-  oshape,
+  o,
 
   /// Shapeform i
-  ishape,
+  i,
 
   /// Shapeform s
-  sshape,
+  s,
 
   /// Shapeform j
-  jshape,
+  j,
 
   /// Shapeform l
-  lshape,
+  l,
 
   /// Shapeform z
-  zshape,
+  z,
 
   /// Shapeform t
-  tshape
+  t
 }

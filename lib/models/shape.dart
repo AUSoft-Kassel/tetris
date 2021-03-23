@@ -1,21 +1,22 @@
 import 'package:models/shapeform.dart';
 import 'package:models/shapes.dart';
+import 'package:models/position.dart';
 
 abstract class Shape{
 
-final Position _anchorPosition
+final Position _anchorPosition;
 
 int _currentShapeState;
-final List<List<Position>> _shapeStates;= [[]];
+final List<List<Position>> _shapeStates = [[]];
 final Color _color;
 
    
 
 void rotateRight(){
-  if(_currentShapeState >= _relPosition[].count)
+  if(_currentShapeState >= _shapeStates= [[]].count)
     _currentShapeState = 0;
 
-  if(_currentShapeState < _relPosition[].count < _currentShapeState)
+  if(_currentShapeState < _shapeStates= [[]].count < _currentShapeState)
     _currentShapeState++;
 }
 void rotateLeft(){

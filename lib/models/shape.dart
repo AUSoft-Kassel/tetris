@@ -1,27 +1,30 @@
-import 'package:flutter/material.dart';
+import 'package:models/shapeform.dart';
+import 'package:models/shapes.dart';
+import 'package:models/position.dart';
 
-import 'position.dart';
+abstract class Shape{
 
-abstract class Shape {
-  Position? _anchorPosition;
+final Position _anchorPosition;
 
-  abstract int _currentShapeState;
-  abstract final List<List<Position>> _shapeStates;
-  abstract final Color _color;
+int _currentShapeState;
+final List<List<Position>> _shapeStates = [[]];
+final Color _color;
 
-  void rotateRight() {
-    if (_currentShapeState >= _shapeStates.length) {
-      _currentShapeState = 0;
-    } else {
-      _currentShapeState++;
-    }
-  }
 
-  void rotateLeft() {
-    if (_currentShapeState <= 0) {
-      _currentShapeState = _shapeStates.length;
-    } else {
-      _currentShapeState++;
-    }
-  }
+
+void rotateRight(){
+  if(_currentShapeState >= _shapeStates= [[]].)
+    _currentShapeState = 0;
+
+  if(_currentShapeState < _shapeStates= [[]].count < _currentShapeState)
+    _currentShapeState++;
+}
+void rotateLeft(){
+  if(_currentShapeState <= 0)
+    _currentShapeState = _relPositions.count;
+
+  if(_currentShapeState > 0)
+    _currentShapeState++;
+}
+
 }

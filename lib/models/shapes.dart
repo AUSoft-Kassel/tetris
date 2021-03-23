@@ -1,3 +1,4 @@
+import 'package:models/position.dart';
 class Shape_O : include Shape{
   final List<List<Position>> _shapeStates = [
   [

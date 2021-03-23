@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 
 /// Description of the class which define our position
-@immutable
 class Position {
 /*-----------------------------------------------------------------------------\
 | Attributes                                                                   |

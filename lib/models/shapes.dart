@@ -16,6 +16,7 @@ class ShapeO extends Shape {
 class ShapeI extends Shape {
   final List<List<Position>> _shapeStates = [
     [
+      // TODO: Positionen fixen
       Position(0, 0),
       Position(0, 1),
       Position(1, 0),
@@ -27,6 +28,7 @@ class ShapeI extends Shape {
 class ShapeL extends Shape {
   final List<List<Position>> _shapeStates = [
     [
+      // TODO: Positionen fixen
       Position(0, 0),
       Position(0, 1),
       Position(1, 0),
@@ -38,6 +40,7 @@ class ShapeL extends Shape {
 class ShapeJ extends Shape {
   final List<List<Position>> _shapeStates = [
     [
+      // TODO: Positionen fixen
       Position(0, 0),
       Position(0, 1),
       Position(1, 0),
@@ -49,6 +52,7 @@ class ShapeJ extends Shape {
 class ShapeS extends Shape {
   final List<List<Position>> _shapeStates = [
     [
+      // TODO: Positionen fixen
       Position(0, 0),
       Position(0, 1),
       Position(1, 0),
@@ -60,6 +64,7 @@ class ShapeS extends Shape {
 class ShapeZ extends Shape {
   final List<List<Position>> _shapeStates = [
     [
+      // TODO: Positionen fixen
       Position(0, 0),
       Position(0, 1),
       Position(1, 0),
@@ -71,6 +76,7 @@ class ShapeZ extends Shape {
 class ShapeT extends Shape {
   final List<List<Position>> _shapeStates = [
     [
+      // TODO: Positionen fixen
       Position(0, 0),
       Position(0, 1),
       Position(1, 0),
@@ -78,4 +84,3 @@ class ShapeT extends Shape {
     ],
   ]; // [0,0],[0,1],[1,0],[1,-1]
 }
-

@@ -1,23 +1,17 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tetris/models/shape.dart';
-import 'package:tetris/models/shape_i.dart';
-import 'package:tetris/models/shape_l.dart';
-import 'package:tetris/models/shape_j.dart';
-import 'package:tetris/models/shape_s.dart';
-import 'package:tetris/models/shape_z.dart';
-import 'package:tetris/models/shape_o.dart';
-import 'package:tetris/models/shape_t.dart';
 import 'package:tetris/models/shapeform.dart';
+import 'package:tetris/models/shapes.dart';
 
 void main() {
   test('All Shapes can be constructed', () {
-    var shapeI = Shape.fromLetter(ShapeForm.i);
-    var shapeL = Shape.fromLetter(ShapeForm.l);
-    var shapeJ = Shape.fromLetter(ShapeForm.j);
-    var shapeS = Shape.fromLetter(ShapeForm.s);
-    var shapeZ = Shape.fromLetter(ShapeForm.z);
-    var shapeO = Shape.fromLetter(ShapeForm.o);
-    var shapeT = Shape.fromLetter(ShapeForm.t);
+    var shapeI = Shape.fromForm(ShapeForm.i);
+    var shapeL = Shape.fromForm(ShapeForm.l);
+    var shapeJ = Shape.fromForm(ShapeForm.j);
+    var shapeS = Shape.fromForm(ShapeForm.s);
+    var shapeZ = Shape.fromForm(ShapeForm.z);
+    var shapeO = Shape.fromForm(ShapeForm.o);
+    var shapeT = Shape.fromForm(ShapeForm.t);
     expect(shapeI is ShapeI, true);
     expect(shapeL is ShapeL, true);
     expect(shapeJ is ShapeJ, true);

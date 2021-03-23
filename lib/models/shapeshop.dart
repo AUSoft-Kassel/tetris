@@ -39,8 +39,7 @@ class ShapeShop {
   }
 
   Shape showShape([int x = 0]) {
-
-    if()
+    //if()
 
     return _currentBag[x];
     return _nextBag[x];

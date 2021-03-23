@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:tetris/models/position.dart';
 import 'package:tetris/models/rotation.dart';
 import 'package:tetris/models/shape.dart';
-import 'package:tetris/models/shape_l.dart';
+import 'package:tetris/models/shapes.dart';
 
 void main() {
   test('ShapeL can be constructed and is a shape', () {

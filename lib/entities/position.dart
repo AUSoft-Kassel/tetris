@@ -29,6 +29,8 @@ class Position {
   @override
   bool operator ==(Object o) => o is Position && o.y == _y && o.x == _x;
 
+  Position operator +(Position o) => Position(o.x+_x,o.y+_y);
+
   @override
   int get hashCode => _x * 1000 + _y;
 }

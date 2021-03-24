@@ -6,7 +6,7 @@ import 'package:tetris/entities/shapes.dart';
 
 void main() {
   test('ShapeJ can be constructed and is a shape', () {
-    var shape = ShapeJ();
+    final shape = ShapeJ();
     expect(
         shape.getAbsPositions(base: Position(10, 10)) is List<Position>, true);
     expect(

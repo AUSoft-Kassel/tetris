@@ -3,10 +3,12 @@ import 'dart:math';
 import 'shape.dart';
 import 'shapeform.dart';
 
+///Descriptes the class ShapeShop which is our Shop which is shuffeling the next game objects and preparing them for the game.
 class ShapeShop {
   List<Shape> _currentBag = [];
   List<Shape> _nextBag = [];
 
+  ///Descriptes a function which is filling our bag with shapes.
   ShapeShop() {
     _fillBag(_currentBag);
     _fillBag(_nextBag);
@@ -25,6 +27,7 @@ class ShapeShop {
     }
   }
 
+  /// Descriptes a function which is giving us the next game shape, and auto-fill the currentBag from the nextBag which get filled by RNG if empty.
   Shape giveShape() {
     final shape = _currentBag[0];
     _currentBag.removeAt(0);
@@ -36,8 +39,9 @@ class ShapeShop {
     return shape;
   }
 
+  /// Is going to show us the next 14 Shapes at any time if code done
   Shape showShape([int x = 0]) {
-    //if()
+    // TODO: finishing the code here.
 
     return _currentBag[x];
     return _nextBag[x];

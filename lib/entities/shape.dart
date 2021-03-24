@@ -24,35 +24,46 @@ abstract class Shape {
     return ShapeO();
   }
 
-  /// Descriptes the rotation of shapes.
-  void rotateShape(Rotation rotateTo) {
-    _currentShapeState = newShapeState(_shapeStates, _currentShapeState , rotateTo);
+  /// Rotate a shape.
+  void rotateShape(Rotation rotation) {
+    _currentShapeState = getNewShapeState(rotation);
   }
 
-  int getNewShapeState(List<List<Position>> shapeStates ,int currentShapeState, Rotation rotateTo){    
-    int newShapeState = currentShapeState;
-    if (rotateTo = Rotation.right) {
-        if (currentShapeState >= shapeStates.length) {
-          newShapeState = 0;
-        } else {
-          newShapeState++;
-        }
+  /// Gets the new State after rotating
+  int getNewShapeState(Rotation rotation) {
+    var newShapeState = _currentShapeState;
+    if (rotation == Rotation.right) {
+      if (_currentShapeState >= _shapeStates.length) {
+        newShapeState = 0;
+      } else {
+        newShapeState++;
       }
-    if (rotateTo = Rotation.left) {
-        if (currentShapeState <= 0) {
-          newShapeState = shapeStates.length;
-        } else {
-          newShapeState++;
-        }
+    }
+    if (rotation == Rotation.left) {
+      if (_currentShapeState <= 0) {
+        newShapeState = _shapeStates.length;
+      } else {
+        newShapeState++;
       }
-      return newShapeState;
+    }
+    return newShapeState;
   }
-  ///Get Absolut Positions of all Shapeparts
-  List<Position> getAbsPositions(Position absPosition){
-    return List<Position> _shapeStates[_currentShapeState];
+
+  ///Gets Absolut Positions of the current State
+  List<Position> getAbsPositions(Position base) {
+    final List<Position> absPositions = [];
+    for (var relPosition in _shapeStates[_currentShapeState]) {
+      absPositions.add(base + relPosition);
+    }
+    return absPositions;
   }
-  List<Position> getRotatedAbsPositions(Rotation rotateTo){
-    return List<Position> _shapeStates[getNewShapeState(_shapeStates, _currentShapeState , rotateTo)];
+
+  ///Gets Absolut Positions of the rotated State
+  List<Position> getRotatedAbsPositions(Position base, Rotation rotation) {
+    final List<Position> absPositions = [];
+    for (var relPosition in _shapeStates[getNewShapeState(rotation)]) {
+      absPositions.add(base + relPosition);
+    }
+    return absPositions;
   }
-  
 }

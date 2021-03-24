@@ -41,9 +41,14 @@ class ShapeShop {
 
   /// Is going to show us the next 14 Shapes at any time if code done
   Shape showShape([int x = 0]) {
-    // TODO: finishing the code here.
-
-    return _currentBag[x];
-    return _nextBag[x];
+    final List<Shape> shapesToShow = [];
+    for (int i = 0; i < 14; i++) {
+      if (i <= _currentBag.length - 1) {
+        shapesToShow.add(_currentBag[i]);
+      } else {
+        shapesToShow.add(_nextBag[i - (_currentBag.length)]);
+      }
+    }
+    return shapesToShow[x];
   }
 }

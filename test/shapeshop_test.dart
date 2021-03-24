@@ -46,7 +46,7 @@ void main() {
       if (x < 13) {
         expect(shape is Shape, true);
       } else {
-        expect(shape == null, true);
+        expect(shape is Shape, false);
       }
     }
   });

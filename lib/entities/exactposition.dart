@@ -1,8 +1,4 @@
-import 'dart:ffi';
-
-import 'package:tetris/entities/position.dart';
-
-class ExactPosition extends Position {
+class ExactPosition {
   ///Atributes
   final double _exactX;
   final double _exactY;
@@ -10,23 +6,13 @@ class ExactPosition extends Position {
   ///Constructors
   ExactPosition(double exactX, double exactY)
       : _exactX = exactX,
-        _x = Math.floor(exactX),
-        _exactY = exactY,
-        _y = Math.floor(exactY);
+        _exactY = exactY;
 
   ///Getters / Setters
   get exactX => _exactX;
   get exactY => _exactY;
 
   ///Operator
-@override
-  ExactPosition operator +(object o){
-    if(object is Position){
-      return ExactPosition(_exactX+);
-    }
-    if(object is ExactPosition){
-
-    }
-    return false;
-  }
+  ExactPosition operator +(ExactPosition o) =>
+      ExactPosition(o.exactX + _exactX, o.exactY + exactY);
 }

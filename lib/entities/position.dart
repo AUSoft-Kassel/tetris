@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 /// Description of the class which define our position
 class Position {
 /*-----------------------------------------------------------------------------\
@@ -9,13 +7,16 @@ class Position {
 
   final int _y;
 
+  final double _yExact;
+
 /*-----------------------------------------------------------------------------\
 | Constructors                                                                 |
 \-----------------------------------------------------------------------------*/
   /// Constructs Position object using rounded y coordinate
   Position(int x, int y)
       : _x = x,
-        _y = y;
+        _y = y,
+        _yExact = y.toDouble();
 
 /*-----------------------------------------------------------------------------\
 | Getters / Setters                                                            |
@@ -25,7 +26,6 @@ class Position {
 
   /// Describes in which column position the position is located
   int get y => _y;
-
 
   @override
   bool operator ==(Object o) => o is Position && o.y == _y && o.x == _x;

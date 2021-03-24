@@ -23,20 +23,20 @@ abstract class Shape {
     return ShapeO();
   }
 
-  void rotateRight() {
-    if (_currentShapeState >= _shapeStates.length) {
-      _currentShapeState = 0;
-    } else {
-      _currentShapeState++;
+  void rotateShape(Rotation rotateTo) {
+    if(rotateTo = Rotation.right){
+      if (_currentShapeState >= _shapeStates.length) {
+        _currentShapeState = 0;
+      } else {
+        _currentShapeState++;
+      }
     }
-  }
-
-  void rotateLeft() {
-    if (_currentShapeState <= 0) {
-      _currentShapeState = _shapeStates.length;
-    } else {
-      _currentShapeState++;
+    if(rotateTo = Rotation.right) {
+      if (_currentShapeState <= 0) {
+        _currentShapeState = _shapeStates.length;
+      } else {
+        _currentShapeState++;
+      }
     }
-
   }
 }

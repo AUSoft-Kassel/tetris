@@ -2,13 +2,13 @@ import 'dart:ffi';
 
 import 'package:tetris/entities/position.dart';
 
-class PositionExact {
+class ExactPosition {
   ///Atributes
   final Float _x;
   final Float _y;
 
   ///Constructors
-  PositionExact(Float x, Float y)
+  ExactPosition(Float x, Float y)
       : _x = x,
         _y = y;
 

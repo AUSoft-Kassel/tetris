@@ -26,19 +26,33 @@ abstract class Shape {
 
   /// Descriptes the rotation of shapes.
   void rotateShape(Rotation rotateTo) {
-    if (rotateTo = Rotation.right) {
-      if (_currentShapeState >= _shapeStates.length) {
-        _currentShapeState = 0;
-      } else {
-        _currentShapeState++;
-      }
-    }
-    if (rotateTo = Rotation.left) {
-      if (_currentShapeState <= 0) {
-        _currentShapeState = _shapeStates.length;
-      } else {
-        _currentShapeState++;
-      }
-    }
+    _currentShapeState = newShapeState(_shapeStates, _currentShapeState , rotateTo);
   }
+
+  int getNewShapeState(List<List<Position>> shapeStates ,int currentShapeState, Rotation rotateTo){    
+    int newShapeState = currentShapeState;
+    if (rotateTo = Rotation.right) {
+        if (currentShapeState >= shapeStates.length) {
+          newShapeState = 0;
+        } else {
+          newShapeState++;
+        }
+      }
+    if (rotateTo = Rotation.left) {
+        if (currentShapeState <= 0) {
+          newShapeState = shapeStates.length;
+        } else {
+          newShapeState++;
+        }
+      }
+      return newShapeState;
+  }
+
+  List<Position> getCurrentState(){
+    return List<Position> _shapeStates[_currentShapeState];
+  }
+  List<Position> getRotatedState(Rotation rotateTo){
+    return List<Position> _shapeStates[getNewShapeState(_shapeStates, _currentShapeState , rotateTo)];
+  }
+  
 }

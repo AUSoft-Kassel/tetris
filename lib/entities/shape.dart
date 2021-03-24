@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tetris/entities/shapes.dart';
+import 'package:tetris/entities/rotation.dart';
 
 import 'position.dart';
 import 'shapeform.dart';

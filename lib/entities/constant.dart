@@ -11,5 +11,4 @@ abstract class Constant {
 
   /// The number of columns of a standard Tetris field
   static const numCols = 10;
-
 }

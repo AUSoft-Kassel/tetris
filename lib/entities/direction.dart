@@ -1,4 +1,4 @@
-/// Moving direktion of the shape
+/// Moving direction of the shape
 enum Direction {
   /// Direction up
   up,

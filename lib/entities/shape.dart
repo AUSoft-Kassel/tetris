@@ -37,5 +37,10 @@ abstract class Shape {
     } else {
       _currentShapeState++;
     }
+
+Position a = Position(0,1);
+Position b = Position(1,0);
+Position c = a+b;
+
   }
 }

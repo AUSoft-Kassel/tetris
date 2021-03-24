@@ -8,10 +8,10 @@ void main() {
   test('ShapeI can be constructed and is a shape', () {
     final shape = ShapeI();
     expect(
-        shape.getAbsPositions(base: Position(10, 10)) is List<Position>, true);
+        shape.getAbsPositions(absPosition: Position(10, 10)) is List<Position>, true);
     expect(
         shape.getRotatedAbsPositions(
-            base: Position(10, 10), rotation: Rotation.left) is Shape,
+            absPosition: Position(10, 10), rotateTo: Rotation.left) is Shape,
         true);
   });
 }

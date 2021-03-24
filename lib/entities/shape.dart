@@ -47,11 +47,11 @@ abstract class Shape {
       }
       return newShapeState;
   }
-
-  List<Position> getCurrentState(){
+  ///Get Absolut Positions of all Shapeparts
+  List<Position> getAbsPositions(Position absPosition){
     return List<Position> _shapeStates[_currentShapeState];
   }
-  List<Position> getRotatedState(Rotation rotateTo){
+  List<Position> getRotatedAbsPositions(Rotation rotateTo){
     return List<Position> _shapeStates[getNewShapeState(_shapeStates, _currentShapeState , rotateTo)];
   }
   

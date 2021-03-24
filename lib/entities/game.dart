@@ -42,20 +42,20 @@ class Game {
     }
   }
 
-  bool isPositionValid(Shape shape,ExactPosition exactPosition, [Rotation rotateTo]{
-    List<Position> relPositions;
+  bool isPositionValid(Shape shape,ExactPosition exactAbsPosition, [Rotation rotateTo]{
+    List<ExactPosition> absPositions;
     if(rotateTo != null){
-       relPositions = shape.getRotatedState(rotateTo);
+      absPositions = shape.getRotatedState(exactAbsPosition, rotateTo);
     } else {
-      relPositions = shape.getCurrentState();
+      absPositions = shape.getAbsPositions(exactAbsPosition);
     }
     List<ExactPosition> exactPositions = [];
-    for (var relPosition in relPositions){
-      exactPositions.add(relPosition + exactPosition);
+    for (var absPosition in absPositions){
+      exactAbsPosition.add(absPosition + exactAbsPosition);
     }
     List<ExactPosition> absExactPositions;
     for(Position cell in Grid){
-      for(Position relPposition in) 
+      for(Position absPposition in) 
     }
   }
 

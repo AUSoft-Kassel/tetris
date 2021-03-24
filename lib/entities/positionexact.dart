@@ -1,17 +1,20 @@
-class PositionExact{
+import 'dart:ffi';
+
+import 'package:tetris/entities/position.dart';
+
+class PositionExact {
   ///Atributes
   final Float _x;
   final Float _y;
 
   ///Constructors
-  Position(Float x, Float y)
-    : _x = x,
-      _y = y;
+  PositionExact(Float x, Float y)
+      : _x = x,
+        _y = y;
 
   ///Getters / Setters
   get x => _x;
   get y => _y;
-
 
   ///Operator
   @override

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:tetris/entities/position.dart';
+import 'package:tetris/entities/shapeform.dart';
 import 'package:tetris/entities/shapes.dart';
 import 'package:tetris/entities/rotation.dart';
-
-import 'position.dart';
-import 'shapeform.dart';
 
 ///Descriptes a abstract class for our Shapes.
 abstract class Shape {
@@ -27,20 +26,19 @@ abstract class Shape {
 
   /// Descriptes the rotation of shapes.
   void rotateShape(Rotation rotateTo) {
-    if(rotateTo = Rotation.right){
-    if (_currentShapeState >= _shapeStates.length) {
-      _currentShapeState = 0;
-    } else {
-      _currentShapeState++;
+    if (rotateTo = Rotation.right) {
+      if (_currentShapeState >= _shapeStates.length) {
+        _currentShapeState = 0;
+      } else {
+        _currentShapeState++;
+      }
     }
+    if (rotateTo = Rotation.left) {
+      if (_currentShapeState <= 0) {
+        _currentShapeState = _shapeStates.length;
+      } else {
+        _currentShapeState++;
+      }
     }
-    if(rotateTo = Rotation.left){
-    if (_currentShapeState <= 0) {
-      _currentShapeState = _shapeStates.length;
-    } else {
-      _currentShapeState++;
-    }
-    }
-
   }
 }

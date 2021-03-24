@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tetris/models/gamestatus.dart';
+import 'package:tetris/entities/gamestatus.dart';
 
 void main() {
   test('GameStatus can be constructed and read', () {

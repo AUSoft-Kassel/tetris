@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tetris/models/rotation.dart';
+import 'package:tetris/entities/rotation.dart';
 
 void main() {
   test('Rotation can be constructed and read', () {

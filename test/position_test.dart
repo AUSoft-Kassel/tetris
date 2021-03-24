@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tetris/models/position.dart';
+import 'package:tetris/entities/position.dart';
 
 void main() {
   test('Positions can be constructed and read', () {

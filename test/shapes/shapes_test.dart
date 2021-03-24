@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tetris/models/shape.dart';
-import 'package:tetris/models/shapeform.dart';
-import 'package:tetris/models/shapes.dart';
+import 'package:tetris/entities/shape.dart';
+import 'package:tetris/entities/shapeform.dart';
+import 'package:tetris/entities/shapes.dart';
 
 void main() {
   test('All Shapes can be constructed', () {

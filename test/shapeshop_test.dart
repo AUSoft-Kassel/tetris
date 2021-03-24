@@ -1,8 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tetris/models/shape.dart';
-import 'package:tetris/models/shapeshop.dart';
+import 'package:tetris/entities/shape.dart';
+import 'package:tetris/entities/shapeshop.dart';
 
 void main() {
   test('ShapeShop can be constructed', () {

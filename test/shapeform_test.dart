@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tetris/models/shapeform.dart';
+import 'package:tetris/entities/shapeform.dart';
 
 void main() {
   test('ShapeFormEnum works', () {

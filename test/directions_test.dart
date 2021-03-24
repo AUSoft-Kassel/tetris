@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tetris/models/direction.dart';
+import 'package:tetris/entities/direction.dart';
 
 void main() {
   test('Directions can be constructed and read', () {

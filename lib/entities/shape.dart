@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:tetris/entities/position.dart';
+import 'package:tetris/entities/shapeform.dart';
 import 'package:tetris/entities/shapes.dart';
+import 'package:tetris/entities/rotation.dart';
 
-import 'position.dart';
-import 'shapeform.dart';
-import 'shapeform.dart';
-
+///Descriptes a abstract class for our Shapes.
 abstract class Shape {
-  abstract final Position _anchorPosition;
   abstract int _currentShapeState;
   abstract final List<List<Position>> _shapeStates;
   abstract final Color _color;
 
+  ///Our game object
   Shape();
 
+  ///Descriptes which form we need.
   factory Shape.fromForm(ShapeForm form) {
     if (form == ShapeForm.i) return ShapeI();
     if (form == ShapeForm.j) return ShapeJ();
@@ -23,19 +24,35 @@ abstract class Shape {
     return ShapeO();
   }
 
-  void rotateRight() {
-    if (_currentShapeState >= _shapeStates.length) {
-      _currentShapeState = 0;
-    } else {
-      _currentShapeState++;
-    }
+  /// Descriptes the rotation of shapes.
+  void rotateShape(Rotation rotateTo) {
+    _currentShapeState = newShapeState(_shapeStates, _currentShapeState , rotateTo);
   }
 
-  void rotateLeft() {
-    if (_currentShapeState <= 0) {
-      _currentShapeState = _shapeStates.length;
-    } else {
-      _currentShapeState++;
-    }
+  int getNewShapeState(List<List<Position>> shapeStates ,int currentShapeState, Rotation rotateTo){    
+    int newShapeState = currentShapeState;
+    if (rotateTo = Rotation.right) {
+        if (currentShapeState >= shapeStates.length) {
+          newShapeState = 0;
+        } else {
+          newShapeState++;
+        }
+      }
+    if (rotateTo = Rotation.left) {
+        if (currentShapeState <= 0) {
+          newShapeState = shapeStates.length;
+        } else {
+          newShapeState++;
+        }
+      }
+      return newShapeState;
   }
+  ///Get Absolut Positions of all Shapeparts
+  List<Position> getAbsPositions(Position absPosition){
+    return List<Position> _shapeStates[_currentShapeState];
+  }
+  List<Position> getRotatedAbsPositions(Rotation rotateTo){
+    return List<Position> _shapeStates[getNewShapeState(_shapeStates, _currentShapeState , rotateTo)];
+  }
+  
 }

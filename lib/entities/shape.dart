@@ -25,21 +25,22 @@ abstract class Shape {
     return ShapeO();
   }
 
-  /// Descriptes the rotation of a shape to the right side.
-  void rotateRight() {
+  /// Descriptes the rotation of shapes.
+  void rotateShape(Rotation rotateTo) {
+    if(rotateTo = Rotation.right){
     if (_currentShapeState >= _shapeStates.length) {
       _currentShapeState = 0;
     } else {
       _currentShapeState++;
     }
-  }
-
-  /// Descriptes the rotation of a shape to the left side.
-  void rotateLeft() {
+    }
+    if(rotateTo = Rotation.left){
     if (_currentShapeState <= 0) {
       _currentShapeState = _shapeStates.length;
     } else {
       _currentShapeState++;
     }
+    }
+
   }
 }

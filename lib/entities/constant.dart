@@ -1,5 +1,5 @@
 /// Class which holds static data - more or less global variables
-abstract class Constants {
+abstract class Constant {
   /// Minimum gamespeed
   static const minSpeed = 10.0;
 
@@ -11,4 +11,5 @@ abstract class Constants {
 
   /// The number of columns of a standard Tetris field
   static const numCols = 10;
+
 }

@@ -1,0 +1,12 @@
+"filename", "language", "Dart", "comment", "blank", "total"
+"c:\projects\tetris\lib\entities\constants.dart", "Dart", 6, 5, 4, 15
+"c:\projects\tetris\lib\entities\direction.dart", "Dart", 6, 5, 4, 15
+"c:\projects\tetris\lib\entities\gamestatus.dart", "Dart", 7, 6, 5, 18
+"c:\projects\tetris\lib\entities\position.dart", "Dart", 14, 13, 8, 35
+"c:\projects\tetris\lib\entities\rotation.dart", "Dart", 4, 3, 2, 9
+"c:\projects\tetris\lib\entities\shape.dart", "Dart", 35, 0, 7, 42
+"c:\projects\tetris\lib\entities\shapeform.dart", "Dart", 9, 8, 6, 23
+"c:\projects\tetris\lib\entities\shapes.dart", "Dart", 72, 6, 9, 87
+"c:\projects\tetris\lib\entities\shapeshop.dart", "Dart", 38, 1, 9, 48
+"c:\projects\tetris\lib\main.dart", "Dart", 57, 47, 11, 115
+"Total", "-", 248, 94, 65, 407

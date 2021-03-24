@@ -1,0 +1,42 @@
+Date : 2021-03-24 00:46:09
+Directory : c:\projects\tetris\test
+Total : 16 files,  331 codes, 24 comments, 48 blanks, all 403 lines
+
+Languages
++----------+------------+------------+------------+------------+------------+
+| language | files      | code       | comment    | blank      | total      |
++----------+------------+------------+------------+------------+------------+
+| Dart     |         16 |        331 |         24 |         48 |        403 |
++----------+------------+------------+------------+------------+------------+
+
+Directories
++--------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                             | files      | code       | comment    | blank      | total      |
++--------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                |         16 |        331 |         24 |         48 |        403 |
+| shapes                                           |          8 |        117 |          0 |         16 |        133 |
+| tesX                                             |          1 |          0 |         24 |          7 |         31 |
++--------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++--------------------------------------------------+----------+------------+------------+------------+------------+
+| filename                                         | language | code       | comment    | blank      | total      |
++--------------------------------------------------+----------+------------+------------+------------+------------+
+| c:\projects\tetris\test\constants_test.dart      | Dart     |         14 |          0 |          2 |         16 |
+| c:\projects\tetris\test\directions_test.dart     | Dart     |         14 |          0 |          2 |         16 |
+| c:\projects\tetris\test\gamestatus_test.dart     | Dart     |         16 |          0 |          2 |         18 |
+| c:\projects\tetris\test\position_test.dart       | Dart     |         22 |          0 |          4 |         26 |
+| c:\projects\tetris\test\rotation_test.dart       | Dart     |         10 |          0 |          2 |         12 |
+| c:\projects\tetris\test\shapeform_test.dart      | Dart     |         41 |          0 |          2 |         43 |
+| c:\projects\tetris\test\shapes\shape_i_test.dart | Dart     |         12 |          0 |          2 |         14 |
+| c:\projects\tetris\test\shapes\shape_j_test.dart | Dart     |         12 |          0 |          2 |         14 |
+| c:\projects\tetris\test\shapes\shape_l_test.dart | Dart     |         12 |          0 |          2 |         14 |
+| c:\projects\tetris\test\shapes\shape_o_test.dart | Dart     |         16 |          0 |          2 |         18 |
+| c:\projects\tetris\test\shapes\shape_s_test.dart | Dart     |         12 |          0 |          2 |         14 |
+| c:\projects\tetris\test\shapes\shape_t_test.dart | Dart     |         12 |          0 |          2 |         14 |
+| c:\projects\tetris\test\shapes\shape_z_test.dart | Dart     |         12 |          0 |          2 |         14 |
+| c:\projects\tetris\test\shapes\shapes_test.dart  | Dart     |         29 |          0 |          2 |         31 |
+| c:\projects\tetris\test\shapeshop_test.dart      | Dart     |         97 |          0 |         11 |        108 |
+| c:\projects\tetris\test\tesX\widget_test.dart    | Dart     |          0 |         24 |          7 |         31 |
+| Total                                            |          |        331 |         24 |         48 |        403 |
++--------------------------------------------------+----------+------------+------------+------------+------------+

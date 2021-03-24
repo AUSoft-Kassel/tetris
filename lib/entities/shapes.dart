@@ -1,6 +1,5 @@
-import 'package:tetris/models/shape.dart';
-
-import 'position.dart';
+import 'package:tetris/entities/position.dart';
+import 'package:tetris/entities/shape.dart';
 
 class ShapeO extends Shape {
   final List<List<Position>> _shapeStates = [

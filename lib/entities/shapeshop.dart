@@ -1,7 +1,5 @@
 import 'dart:math';
 
-import 'package:tetris/models/shapes.dart';
-
 import 'shape.dart';
 import 'shapeform.dart';
 

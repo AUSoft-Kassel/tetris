@@ -27,7 +27,8 @@ an object and so on).
 
 ## What is the current state of the app?
 
-Zero. Niente. Nada. Nichts.
+We started with the helper classes, because they were reasy. We will now begin 
+to finish all of the domain layer
 
 ## What do we have to do in this phase of the project?
 

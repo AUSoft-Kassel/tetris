@@ -6,7 +6,7 @@ import 'package:tetris/entities/shapes.dart';
 
 void main() {
   test('ShapeO can be constructed and is a shape', () {
-    var shape = ShapeO();
+    final shape = ShapeO();
     expect(
         shape.getAbsPositions(base: Position(10, 10)) is List<Position>, true);
     expect(

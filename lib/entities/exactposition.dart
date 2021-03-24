@@ -4,11 +4,11 @@ import 'package:tetris/entities/position.dart';
 
 class ExactPosition {
   ///Atributes
-  final Float _x;
-  final Float _y;
+  final double _x;
+  final double _y;
 
   ///Constructors
-  ExactPosition(Float x, Float y)
+  ExactPosition(double x, double y)
       : _x = x,
         _y = y;
 
@@ -17,11 +17,7 @@ class ExactPosition {
   get y => _y;
 
   ///Operator
-  @override
-  bool operator ==(Object o) => o is Position && o.y == _y && o.x == _x;
 
-  Position operator +(Position o) => Position(o.x + _x, o.y + _y);
-
-  @override
-  int get hashCode => _x * 1000 + _y;
+  ExactPosition operator +(ExactPosition o) =>
+      ExactPosition(o.x + _x, o.y + _y);
 }

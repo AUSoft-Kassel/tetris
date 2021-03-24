@@ -1,18 +1,23 @@
+import 'dart:ffi';
+
 import 'package:tetris/entities/constant.dart';
+import 'package:tetris/entities/exactposition.dart';
+import 'package:tetris/entities/grid.dart';
+import 'package:tetris/entities/position.dart';
+import 'package:tetris/entities/rotation.dart';
 import 'package:tetris/entities/shape.dart';
 import 'package:tetris/entities/shapeshop.dart';
 import 'package:tetris/entities/direction.dart';
 
 class Game {
   var shapeShop = ShapeShop();
-
+  var grid = Grid();
   var actualSpeed = Constant.minSpeed;
-  var lastTimeMoved
+  var lastTimeMoved;
 
   var activeShape;
-  var activeShapeAbsExactPosition; 
 
-  final activeShapeAbsExactPosition = ExactPosition(Constant.numColums/2,Constant.numRows);
+  var activeShapeAbsExactPosition = ExactPosition(Constant.numCols/2,Constant.numRows.toDouble());
 
   Game() {
     spawnShape();
@@ -22,34 +27,35 @@ class Game {
     activeShapePosition = Position(shapeSpawnAbsPosition.x,shapeSpawnAbsPosition.y);
   }
   void moveShape(Direction direction,[Float distance]){
-    distance ? distance = 1;
+   distance ? distance = 1;
     var moveToExactPosition;
     if(direction == Direction.up   )
-      moveToExactPosition = activeShapeAbsExactPosition+Position( distance,0);
+      moveToExactPosition = activeShapeAbsExactPosition+ExactPosition( distance,0);
     if(direction == Direction.down )
-      moveToExactPosition = activeShapeAbsExactPosition+Position(-distance,0);
+      moveToExactPosition = activeShapeAbsExactPosition+ExactPosition(-distance,0);
     if(direction == Direction.left )
-      moveToExactPosition = activeShapeAbsExactPosition+Position(0,-distance);
+      moveToExactPosition = activeShapeAbsExactPosition+ExactPosition(0,-distance);
     if(direction == Direction.right)
-      moveToExactPosition = activeShapeAbsExactPosition+Position(0, distance);
+      moveToExactPosition = activeShapeAbsExactPosition+ExactPosition(0, distance);
     if(isPositionValid(activeShape,activeShapeAbsExactPosition,moveToExactPosition)){
       activeShapeAbsExactPosition+=moveToExactPosition;
     }
   }
 
   bool isPositionValid(Shape shape,ExactPosition exactPosition, [Rotation rotateTo]{
+    List<Position> relPositions;
     if(rotateTo != null){
-      List<Position> relPositions = shape.getRotatedState(rotateTo);
+       relPositions = shape.getRotatedState(rotateTo);
     } else {
-      List<Position> relPositions = shape.getCurrentState();
+      relPositions = shape.getCurrentState();
     }
     List<ExactPosition> exactPositions = [];
-    for(Position relPosition in relPositions){
-      exactPositions.add(relPosition + exactPosition)
+    for (var relPosition in relPositions){
+      exactPositions.add(relPosition + exactPosition);
     }
-    List<ExactPosition> absExactPositions
-    for(Position cell in grid){
-      for(Position relPposition in)
+    List<ExactPosition> absExactPositions;
+    for(Position cell in Grid){
+      for(Position relPposition in) 
     }
   }
 

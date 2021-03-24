@@ -7,7 +7,6 @@ import 'shapeform.dart';
 import 'shapeform.dart';
 
 abstract class Shape {
-  abstract final Position _anchorPosition;
   abstract int _currentShapeState;
   abstract final List<List<Position>> _shapeStates;
   abstract final Color _color;

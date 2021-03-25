@@ -1,11 +1,12 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:math';
+
+import 'package:flutter/material.dart';
 import 'package:tetris/entities/position.dart';
 import 'package:tetris/entities/shape.dart';
 
 /// Description of the class which will show us the Shape O.
 class ShapeO extends Shape {
-  final Color _color = const Color(0x919191FF);
-  final List<List<Position>> _shapeStates = [
+  static final List<List<Position>> _shapeStates = [
     [
       Position(0, 0),
       Position(0, 1),
@@ -13,12 +14,19 @@ class ShapeO extends Shape {
       Position(1, -1),
     ],
   ];
+
+  ///Constructor
+  ShapeO()
+      : super(
+          color: const Color(0x919191FF),
+          shapeStates: _shapeStates,
+          shapeStateId: Random().nextInt(_shapeStates.length),
+        );
 }
 
 /// Description of the class which will show us the Shape I.
 class ShapeI extends Shape {
-  final Color _color = const Color(0x3617FFFF);
-  final List<List<Position>> _shapeStates = [
+  static final List<List<Position>> _shapeStates = [
     [
       Position(0, 0),
       Position(0, 2),
@@ -32,12 +40,19 @@ class ShapeI extends Shape {
       Position(1, 0),
     ],
   ];
+
+  ///Constructor
+  ShapeI()
+      : super(
+          color: const Color(0x3617FFFF),
+          shapeStates: _shapeStates,
+          shapeStateId: Random().nextInt(_shapeStates.length),
+        );
 }
 
 /// Description of the class which will show us the Shape L.
 class ShapeL extends Shape {
-  final Color _color = const Color(0xFF5C5CFF);
-  final List<List<Position>> _shapeStates = [
+  static final List<List<Position>> _shapeStates = [
     [
       Position(0, 0),
       Position(0, 1),
@@ -63,12 +78,19 @@ class ShapeL extends Shape {
       Position(1, 1),
     ],
   ];
+
+  ///Constructor
+  ShapeL()
+      : super(
+          color: const Color(0xFF5C5CFF),
+          shapeStates: _shapeStates,
+          shapeStateId: Random().nextInt(_shapeStates.length),
+        );
 }
 
 /// Description of the class which will show us the Shape  J.
 class ShapeJ extends Shape {
-  final Color _color = const Color(0xFFB536FF);
-  final List<List<Position>> _shapeStates = [
+  static final List<List<Position>> _shapeStates = [
     [
       Position(0, 0),
       Position(0, 1),
@@ -94,12 +116,19 @@ class ShapeJ extends Shape {
       Position(-2, 0),
     ],
   ];
+
+  ///Constructor
+  ShapeJ()
+      : super(
+          color: const Color(0xFFB536FF),
+          shapeStates: _shapeStates,
+          shapeStateId: Random().nextInt(_shapeStates.length),
+        );
 }
 
 /// Description of the class which will show us the Shape S.
 class ShapeS extends Shape {
-  final Color _color = const Color(0xF830FFFF);
-  final List<List<Position>> _shapeStates = [
+  static final List<List<Position>> _shapeStates = [
     [
       Position(0, 0),
       Position(0, 1),
@@ -113,12 +142,19 @@ class ShapeS extends Shape {
       Position(-1, -1),
     ],
   ];
+
+  ///Constructor
+  ShapeS()
+      : super(
+          color: const Color(0xF830FFFF),
+          shapeStates: _shapeStates,
+          shapeStateId: Random().nextInt(_shapeStates.length),
+        );
 }
 
 /// Description of the class which will show us the Shape Z.
 class ShapeZ extends Shape {
-  final Color _color = const Color(0xD9FFBBFF);
-  final List<List<Position>> _shapeStates = [
+  static final List<List<Position>> _shapeStates = [
     [
       Position(0, 0),
       Position(0, 1),
@@ -132,12 +168,19 @@ class ShapeZ extends Shape {
       Position(1, -1),
     ],
   ];
+
+  ///Constructor
+  ShapeZ()
+      : super(
+          color: const Color(0xD9FFBBFF),
+          shapeStates: _shapeStates,
+          shapeStateId: Random().nextInt(_shapeStates.length),
+        );
 }
 
 /// Description of the class which will show us the Shape T.
 class ShapeT extends Shape {
-  final Color _color = const Color(0xFAFF75FF);
-  final List<List<Position>> _shapeStates = [
+  static final List<List<Position>> _shapeStates = [
     [
       Position(0, 0),
       Position(1, 0),
@@ -163,4 +206,12 @@ class ShapeT extends Shape {
       Position(0, -1),
     ],
   ];
+
+  ///Constructor
+  ShapeT()
+      : super(
+          color: const Color(0xFAFF75FF),
+          shapeStates: _shapeStates,
+          shapeStateId: Random().nextInt(_shapeStates.length),
+        );
 }

@@ -42,7 +42,7 @@ void main() {
     final shapeShop = ShapeShop();
     final shown = <Shape>[];
     for (var x = 0; x < 100; x++) {
-      final shape = shapeShop.showShape(x);
+      final Shape? shape = shapeShop.showShape(x);
       if (x < 13) {
         expect(shape is Shape, true);
       } else {

@@ -8,15 +8,18 @@ import 'package:tetris/entities/rotation.dart';
 
 ///Descriptes a abstract class for our Shapes.
 abstract class Shape {
-  abstract int _currentShapeStateId;
-  abstract final List<List<Position>> _shapeStates;
-  abstract final Color _color;
+  int _currentShapeStateId;
+  final List<List<Position>> _shapeStates;
+  final Color _color;
 
   ///Our game object
-  Shape();
-
-  /// Getter
-  List<List<Position>> get shapeStates => _shapeStates;
+  Shape(
+      {required int shapeStateId,
+      required Color color,
+      required List<List<Position>> shapeStates})
+      : _currentShapeStateId = shapeStateId,
+        _color = color,
+        _shapeStates = shapeStates;
 
   ///Descriptes which form we need.
   factory Shape.fromForm(ShapeForm form) {
@@ -40,32 +43,30 @@ abstract class Shape {
 
   /// Gets the new State after rotating
   int getNewShapeStateId(Rotation rotation) {
-    var newShapeState = _currentShapeStateId;
+    var newShapeStateId = _currentShapeStateId;
     if (rotation == Rotation.right) {
       if (_currentShapeStateId >= _shapeStates.length) {
-        newShapeState = 0;
+        newShapeStateId = 0;
       } else {
-        newShapeState++;
+        newShapeStateId++;
       }
     }
     if (rotation == Rotation.left) {
       if (_currentShapeStateId <= 0) {
-        newShapeState = _shapeStates.length;
+        newShapeStateId = _shapeStates.length - 1;
       } else {
-        newShapeState++;
+        newShapeStateId--;
       }
     }
-    return newShapeState;
+    return newShapeStateId;
   }
 
   ///Gets Absolut Positions of the currend or rotated State
   List<Position> getAbsPositions(
       {required Position base, Rotation rotation = Rotation.none}) {
     final absPositions = <Position>[];
-    for (var i = 0;
-        i < _shapeStates[getNewShapeStateId(rotation)].length;
-        i++) {
-      absPositions.add(base + _shapeStates[getNewShapeStateId(rotation)][i]);
+    for (var shapeState in _shapeStates) {
+      absPositions.add(base + shapeState[getNewShapeStateId(rotation)]);
     }
     return absPositions;
   }

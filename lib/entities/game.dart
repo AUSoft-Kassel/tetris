@@ -91,39 +91,11 @@ class Game {
       _activeShapePosition = moveToPosition;
     };
   }
-  
 
-  // TODO: AH: Umschreiben auf Position
-  // Vom Ansatz aber richtig. Wir brauchen eine Methode, die den potenziellen 
-  // zukünftigen State des Shapes prüft. Ich würde aber den Teil, der erstmal 
-  // errechnet, wie die zukünftige Position (nach Drehung und Bewegung) aussieht,
-  // extrahieren, denn wir brauchen den Teil nochmal, wenn wir die dann die 
-  // tatsächliche Drehung durchführen. Außerdem würde ich ihn in Shape packen, 
-  // denn da liegen alle Informationen direkt vor.
-  // Und um null-Checks zu vermeiden, ist es eine Idee wert, in Direction und 
-  // Rotation den Wert "none" einzufügen, um eine Nicht-Bewegung bzw. Nicht-
-  // Rotation auszudrücken. Dann können wir uns hier die Fragezeichen sparen.
-  // bool isShapePositionValid(Shape shape, Direction? direction, Rotation? rotation) {
-
-  //   List<Position> futureAbsolutePositions = shape.positionsAfterMovementAndRotation(direction, rotation, activeShapeAbsExactPosition);
-  //   for (var pos in futureAbsolutePositions) {
-  //     if (pos2Shape[pos] != null && pos2Shape[pos] != shape) {   // ggf ist die Map in Grid
-  //       return false;
-  //     }
-  //   }
-  //   return true;
-  // }
-
-  bool isPositionValid(Shape shape, Position moveToPosition){
+  bool isPositionValid(Shape shape, Position moveToPosition, [Rotation rotation = Rotation.none]){
     bool isValid = false;
   
-    List<Position> absPositions;
-    
-    if(rotateTo == Rotation.none){
-      absPositions = shape.getAbsPositions(exactAbsPosition);
-    } else {
-      absPositions = shape.getRotatedAbsPositions(moveToPosition, rotateTo);
-    }
+    List<Position> absPositions = shape.getAbsPositions(moveToPosition, rotation);
 
     for(var absPosition in absPositions){
       if(grid[absPosition] is Shape && grid[absPosition] != _activeShape)

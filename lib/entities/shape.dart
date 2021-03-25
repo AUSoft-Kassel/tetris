@@ -50,7 +50,7 @@ abstract class Shape {
   }
 
   ///Gets Absolut Positions of the current State
-  List<Position> getAbsPositions(Position base) {
+  List<Position> getAbsPositions({required Position base}) {
     final List<Position> absPositions = [];
     for (var relPosition in _shapeStates[_currentShapeState]) {
       absPositions.add(base + relPosition);
@@ -59,7 +59,8 @@ abstract class Shape {
   }
 
   ///Gets Absolut Positions of the rotated State
-  List<Position> getRotatedAbsPositions(Position base, Rotation rotation) {
+  List<Position> getRotatedAbsPositions(
+      {required Position base, required Rotation rotation}) {
     final List<Position> absPositions = [];
     for (var relPosition in _shapeStates[getNewShapeState(rotation)]) {
       absPositions.add(base + relPosition);

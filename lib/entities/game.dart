@@ -30,13 +30,14 @@ class Game {
   var actualSpeed = Constant.minSpeed;
   var lastTimeActiveShapeMoved;
 
-  Shape _activeShape;
-  List<ExactPosition> activeShapeAbsPositions;
-  Position _activeShapePosition;
+  late Shape _activeShape;
+  late List<ExactPosition> activeShapeAbsPositions;
+  late Position _activeShapePosition;
   final Position _spawnPosition =
-      Position((Constant.numCols / 2).floor, Constant.numRows);
+      Position((Constant.numCols / 2).floor(), Constant.numRows);
 
   Game() {
+    _activeShapePosition = _spawnPosition;
     spawnShape();
   }
 
@@ -83,7 +84,7 @@ class Game {
 
     void addActiveShapeToGrid() {
       for (Position position
-          in _activeShape.getAbsPositions(_activeShapePosition)) {
+          in _activeShape.getAbsPositions(base: _activeShapePosition)) {
         grid[position] = _activeShape;
       }
     }

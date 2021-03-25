@@ -28,26 +28,12 @@ class Game {
   // Sollte das Grid die Positionen enthalten, dann ist das okay.
   var grid = Grid();
   var actualSpeed = Constant.minSpeed;
-  var lastTimeMoved;  // TODO: AH: Ich würde es noch länger machen a la activeShapeMovedLastWhen,
-                      // aber das ist Geschmackssache.
+  var lastTimeActiveShapeMoved;
 
-  var activeShape;    // TODO: Generell sollte man die Attribute einer Klasse
-                      // mit Typen versehen. Also Shape activeShape.
+  Shape activeShape;
+  List<ExactPosition> activeShapeAbsPositions;
 
-  var activeShapeAbsExactPosition = ExactPosition(Constant.numCols/2,Constant.numRows.toDouble());
-                      // TODO: AH: Klingt eher wie die SpawnPosition (also wo starten neue 
-                      // Shapes generell. Die könnte man final festlegen bei 
-                      // der Initialisierung von Game. Wenn es aber um die 
-                      // Position des activeShapes insgesamt geht, und das deutet 
-                      // der Name ja an, dann würde ich den Wert eben nicht 
-                      // initialisieren. Weil effektiv ist die ganze Einstellung 
-                      // ja wirklich nur beim ersten Shape nach Neustart. Danach 
-                      // werden ja wieder neue Shapes gespawnt ... und der 
-                      // Wert activeShapeAbsExactPosition ist dann schon 
-                      // verstellt noch durch den ehemaligen aktiven Shape.
-                      // Kurzum: Einfach weglassen, ggf. eine spanLocation
-                      // als Varoable lassen - die ist dan aber nur die spawnPosition.
-                      // ExactPosition activeShapeAbsExactPosition = ExactPosition(Constant.numCols ~/ 2, numRows, numRows.toDouble());
+  final Position spawnPosition = ExactPosition((Constant.numCols/2).floor,Constant.numRows);
 
   Game() {
     spawnShape();
@@ -80,21 +66,32 @@ class Game {
 
 
   // TODO: AH: Muss umgeschrieben werden auf neue Definition von exactPosition
-  void moveShape(Direction direction,[Float distance]){
-   distance ? distance = 1;
-    var moveToExactPosition;
-    if(direction == Direction.up   )
-      moveToExactPosition = activeShapeAbsExactPosition+ExactPosition( distance,0);
-    if(direction == Direction.down )
-      moveToExactPosition = activeShapeAbsExactPosition+ExactPosition(-distance,0);
-    if(direction == Direction.left )
-      moveToExactPosition = activeShapeAbsExactPosition+ExactPosition(0,-distance);
-    if(direction == Direction.right)
-      moveToExactPosition = activeShapeAbsExactPosition+ExactPosition(0, distance);
-    if(isPositionValid(activeShape,activeShapeAbsExactPosition,moveToExactPosition)){
-      activeShapeAbsExactPosition+=moveToExactPosition;
+  void moveShape({Direction direction,num distance})
+  {
+    distance ? distance = 1.0;
+    direction ? direction = Direction.down;
+
+    var moveToPosition;
+
+    if(direction == Direction.down ){
+      if(distance is int) moveToPosition = activeShapePosition.y + distance;
+      if(distance is double || distance is Float) moveToPosition = activeShapePosition.y + distance;
     }
+    if(direction == Direction.left ){
+       if(distance is int) moveToPosition = activeShapePosition.x - distance;
+      if(distance is double || distance is Float) moveToPosition = activeShapePosition.x - distance;
+    }
+    if(direction == Direction.right){
+       if(distance is int) moveToPosition = activeShapePosition.x + distance;
+      if(distance is double || distance is Float) moveToPosition = activeShapePosition.x + distance;
+    }
+
+    if(isPositionValid(moveToPosition)){
+      activeShapeAbsPositions = activeShape.getAbsPositions(moveToPosition);
+      activeShapePosition = moveToPosition;
+    };
   }
+  
 
   // TODO: AH: Umschreiben auf Position
   // Vom Ansatz aber richtig. Wir brauchen eine Methode, die den potenziellen 

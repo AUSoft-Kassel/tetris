@@ -27,7 +27,7 @@ class Game {
   // in DIESER Klasse ist. Wir wissen die Dimensionen des Grids und wir wissen
   // durch die Maps, welche Positionen durch Shapes belegt sind.
   // Sollte das Grid die Positionen enthalten, dann ist das okay.
-  List<Shape> grid = [];
+  final grid = Map<Position,Shape>();
   var actualSpeed = Constant.minSpeed;
   var lastTimeActiveShapeMoved;
 
@@ -105,8 +105,6 @@ class Game {
         grid[position] = _activeShape;
       }
     }
-
-    
 
     bool isPositionValid(Position moveToPosition, [Rotation rotation = Rotation.none]) {
       bool isValid = false;

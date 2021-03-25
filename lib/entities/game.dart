@@ -30,10 +30,10 @@ class Game {
   var actualSpeed = Constant.minSpeed;
   var lastTimeActiveShapeMoved;
 
-  Shape activeShape;
+  Shape _activeShape;
   List<ExactPosition> activeShapeAbsPositions;
   Position _activeShapePosition;
-  final Position spawnPosition = Position((Constant.numCols/2).floor,Constant.numRows);
+  final Position _spawnPosition = Position((Constant.numCols/2).floor,Constant.numRows);
 
   Game() {
     spawnShape();
@@ -50,8 +50,8 @@ class Game {
 
   // TODO: AH: Oops, das war ja schon da .....
   void spawnShape() {
-    activeShape = shapeShop.giveShape();
-    _activeShapePosition = Position(shapeSpawnAbsPosition.x,shapeSpawnAbsPosition.y);
+    _activeShape = shapeShop.giveShape();
+    _activeShapePosition = Position(_spawnPosition.x,_spawnPosition.y);
   // }  // TODO: AH: Außerdem wird bei dem aktiven Shape ja die ExactPositon
         // gespeichert. Folglich müssen wir keine Umrechnung auf Position vornehmen
         //   activeShapePosition = ExactPosition.clone(spawnPosition)
@@ -87,7 +87,7 @@ class Game {
     }
 
     if(isPositionValid(moveToPosition)){
-      activeShapeAbsPositions = activeShape.getAbsPositions(base:moveToPosition);
+      activeShapeAbsPositions = _activeShape.getAbsPositions(base:moveToPosition);
       _activeShapePosition = moveToPosition;
     };
   }
@@ -126,8 +126,9 @@ class Game {
     }
 
     for(var absPosition in absPositions){
-      if(grid[absPosition] is Shape && grid[absPosition] != activeShape)
+      if(grid[absPosition] is Shape && grid[absPosition] != _activeShape)
         isValidPosition = true;
     }
   }
+}
 }

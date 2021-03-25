@@ -88,20 +88,25 @@ class Game {
       if (isPositionValid(moveToPosition)) {
         removeFromGrid(_activeShape);
           _activeShapePosition = moveToPosition;
-        addToGrid();
+        addActiveShapeToGrid();
       }
       ;
     }
-
-    void addActiveShapeToGrid(){
-      for(Position position in _activeShape.shapeState){
-        grid[position.getAbsPositions(_activeShapePosition).toString];
+    void removeFromGrid(){
+      for(Shape shape in grid){
+        if(shape == _activeShape){
+          grid.remove(shape);
+        }
       }
     }
 
-    void moveFromGrid(){
-      for(Position position in shape)
+    void addActiveShapeToGrid(){
+      for(Position position in _activeShape.getAbsPositions(_activeShapePosition)){
+        grid[position] = _activeShape;
+      }
     }
+
+    
 
     bool isPositionValid(Position moveToPosition, [Rotation rotation = Rotation.none]) {
       bool isValid = false;

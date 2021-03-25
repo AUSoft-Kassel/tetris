@@ -26,6 +26,10 @@ class Position {
   /// Describes in which column position the position is located
   int get y => _y;
 
+  @override
+  string toString(){
+    return '$_x,$_y';
+  }
 
   @override
   bool operator ==(Object o) => o is Position && o.y == _y && o.x == _x;

@@ -27,9 +27,7 @@ class Position {
   int get y => _y;
 
   @override
-  string toString(){
-    return '$_x,$_y';
-  }
+  String toString() => '$_x,$_y';
 
   @override
   bool operator ==(Object o) => o is Position && o.y == _y && o.x == _x;

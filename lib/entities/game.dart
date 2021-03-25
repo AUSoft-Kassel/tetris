@@ -94,13 +94,13 @@ class Game {
     }
 
     void addActiveShapeToGrid(){
-      for(Position position in shape.relPosition){
+      for(Position position in _activeShape.shapeState){
         grid[position.getAbsPositions(_activeShapePosition).toString];
       }
     }
 
     void moveFromGrid(){
-      for(Position position in shap)
+      for(Position position in shape)
     }
 
     bool isPositionValid(Position moveToPosition, [Rotation rotation = Rotation.none]) {

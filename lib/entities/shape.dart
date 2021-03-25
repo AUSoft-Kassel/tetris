@@ -29,13 +29,13 @@ abstract class Shape {
     _currentShapeStateId = getNewShapeState(rotation);
   }
 
-  List<Position> getCurrentShapeState(){
+  List<Position> getCurrentShapeState() {
     return _shapeStates[_currentShapeStateId];
   }
 
   /// Gets the new State after rotating
   int getNewShapeState(Rotation rotation) {
-    var newShapeState = _currentShapeState;
+    var newShapeState = _currentShapeStateId;
     if (rotation == Rotation.right) {
       if (_currentShapeStateId >= _shapeStates.length) {
         newShapeState = 0;
@@ -55,7 +55,8 @@ abstract class Shape {
 
   ///Gets Absolut Positions of the currend or rotated State
 
-  List<Position> getAbsPositions({required Position base, Rotation rotation = Rotation.none}) {
+  List<Position> getAbsPositions(
+      {required Position base, Rotation rotation = Rotation.none}) {
     final List<Position> absPositions = [];
     for (var relPosition in _shapeStates[getNewShapeState(rotation)]) {
       absPositions.add(base + relPosition);

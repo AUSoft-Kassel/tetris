@@ -26,7 +26,7 @@ class Game {
   // in DIESER Klasse ist. Wir wissen die Dimensionen des Grids und wir wissen 
   // durch die Maps, welche Positionen durch Shapes belegt sind.
   // Sollte das Grid die Positionen enthalten, dann ist das okay.
-  var grid = Grid();
+  List<Shape> grid = [];
   var actualSpeed = Constant.minSpeed;
   var lastTimeActiveShapeMoved;
 
@@ -115,20 +115,21 @@ class Game {
   // }
 
   bool isPositionValid(Shape shape, Position moveToPosition){
-    bool isValidPosition = false;
+    bool isValid = false;
   
     List<Position> absPositions;
     
-    if(rotateTo != null){
-      absPositions = shape.getRotatedAbsPositions(moveToPosition, rotateTo);
-    } else {
+    if(rotateTo == Rotation.none){
       absPositions = shape.getAbsPositions(exactAbsPosition);
+    } else {
+      absPositions = shape.getRotatedAbsPositions(moveToPosition, rotateTo);
     }
 
     for(var absPosition in absPositions){
       if(grid[absPosition] is Shape && grid[absPosition] != _activeShape)
-        isValidPosition = true;
+        isValid = true;
     }
+    return isValid;
   }
 }
 }

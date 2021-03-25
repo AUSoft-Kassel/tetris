@@ -66,4 +66,12 @@ abstract class Shape {
     }
     return absPositions;
   }
+
+  List<Position> getAbsPositions2({required Position base, Rotation rotation = Rotation.none}) {
+    final List<Position> absPositions = [];
+    for (var relPosition in _shapeStates[getNewShapeState(rotation)]) {
+      absPositions.add(base + relPosition);
+    }
+    return absPositions;
+  }
 }

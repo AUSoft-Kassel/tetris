@@ -3,7 +3,6 @@ import 'dart:ffi';
 import 'package:flutter/foundation.dart';
 import 'package:tetris/entities/constant.dart';
 import 'package:tetris/entities/exactposition.dart';
-import 'package:tetris/entities/grid.dart';
 import 'package:tetris/entities/position.dart';
 import 'package:tetris/entities/rotation.dart';
 import 'package:tetris/entities/shape.dart';
@@ -27,7 +26,7 @@ class Game {
   // in DIESER Klasse ist. Wir wissen die Dimensionen des Grids und wir wissen
   // durch die Maps, welche Positionen durch Shapes belegt sind.
   // Sollte das Grid die Positionen enthalten, dann ist das okay.
-  final grid = Map<Position,Shape>();
+  final grid = Map<Position, Shape>();
   var actualSpeed = Constant.minSpeed;
   var lastTimeActiveShapeMoved;
 
@@ -64,6 +63,30 @@ class Game {
     // würden spawnPosition verändern! Bei uns wäre die Auswirkung allerdings
     // wohl relativ neu, weil wir nie etwas ändern, sondern nur neue
     // Objekte erstellen (immutable state).
+    bool isPositionValid(Position moveToPosition,
+        [Rotation rotation = Rotation.none]) {
+      bool isValid = false;
+
+      List<Position> absPositions = _activeShape.getAbsPositions(
+          base: moveToPosition, rotation: rotation);
+
+      for (var absPosition in absPositions) {
+        if (grid[absPosition] is Shape && grid[absPosition] != _activeShape)
+          isValid = true;
+      }
+      return isValid;
+    }
+
+    void removeFromGrid() {
+      grid.remove(_activeShape);
+    }
+
+    void addActiveShapeToGrid() {
+      for (Position position
+          in _activeShape.getAbsPositions(_activeShapePosition)) {
+        grid[position] = _activeShape;
+      }
+    }
 
     // TODO: AH: Muss umgeschrieben werden auf neue Definition von exactPosition
     void moveShape(Direction direction, [num distance = 1]) {
@@ -86,37 +109,10 @@ class Game {
       }
 
       if (isPositionValid(moveToPosition)) {
-        removeFromGrid(_activeShape);
-          _activeShapePosition = moveToPosition;
+        removeFromGrid();
+        _activeShapePosition = moveToPosition;
         addActiveShapeToGrid();
       }
-      ;
-    }
-    void removeFromGrid(){
-      for(Shape shape in grid){
-        if(shape == _activeShape){
-          grid.remove(shape);
-        }
-      }
-    }
-
-    void addActiveShapeToGrid(){
-      for(Position position in _activeShape.getAbsPositions(_activeShapePosition)){
-        grid[position] = _activeShape;
-      }
-    }
-
-    bool isPositionValid(Position moveToPosition, [Rotation rotation = Rotation.none]) {
-      bool isValid = false;
-
-      List<Position> absPositions =
-          shape.getAbsPositions(moveToPosition, rotation);
-
-      for (var absPosition in absPositions) {
-        if (grid[absPosition] is Shape && grid[absPosition] != _activeShape)
-          isValid = true;
-      }
-      return isValid;
     }
   }
 }

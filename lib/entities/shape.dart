@@ -6,7 +6,7 @@ import 'package:tetris/entities/rotation.dart';
 
 ///Descriptes a abstract class for our Shapes.
 abstract class Shape {
-  abstract int _currentShapeState;
+  abstract int _currentShapeStateId;
   abstract final List<List<Position>> _shapeStates;
   abstract final Color _color;
 
@@ -26,21 +26,25 @@ abstract class Shape {
 
   /// Rotate a shape.
   void rotateShape(Rotation rotation) {
-    _currentShapeState = getNewShapeState(rotation);
+    _currentShapeStateId = getNewShapeState(rotation);
+  }
+
+  List<Position> getCurrentShapeState(){
+    return _shapeStates[_currentShapeStateId];
   }
 
   /// Gets the new State after rotating
   int getNewShapeState(Rotation rotation) {
     var newShapeState = _currentShapeState;
     if (rotation == Rotation.right) {
-      if (_currentShapeState >= _shapeStates.length) {
+      if (_currentShapeStateId >= _shapeStates.length) {
         newShapeState = 0;
       } else {
         newShapeState++;
       }
     }
     if (rotation == Rotation.left) {
-      if (_currentShapeState <= 0) {
+      if (_currentShapeStateId <= 0) {
         newShapeState = _shapeStates.length;
       } else {
         newShapeState++;

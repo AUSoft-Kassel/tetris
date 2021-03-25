@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:tetris/entities/position.dart';
 import 'package:tetris/entities/shapeform.dart';
@@ -13,6 +15,9 @@ abstract class Shape {
   ///Our game object
   Shape();
 
+  /// Getter
+  List<List<Position>> get shapeStates => _shapeStates;
+
   ///Descriptes which form we need.
   factory Shape.fromForm(ShapeForm form) {
     if (form == ShapeForm.i) return ShapeI();
@@ -26,7 +31,7 @@ abstract class Shape {
 
   /// Rotate a shape.
   void rotateShape(Rotation rotation) {
-    _currentShapeStateId = getNewShapeState(rotation);
+    _currentShapeStateId = getNewShapeStateId(rotation);
   }
 
   List<Position> getCurrentShapeState() {
@@ -34,7 +39,7 @@ abstract class Shape {
   }
 
   /// Gets the new State after rotating
-  int getNewShapeState(Rotation rotation) {
+  int getNewShapeStateId(Rotation rotation) {
     var newShapeState = _currentShapeStateId;
     if (rotation == Rotation.right) {
       if (_currentShapeStateId >= _shapeStates.length) {
@@ -54,12 +59,13 @@ abstract class Shape {
   }
 
   ///Gets Absolut Positions of the currend or rotated State
-
   List<Position> getAbsPositions(
       {required Position base, Rotation rotation = Rotation.none}) {
-    final List<Position> absPositions = [];
-    for (var relPosition in _shapeStates[getNewShapeState(rotation)]) {
-      absPositions.add(base + relPosition);
+    final absPositions = <Position>[];
+    for (var i = 0;
+        i < _shapeStates[getNewShapeStateId(rotation)].length;
+        i++) {
+      absPositions.add(base + _shapeStates[getNewShapeStateId(rotation)][i]);
     }
     return absPositions;
   }

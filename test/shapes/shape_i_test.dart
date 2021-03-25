@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tetris/entities/position.dart';
 import 'package:tetris/entities/rotation.dart';
+import 'package:tetris/entities/shape.dart';
 import 'package:tetris/entities/shapes.dart';
 
 void main() {

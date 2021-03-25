@@ -32,8 +32,8 @@ class Game {
 
   Shape activeShape;
   List<ExactPosition> activeShapeAbsPositions;
-
-  final Position spawnPosition = ExactPosition((Constant.numCols/2).floor,Constant.numRows);
+  Position _activeShapePosition;
+  final Position spawnPosition = Position((Constant.numCols/2).floor,Constant.numRows);
 
   Game() {
     spawnShape();
@@ -49,9 +49,9 @@ class Game {
 
 
   // TODO: AH: Oops, das war ja schon da .....
-  // void spawnShape() {
-  //   activeShape = shapeShop.giveShape();
-  //   activeShapePosition = Position(shapeSpawnAbsPosition.x,shapeSpawnAbsPosition.y);
+  void spawnShape() {
+    activeShape = shapeShop.giveShape();
+    _activeShapePosition = Position(shapeSpawnAbsPosition.x,shapeSpawnAbsPosition.y);
   // }  // TODO: AH: Außerdem wird bei dem aktiven Shape ja die ExactPositon
         // gespeichert. Folglich müssen wir keine Umrechnung auf Position vornehmen
         //   activeShapePosition = ExactPosition.clone(spawnPosition)
@@ -66,29 +66,29 @@ class Game {
 
 
   // TODO: AH: Muss umgeschrieben werden auf neue Definition von exactPosition
-  void moveShape({Direction direction,num distance})
+  void moveShape([ Direction direction],[ num distance])
   {
-    distance ? distance = 1.0;
-    direction ? direction = Direction.down;
+     final distance ? distance = 1.0;
+     final direction ? direction = Direction.down;
 
     var moveToPosition;
 
     if(direction == Direction.down ){
-      if(distance is int) moveToPosition = activeShapePosition.y + distance;
-      if(distance is double || distance is Float) moveToPosition = activeShapePosition.y + distance;
+      if(distance is int) moveToPosition = _activeShapePosition.y + distance;
+      if(distance is double || distance is Float) moveToPosition = _activeShapePosition.y + distance;
     }
     if(direction == Direction.left ){
-       if(distance is int) moveToPosition = activeShapePosition.x - distance;
-      if(distance is double || distance is Float) moveToPosition = activeShapePosition.x - distance;
+       if(distance is int) moveToPosition = _activeShapePosition.x - distance;
+      if(distance is double || distance is Float) moveToPosition = _activeShapePosition.x - distance;
     }
     if(direction == Direction.right){
-       if(distance is int) moveToPosition = activeShapePosition.x + distance;
-      if(distance is double || distance is Float) moveToPosition = activeShapePosition.x + distance;
+       if(distance is int) moveToPosition = _activeShapePosition.x + distance;
+      if(distance is double || distance is Float) moveToPosition = _activeShapePosition.x + distance;
     }
 
     if(isPositionValid(moveToPosition)){
-      activeShapeAbsPositions = activeShape.getAbsPositions(moveToPosition);
-      activeShapePosition = moveToPosition;
+      activeShapeAbsPositions = activeShape.getAbsPositions(base:moveToPosition);
+      _activeShapePosition = moveToPosition;
     };
   }
   
@@ -121,7 +121,7 @@ class Game {
     } else {
       absPositions = shape.getAbsPositions(exactAbsPosition);
     }
-    List<ExactPosition> exactPositions = [];
+    final List<ExactPosition> exactPositions = [];
     for (var absPosition in absPositions){
       exactAbsPosition.add(absPosition + exactAbsPosition);
     }

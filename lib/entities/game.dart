@@ -54,7 +54,7 @@ class Game {
       [Rotation rotation = Rotation.none]) {
     bool isValid = false;
 
-    List<Position> absPositions = _activeShape.getAbsPositions(
+    List<Position> absPositions = _activeShape.absPositions(
         base: Position(moveToPosition.x, moveToPosition.y), rotation: rotation);
 
     for (var absPosition in absPositions) {
@@ -71,7 +71,7 @@ class Game {
   ///Places the active Shape to the Grid
   void addActiveShapeToGrid() {
     for (var position
-        in _activeShape.getAbsPositions(base: _activeShapePosition)) {
+        in _activeShape.absPositions(base: _activeShapePosition)) {
       _grid[position] = _activeShape;
     }
   }

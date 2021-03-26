@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:tetris/entities/position.dart';
 import 'package:tetris/entities/shapeform.dart';
@@ -9,17 +7,20 @@ import 'package:tetris/entities/rotation.dart';
 ///Descriptes a abstract class for our Shapes.
 abstract class Shape {
   int _currentShapeStateId;
-  final List<List<Position>> _shapeStates;
+  final List<List<Position>> _relRotatingPositions;
   final Color _color;
+
+  ///getter
+  Color get color => _color;
 
   ///Our game object
   Shape(
       {required int shapeStateId,
       required Color color,
-      required List<List<Position>> shapeStates})
+      required List<List<Position>> relRotatingPositions})
       : _currentShapeStateId = shapeStateId,
         _color = color,
-        _shapeStates = shapeStates;
+        _relRotatingPositions = relRotatingPositions;
 
   ///Descriptes which form we need.
   factory Shape.fromForm(ShapeForm form) {
@@ -34,18 +35,18 @@ abstract class Shape {
 
   /// Rotate a shape.
   void rotateShape(Rotation rotation) {
-    _currentShapeStateId = getNewShapeStateId(rotation);
+    _currentShapeStateId = newShapeStateId(rotation);
   }
 
-  List<Position> getCurrentShapeState() {
-    return _shapeStates[_currentShapeStateId];
-  }
+  ///
+  List<Position> currentShapeState() =>
+      _relRotatingPositions[_currentShapeStateId];
 
   /// Gets the new State after rotating
-  int getNewShapeStateId(Rotation rotation) {
+  int newShapeStateId(Rotation rotation) {
     var newShapeStateId = _currentShapeStateId;
     if (rotation == Rotation.right) {
-      if (_currentShapeStateId >= _shapeStates.length) {
+      if (_currentShapeStateId >= _relRotatingPositions.length) {
         newShapeStateId = 0;
       } else {
         newShapeStateId++;
@@ -53,20 +54,22 @@ abstract class Shape {
     }
     if (rotation == Rotation.left) {
       if (_currentShapeStateId <= 0) {
-        newShapeStateId = _shapeStates.length - 1;
+        newShapeStateId = _relRotatingPositions.length - 1;
       } else {
         newShapeStateId--;
       }
     }
+
     return newShapeStateId;
   }
 
   ///Gets Absolut Positions of the currend or rotated State
-  List<Position> getAbsPositions(
+  List<Position> absPositions(
       {required Position base, Rotation rotation = Rotation.none}) {
     final absPositions = <Position>[];
-    for (var shapeState in _shapeStates) {
-      absPositions.add(base + shapeState[getNewShapeStateId(rotation)]);
+    for (var relRotatingPosition
+        in _relRotatingPositions[newShapeStateId(rotation)]) {
+      absPositions.add(base + relRotatingPosition);
     }
     return absPositions;
   }

@@ -1,12 +1,11 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:tetris/entities/position.dart';
 import 'package:tetris/entities/shape.dart';
 
 /// Description of the class which will show us the Shape O.
 class ShapeO extends Shape {
-  static final List<List<Position>> _shapeStates = [
+  static final List<List<Position>> _relRotatingPositions = [
     [
       Position(0, 0),
       Position(0, 1),
@@ -19,14 +18,14 @@ class ShapeO extends Shape {
   ShapeO()
       : super(
           color: const Color(0x919191FF),
-          shapeStates: _shapeStates,
-          shapeStateId: Random().nextInt(_shapeStates.length),
+          relRotatingPositions: _relRotatingPositions,
+          shapeStateId: Random().nextInt(_relRotatingPositions.length),
         );
 }
 
 /// Description of the class which will show us the Shape I.
 class ShapeI extends Shape {
-  static final List<List<Position>> _shapeStates = [
+  static final List<List<Position>> _relRotatingPositions = [
     [
       Position(0, 0),
       Position(0, 2),
@@ -45,14 +44,14 @@ class ShapeI extends Shape {
   ShapeI()
       : super(
           color: const Color(0x3617FFFF),
-          shapeStates: _shapeStates,
-          shapeStateId: Random().nextInt(_shapeStates.length),
+          relRotatingPositions: _relRotatingPositions,
+          shapeStateId: Random().nextInt(_relRotatingPositions.length),
         );
 }
 
 /// Description of the class which will show us the Shape L.
 class ShapeL extends Shape {
-  static final List<List<Position>> _shapeStates = [
+  static final List<List<Position>> _relRotatingPositions = [
     [
       Position(0, 0),
       Position(0, 1),
@@ -83,14 +82,14 @@ class ShapeL extends Shape {
   ShapeL()
       : super(
           color: const Color(0xFF5C5CFF),
-          shapeStates: _shapeStates,
-          shapeStateId: Random().nextInt(_shapeStates.length),
+          relRotatingPositions: _relRotatingPositions,
+          shapeStateId: Random().nextInt(_relRotatingPositions.length),
         );
 }
 
 /// Description of the class which will show us the Shape  J.
 class ShapeJ extends Shape {
-  static final List<List<Position>> _shapeStates = [
+  static final List<List<Position>> _relRotatingPositions = [
     [
       Position(0, 0),
       Position(0, 1),
@@ -121,14 +120,14 @@ class ShapeJ extends Shape {
   ShapeJ()
       : super(
           color: const Color(0xFFB536FF),
-          shapeStates: _shapeStates,
-          shapeStateId: Random().nextInt(_shapeStates.length),
+          relRotatingPositions: _relRotatingPositions,
+          shapeStateId: Random().nextInt(_relRotatingPositions.length),
         );
 }
 
 /// Description of the class which will show us the Shape S.
 class ShapeS extends Shape {
-  static final List<List<Position>> _shapeStates = [
+  static final List<List<Position>> _relRotatingPositions = [
     [
       Position(0, 0),
       Position(0, 1),
@@ -147,14 +146,14 @@ class ShapeS extends Shape {
   ShapeS()
       : super(
           color: const Color(0xF830FFFF),
-          shapeStates: _shapeStates,
-          shapeStateId: Random().nextInt(_shapeStates.length),
+          relRotatingPositions: _relRotatingPositions,
+          shapeStateId: Random().nextInt(_relRotatingPositions.length),
         );
 }
 
 /// Description of the class which will show us the Shape Z.
 class ShapeZ extends Shape {
-  static final List<List<Position>> _shapeStates = [
+  static final List<List<Position>> _relRotatingPositions = [
     [
       Position(0, 0),
       Position(0, 1),
@@ -173,14 +172,14 @@ class ShapeZ extends Shape {
   ShapeZ()
       : super(
           color: const Color(0xD9FFBBFF),
-          shapeStates: _shapeStates,
-          shapeStateId: Random().nextInt(_shapeStates.length),
+          relRotatingPositions: _relRotatingPositions,
+          shapeStateId: Random().nextInt(_relRotatingPositions.length),
         );
 }
 
 /// Description of the class which will show us the Shape T.
 class ShapeT extends Shape {
-  static final List<List<Position>> _shapeStates = [
+  static final List<List<Position>> _relRotatingPositions = [
     [
       Position(0, 0),
       Position(1, 0),
@@ -211,7 +210,7 @@ class ShapeT extends Shape {
   ShapeT()
       : super(
           color: const Color(0xFAFF75FF),
-          shapeStates: _shapeStates,
-          shapeStateId: Random().nextInt(_shapeStates.length),
+          relRotatingPositions: _relRotatingPositions,
+          shapeStateId: Random().nextInt(_relRotatingPositions.length),
         );
 }

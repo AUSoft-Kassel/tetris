@@ -8,8 +8,8 @@ class ExactPosition extends Position {
   ///Constructors
 
   ExactPosition(int x, int y, double yExact)
-      : _yExact = yExact,
-        super(x, y);
+      : _yExact = ((yExact * 1000) % 1000) / 1000,
+        super(x, y + (yExact * 1000) ~/ 1000);
 
   ///Returns ExactPosition Copy of Position
   ExactPosition.clone(Position position)

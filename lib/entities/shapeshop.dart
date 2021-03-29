@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'shape.dart';
 import 'shapeform.dart';
 
@@ -16,12 +15,12 @@ class ShapeShop {
 
   void _fillBag(List<Shape> fillBag) {
     var bag = <Shape>[];
-    final rng = Random();
+    final rng = Random(); // Random();
     for (var form in ShapeForm.values) {
       bag = [...bag, Shape.fromForm(form), Shape.fromForm(form)];
     }
     while (bag.isNotEmpty) {
-      final n = rng.nextInt(bag.length);
+      final n = rng.nextInt(bag.length); //rng.nextInt(bag.length);
       fillBag.add(bag[n]);
       bag.removeAt(n);
     }
@@ -41,9 +40,11 @@ class ShapeShop {
 
   /// Is going to show us the next 14 Shapes at any time if code done
   Shape showShape([int x = 0]) {
-    // TODO: finishing the code here.
-
-    return _currentBag[x];
-    return _nextBag[x];
+    var shapesToShow = <Shape>[];
+    shapesToShow = _currentBag;
+    for (var i = 0; shapesToShow.length < 14; i++) {
+      shapesToShow.add(_nextBag[i]);
+    }
+    return shapesToShow[x];
   }
 }

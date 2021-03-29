@@ -11,7 +11,7 @@ class Position {
 | Constructors                                                                 |
 \-----------------------------------------------------------------------------*/
   /// Constructs Position object using rounded y coordinate
-  Position(int x, int y)
+  const Position(int x, int y)
       : _x = x,
         _y = y;
 

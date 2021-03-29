@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tetris/entities/direction.dart';
 import 'package:tetris/entities/position.dart';
 import 'package:tetris/entities/shapeform.dart';
 import 'package:tetris/entities/shapes.dart';
@@ -14,10 +15,7 @@ abstract class Shape {
   Color get color => _color;
 
   ///Our game object
-  Shape(
-      {required int shapeStateId,
-      required Color color,
-      required List<List<Position>> relRotatingPositions})
+  Shape({required int shapeStateId, required Color color, required List<List<Position>> relRotatingPositions})
       : _currentShapeStateId = shapeStateId,
         _color = color,
         _relRotatingPositions = relRotatingPositions;
@@ -39,11 +37,10 @@ abstract class Shape {
   }
 
   ///
-  List<Position> currentShapeState() =>
-      _relRotatingPositions[_currentShapeStateId];
+  List<Position> currentShapeState() => _relRotatingPositions[_currentShapeStateId];
 
   /// Gets the new State after rotating
-  int newShapeStateId(Rotation rotation) {
+  int newShapeStateId(Rotation? rotation) {
     var newShapeStateId = _currentShapeStateId;
     if (rotation == Rotation.right) {
       if (_currentShapeStateId >= _relRotatingPositions.length) {
@@ -63,13 +60,12 @@ abstract class Shape {
     return newShapeStateId;
   }
 
-  ///Gets Absolut Positions of the currend or rotated State
-  List<Position> absPositions(
-      {required Position base, Rotation rotation = Rotation.none}) {
+  ///Gets Absolut Positions of the currend or rotated or moved State
+  List<Position> absPositions({required Position base, Rotation? rotation, Direction? direction}) {
+    final relPositions = _relRotatingPositions[newShapeStateId(rotation)];
     final absPositions = <Position>[];
-    for (var relRotatingPosition
-        in _relRotatingPositions[newShapeStateId(rotation)]) {
-      absPositions.add(base + relRotatingPosition);
+    for (var relPosition in relPositions) {
+      absPositions.add(base + relPosition + (direction?.toPosition ?? Position(0, 0)));
     }
     return absPositions;
   }

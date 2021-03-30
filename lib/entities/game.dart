@@ -23,7 +23,8 @@ class Game {
   final Map<Position, Shape?> _grid; //ro
   final double _actualSpeed; //ro
   final int _points; //ro
-  final Position _spawnPosition = Position((Constant.numCols / 2).floor(), Constant.numRows);
+  final Position _spawnPosition =
+      Position((Constant.numCols / 2).floor(), Constant.numRows);
 
   /*--------------------------------------------------------------------------*/
   /* Constructors                                                             */
@@ -104,20 +105,26 @@ class Game {
   /*--------------------------------------------------------------------------*/
   /// Creates a new Game object which is a copy of this Game object, except
   /// for the attributes which are provided as arguments to this method
-  bool arePositionsValid(List<Position> positions) {
+  ///Checks if a List of Positions are Empty
+  bool arePositionsEmpty(List<Position> positions) {
+    bool isValid;
     for (var pos in positions) {
-      if (isPositionValid(pos)) {
-        return false;
-      }
+      isValid = isPositionEmpty(pos);
+      if (!isValid) return false;
     }
     return true;
   }
 
-  bool isPositionValid(Position pos) {
-    if (_grid[pos] != null) {
-      return false;
-    }
+  /// Check if a certain position is Empty
+  bool isPositionEmpty(Position pos) {
+    if (shapeFromGrid(pos) != null) return false;
     return true;
+  }
+
+  /// Gets the Shape of a certain position
+  Shape? shapeFromGrid(Position pos) {
+    final shape = _grid[pos];
+    return shape;
   }
 
   bool isRowFull(int row) {

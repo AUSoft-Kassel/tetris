@@ -9,9 +9,6 @@ import 'package:tetris/entities/shape.dart';
 import 'package:tetris/entities/shapeshop.dart';
 import 'package:tetris/entities/direction.dart';
 
-// TODO: AH: Wir sollten versuchen, die Klasse immutable anzulegen, also
-// sind per Definitionem alle Felder final. Wo es nicht klappt, helfe ich
-// dann.
 @immutable
 
 ///A class that handles the gamestate
@@ -25,7 +22,8 @@ class Game {
   final Map<Position, Shape?> _grid; //ro
   final double _actualSpeed; //ro
   final int _points; //ro
-  final Position _spawnPosition = Position((Constant.numCols / 2).floor(), Constant.numRows);
+  final Position _spawnPosition =
+      Position((Constant.numCols / 2).floor(), Constant.numRows);
 
   /*--------------------------------------------------------------------------*/
   /* Constructors                                                             */
@@ -77,25 +75,26 @@ class Game {
         points: points ?? _points,
       );
 
-  // void spawnShape() {
-  //   _activeShape = _shapeShop.giveShape();
-  //   _activeShapePosition = ExactPosition.clone(_spawnPosition);
-  // }
-
-  bool arePositionsValid(List<Position> positions) {
+  ///Checks if a List of Positions are Empty
+  bool arePositionsEmpty(List<Position> positions) {
+    bool isValid;
     for (var pos in positions) {
-      if (isPositionValid(pos)) {
-        return false;
-      }
+      isValid = isPositionEmpty(pos);
+      if (!isValid) return false;
     }
     return true;
   }
 
-  bool isPositionValid(Position pos) {
-    if (_grid[pos] != null) {
-      return false;
-    }
+  /// Check if a certain position is Empty
+  bool isPositionEmpty(Position pos) {
+    if (shapeFromGrid(pos) != null) return false;
     return true;
+  }
+
+  /// Gets the Shape of a certain position
+  Shape? shapeFromGrid(Position pos) {
+    final shape = _grid[pos];
+    return shape;
   }
 
   bool isRowFull(int row) {
@@ -124,30 +123,4 @@ class Game {
   ExactPosition? get activeShapePosition => _activeShapePosition;
   double get actualSpeed => _actualSpeed;
   int get points => _points;
-
-  // /// Places the active Shape to the Grid
-  // void addActiveShapeToGrid() {
-  //   for (var position in _activeShape.absPositions(base: _activeShapePosition)) {
-  //     _grid[position] = _activeShape;
-  //   }
-  //   spawnShape();
-  // }
-
-  // ///Moves the Active Shape
-  // void moveShape(Direction direction, [double distance = 1]) {
-  //   var moveToPosition = _activeShapePosition;
-
-  //   if (direction == Direction.down)
-  //     moveToPosition = ExactPosition(_activeShapePosition.x, (_activeShapePosition.y + distance).floor(), _activeShapePosition.y + distance);
-  //   if (direction == Direction.left)
-  //     moveToPosition = ExactPosition(_activeShapePosition.x - distance.floor(), _activeShapePosition.y, _activeShapePosition.yExact);
-  //   if (direction == Direction.right)
-  //     moveToPosition = ExactPosition(_activeShapePosition.x + distance.floor(), _activeShapePosition.y, _activeShapePosition.yExact);
-
-  //   if (isPositionValid(moveToPosition)) {
-  //     removeFromGrid();
-  //     _activeShapePosition = moveToPosition;
-  //     addActiveShapeToGrid();
-  //   }
-  // }
 }

@@ -19,8 +19,8 @@ void main() {
   test('ShapeShop.showShape returns the same shape every time it runs', () {
     final shapeShop = ShapeShop();
     final shape1 = shapeShop.showShape();
-    // ignore: avoid_redundant_argument_values
     final shape2 = shapeShop.showShape(
+        // ignore: avoid_redundant_argument_values
         0); // It should accept empty and 0, both for the first element
     expect(shape1 == shape2, true);
   });

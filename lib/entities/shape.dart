@@ -14,13 +14,20 @@ abstract class Shape {
   ///getter
   Color get color => _color;
 
-  ///Our game object
-  Shape({required int shapeStateId, required Color color, required List<List<Position>> relRotatingPositions})
-      : _currentShapeStateId = shapeStateId,
+  /*--------------------------------------------------------------------------*/
+  /* Constructor                                                              */
+  /*--------------------------------------------------------------------------*/
+  /// Standard constructor
+  Shape({
+    required int shapeStateId,
+    required Color color,
+    required List<List<Position>> relRotatingPositions,
+  })   : _currentShapeStateId = shapeStateId,
         _color = color,
         _relRotatingPositions = relRotatingPositions;
 
-  ///Descriptes which form we need.
+  /// Factory constructor. Returns the corresponding subclass object, depending
+  /// on the value of paramter [form].
   factory Shape.fromForm(ShapeForm form) {
     if (form == ShapeForm.i) return ShapeI();
     if (form == ShapeForm.j) return ShapeJ();
@@ -36,31 +43,19 @@ abstract class Shape {
     _currentShapeStateId = newShapeStateId(rotation);
   }
 
-  ///
-  List<Position> currentShapeState() => _relRotatingPositions[_currentShapeStateId];
+  /// currentRelativePositions
+  List<Position> currentRelativePositions() => _relRotatingPositions[_currentShapeStateId];
 
   /// Gets the new State after rotating
   int newShapeStateId(Rotation? rotation) {
-    var newShapeStateId = _currentShapeStateId;
-    if (rotation == Rotation.right) {
-      if (_currentShapeStateId >= _relRotatingPositions.length) {
-        newShapeStateId = 0;
-      } else {
-        newShapeStateId++;
-      }
-    }
-    if (rotation == Rotation.left) {
-      if (_currentShapeStateId <= 0) {
-        newShapeStateId = _relRotatingPositions.length - 1;
-      } else {
-        newShapeStateId--;
-      }
-    }
-
+    if (rotation != Rotation.right && rotation != Rotation.left) return _currentShapeStateId;
+    final newShapeStateId = _currentShapeStateId + (rotation == Rotation.right ? 1 : -1);
+    if (newShapeStateId >= _relRotatingPositions.length) return 0;
+    if (newShapeStateId < 0) return _relRotatingPositions.length - 1;
     return newShapeStateId;
   }
 
-  ///Gets Absolut Positions of the currend or rotated or moved State
+  ///Gets absolut Positions of the current or rotated or moved State
   List<Position> absPositions({required Position base, Rotation? rotation, Direction? direction}) {
     final relPositions = _relRotatingPositions[newShapeStateId(rotation)];
     final absPositions = <Position>[];

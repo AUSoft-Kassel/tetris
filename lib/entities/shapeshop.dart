@@ -2,7 +2,7 @@ import 'dart:math';
 import 'shape.dart';
 import 'shapeform.dart';
 
-///Descriptes the class ShapeShop which is our Shop which is shuffeling the next game objects and preparing them for the game.
+/// ShapeShop is our Shop which is storing shapes and preparing them for the game.
 class ShapeShop {
   List<Shape> _currentBag = [];
   List<Shape> _nextBag = [];

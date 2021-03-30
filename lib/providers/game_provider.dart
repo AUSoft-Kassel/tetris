@@ -7,12 +7,21 @@ import 'package:tetris/entities/game.dart';
 import 'package:tetris/entities/position.dart';
 import 'package:tetris/entities/shape.dart';
 
+/// GameProvider is a StateNotifier
+/// It always hold a reference to the currently active state of the underlying
+/// Game object, which is accessible through its state attribute (which is
+/// defined in StateNotifier class). Upon creation, it creates a standard
+/// Game object. Every change of state must be achieved through a reassignment
+/// of the state attribute to a new object of type Game.
 class GameProvider extends StateNotifier<Game> {
+  /// Standard constructor. A Game object is created and handed to the super
+  /// class where it gets stored in the state attribute.
   GameProvider() : super(Game());
 
   /*--------------------------------------------------------------------------*/
-  /* State setters                                                            */
+  /* Use cases (external): Manipulating state for external reasons            */
   /*--------------------------------------------------------------------------*/
+  /// Moves a shape into Direction dir. It is usually invoked after an user input
   void moveShape(Direction dir) {
     final shape = state.activeShape;
     final absRefPosition = state.activeShapePosition;
@@ -21,7 +30,14 @@ class GameProvider extends StateNotifier<Game> {
     for (var pos in absPositions) {}
   }
 
-  void clearFullRow(int row) {
+  /*--------------------------------------------------------------------------*/
+  /* Use cases (internal): Manipulating state for internal reasons            */
+  /*--------------------------------------------------------------------------*/
+  /// Moves a shape into Direction dir. It is usually invoked after an user input
+  /// Clears one specific row
+  /// No checks are performed, which is why the routine is private and
+  /// should only be invoked after checking
+  void _clearFullRow(int row) {
     final newGrid = <Position, Shape?>{};
     state.grid.forEach((pos, shape) {
       if (shape != null) {
@@ -35,16 +51,19 @@ class GameProvider extends StateNotifier<Game> {
     state = state.copyWith(grid: newGrid);
   }
 
-  void clearFullRows() {
-    final fullRows = state.whichRowsAreFull();
-    fullRows.sort((a, b) => b.compareTo(a));
+  /// Clear all rows which are currently filled
+  /// (also checks if there are full rows at all)
+  /// Private method because it'll be invoked as part of an automatic routine,
+  /// not by anything external
+  void _clearFullRows() {
+    final fullRows = state.whichRowsAreFull()..sort((a, b) => b.compareTo(a));
     for (var row in fullRows) {
-      clearFullRow(row);
+      _clearFullRow(row);
     }
   }
 
   /*--------------------------------------------------------------------------*/
-  /* State getters                                                            */
+  /* Use cases (informational): Translating state to the outside              */
   /*--------------------------------------------------------------------------*/
   /// Get the shape at a certain position (x,y)
   /// Returns null if no shape is presen

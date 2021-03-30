@@ -1,20 +1,18 @@
-import 'dart:developer';
-
-import 'package:flutter/foundation.dart';
 import 'package:tetris/entities/constant.dart';
 import 'package:tetris/entities/exactposition.dart';
 import 'package:tetris/entities/position.dart';
-import 'package:tetris/entities/rotation.dart';
 import 'package:tetris/entities/shape.dart';
 import 'package:tetris/entities/shapeshop.dart';
-import 'package:tetris/entities/direction.dart';
 
-// TODO: AH: Wir sollten versuchen, die Klasse immutable anzulegen, also
-// sind per Definitionem alle Felder final. Wo es nicht klappt, helfe ich
-// dann.
-@immutable
+// AH: I had to remove this, because our core entities should be
+// completely independent of anything. Immutable annotation is defined in
+// flutter-foundation ... Not acceptable. Now that we got rid of this
+// dependency, we can easily switch the framework
+//@immutable
 
-///A class that handles the gamestate
+/// Class that holds the state of the game
+/// Objects are immutable, so no changes occur in this class, because all
+/// variables are final
 class Game {
   /*--------------------------------------------------------------------------*/
   /* Attributes                                                               */
@@ -31,17 +29,18 @@ class Game {
   /* Constructors                                                             */
   /*--------------------------------------------------------------------------*/
   /// Standard constructor
+  /// Constructs quite an empty game
   Game()
       : _shapeShop = ShapeShop(),
         _grid = <Position, Shape?>{},
         _actualSpeed = Constant.minSpeed,
         _points = 0,
         _activeShape = null,
-        _activeShapePosition = null {
-    log('Game constructed');
-  }
+        _activeShapePosition = null;
 
   /// Internal constructor
+  /// Used for creating a specific instance of Game
+  /// Only used by copyWith
   Game._internal({
     required ShapeShop shapeShop,
     required Shape? activeShape,
@@ -59,7 +58,8 @@ class Game {
   /*--------------------------------------------------------------------------*/
   /* Methods                                                                  */
   /*--------------------------------------------------------------------------*/
-  /// Modifying state
+  /// Creates a new Game object which is a copy of this Game object, except
+  /// for the attributes which are provided as arguments to this method
   Game copyWith({
     ShapeShop? shapeShop,
     Shape? activeShape,
@@ -77,11 +77,33 @@ class Game {
         points: points ?? _points,
       );
 
-  // void spawnShape() {
-  //   _activeShape = _shapeShop.giveShape();
-  //   _activeShapePosition = ExactPosition.clone(_spawnPosition);
-  // }
+  /*--------------------------------------------------------------------------*/
+  /* Getters (everything we need to access in GameProvider)                   */
+  /*--------------------------------------------------------------------------*/
+  /// Grid that holds all information about shapes on the field
+  Map<Position, Shape?> get grid => _grid;
 
+  /// Currently active shape
+  Shape? get activeShape => _activeShape;
+
+  /// Position of currently active shape
+  ExactPosition? get activeShapePosition => _activeShapePosition;
+
+  /// Game speed
+  double get actualSpeed => _actualSpeed;
+
+  /// Points within the current game
+  int get points => _points;
+
+  /// Position at which new shapes are spawned
+  Position get spawnPosition => _spawnPosition;
+
+  /*--------------------------------------------------------------------------*/
+  /* Methods for getting further data from Game objects                       */
+  /* (These methods could also be located in GameProvider)                    */
+  /*--------------------------------------------------------------------------*/
+  /// Creates a new Game object which is a copy of this Game object, except
+  /// for the attributes which are provided as arguments to this method
   bool arePositionsValid(List<Position> positions) {
     for (var pos in positions) {
       if (isPositionValid(pos)) {
@@ -116,38 +138,32 @@ class Game {
     }
     return result;
   }
-
-  ///getters
-
-  Map<Position, Shape?> get grid => _grid;
-  Shape? get activeShape => _activeShape;
-  ExactPosition? get activeShapePosition => _activeShapePosition;
-  double get actualSpeed => _actualSpeed;
-  int get points => _points;
-
-  // /// Places the active Shape to the Grid
-  // void addActiveShapeToGrid() {
-  //   for (var position in _activeShape.absPositions(base: _activeShapePosition)) {
-  //     _grid[position] = _activeShape;
-  //   }
-  //   spawnShape();
-  // }
-
-  // ///Moves the Active Shape
-  // void moveShape(Direction direction, [double distance = 1]) {
-  //   var moveToPosition = _activeShapePosition;
-
-  //   if (direction == Direction.down)
-  //     moveToPosition = ExactPosition(_activeShapePosition.x, (_activeShapePosition.y + distance).floor(), _activeShapePosition.y + distance);
-  //   if (direction == Direction.left)
-  //     moveToPosition = ExactPosition(_activeShapePosition.x - distance.floor(), _activeShapePosition.y, _activeShapePosition.yExact);
-  //   if (direction == Direction.right)
-  //     moveToPosition = ExactPosition(_activeShapePosition.x + distance.floor(), _activeShapePosition.y, _activeShapePosition.yExact);
-
-  //   if (isPositionValid(moveToPosition)) {
-  //     removeFromGrid();
-  //     _activeShapePosition = moveToPosition;
-  //     addActiveShapeToGrid();
-  //   }
-  // }
 }
+
+///getters
+
+// /// Places the active Shape to the Grid
+// void addActiveShapeToGrid() {
+//   for (var position in _activeShape.absPositions(base: _activeShapePosition)) {
+//     _grid[position] = _activeShape;
+//   }
+//   spawnShape();
+// }
+
+// ///Moves the Active Shape
+// void moveShape(Direction direction, [double distance = 1]) {
+//   var moveToPosition = _activeShapePosition;
+
+//   if (direction == Direction.down)
+//     moveToPosition = ExactPosition(_activeShapePosition.x, (_activeShapePosition.y + distance).floor(), _activeShapePosition.y + distance);
+//   if (direction == Direction.left)
+//     moveToPosition = ExactPosition(_activeShapePosition.x - distance.floor(), _activeShapePosition.y, _activeShapePosition.yExact);
+//   if (direction == Direction.right)
+//     moveToPosition = ExactPosition(_activeShapePosition.x + distance.floor(), _activeShapePosition.y, _activeShapePosition.yExact);
+
+//   if (isPositionValid(moveToPosition)) {
+//     removeFromGrid();
+//     _activeShapePosition = moveToPosition;
+//     addActiveShapeToGrid();
+//   }
+// }

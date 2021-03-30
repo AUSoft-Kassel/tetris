@@ -6,5 +6,3 @@ enum Rotation {
   /// Rotation to the right
   right,
 }
-
-// TRY TO FIND ME

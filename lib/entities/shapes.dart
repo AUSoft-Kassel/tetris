@@ -7,10 +7,10 @@ import 'package:tetris/entities/shape.dart';
 class ShapeO extends Shape {
   static final List<List<Position>> _relRotatingPositions = [
     [
-      Position(0, 0),
-      Position(0, 1),
-      Position(1, 0),
-      Position(1, -1),
+      const Position(0, 0),
+      const Position(0, 1),
+      const Position(1, 0),
+      const Position(1, -1),
     ],
   ];
 
@@ -27,16 +27,16 @@ class ShapeO extends Shape {
 class ShapeI extends Shape {
   static final List<List<Position>> _relRotatingPositions = [
     [
-      Position(0, 0),
-      Position(0, 2),
-      Position(0, 1),
-      Position(0, -1),
+      const Position(0, 0),
+      const Position(0, 2),
+      const Position(0, 1),
+      const Position(0, -1),
     ],
     [
-      Position(0, 0),
-      Position(-2, 0),
-      Position(-1, 0),
-      Position(1, 0),
+      const Position(0, 0),
+      const Position(-2, 0),
+      const Position(-1, 0),
+      const Position(1, 0),
     ],
   ];
 
@@ -53,28 +53,28 @@ class ShapeI extends Shape {
 class ShapeL extends Shape {
   static final List<List<Position>> _relRotatingPositions = [
     [
-      Position(0, 0),
-      Position(0, 1),
-      Position(0, 2),
-      Position(1, 0),
+      const Position(0, 0),
+      const Position(0, 1),
+      const Position(0, 2),
+      const Position(1, 0),
     ],
     [
-      Position(0, 0),
-      Position(0, -1),
-      Position(1, 0),
-      Position(2, 0),
+      const Position(0, 0),
+      const Position(0, -1),
+      const Position(1, 0),
+      const Position(2, 0),
     ],
     [
-      Position(0, 0),
-      Position(0, 1),
-      Position(0, 2),
-      Position(-1, 2),
+      const Position(0, 0),
+      const Position(0, 1),
+      const Position(0, 2),
+      const Position(-1, 2),
     ],
     [
-      Position(0, 0),
-      Position(-1, 0),
-      Position(1, 0),
-      Position(1, 1),
+      const Position(0, 0),
+      const Position(-1, 0),
+      const Position(1, 0),
+      const Position(1, 1),
     ],
   ];
 
@@ -91,28 +91,28 @@ class ShapeL extends Shape {
 class ShapeJ extends Shape {
   static final List<List<Position>> _relRotatingPositions = [
     [
-      Position(0, 0),
-      Position(0, 1),
-      Position(0, 2),
-      Position(-1, 0),
+      const Position(0, 0),
+      const Position(0, 1),
+      const Position(0, 2),
+      const Position(-1, 0),
     ],
     [
-      Position(0, 0),
-      Position(-1, 0),
-      Position(1, 0),
-      Position(-1, 1),
+      const Position(0, 0),
+      const Position(-1, 0),
+      const Position(1, 0),
+      const Position(-1, 1),
     ],
     [
-      Position(0, 0),
-      Position(0, 1),
-      Position(0, 2),
-      Position(1, 2),
+      const Position(0, 0),
+      const Position(0, 1),
+      const Position(0, 2),
+      const Position(1, 2),
     ],
     [
-      Position(0, 0),
-      Position(0, -1),
-      Position(-1, 0),
-      Position(-2, 0),
+      const Position(0, 0),
+      const Position(0, -1),
+      const Position(-1, 0),
+      const Position(-2, 0),
     ],
   ];
 
@@ -129,16 +129,16 @@ class ShapeJ extends Shape {
 class ShapeS extends Shape {
   static final List<List<Position>> _relRotatingPositions = [
     [
-      Position(0, 0),
-      Position(0, 1),
-      Position(1, 0),
-      Position(1, -1),
+      const Position(0, 0),
+      const Position(0, 1),
+      const Position(1, 0),
+      const Position(1, -1),
     ],
     [
-      Position(0, 0),
-      Position(1, 0),
-      Position(0, -1),
-      Position(-1, -1),
+      const Position(0, 0),
+      const Position(1, 0),
+      const Position(0, -1),
+      const Position(-1, -1),
     ],
   ];
 
@@ -155,16 +155,16 @@ class ShapeS extends Shape {
 class ShapeZ extends Shape {
   static final List<List<Position>> _relRotatingPositions = [
     [
-      Position(0, 0),
-      Position(0, 1),
-      Position(-1, 0),
-      Position(-1, -1),
+      const Position(0, 0),
+      const Position(0, 1),
+      const Position(-1, 0),
+      const Position(-1, -1),
     ],
     [
-      Position(0, 0),
-      Position(-1, 0),
-      Position(0, -1),
-      Position(1, -1),
+      const Position(0, 0),
+      const Position(-1, 0),
+      const Position(0, -1),
+      const Position(1, -1),
     ],
   ];
 
@@ -181,28 +181,28 @@ class ShapeZ extends Shape {
 class ShapeT extends Shape {
   static final List<List<Position>> _relRotatingPositions = [
     [
-      Position(0, 0),
-      Position(1, 0),
-      Position(1, 1),
-      Position(1, -1),
+      const Position(0, 0),
+      const Position(1, 0),
+      const Position(1, 1),
+      const Position(1, -1),
     ],
     [
-      Position(0, 0),
-      Position(-1, -1),
-      Position(0, -1),
-      Position(1, -1),
+      const Position(0, 0),
+      const Position(-1, -1),
+      const Position(0, -1),
+      const Position(1, -1),
     ],
     [
-      Position(0, 0),
-      Position(0, -1),
-      Position(0, 1),
-      Position(1, 0),
+      const Position(0, 0),
+      const Position(0, -1),
+      const Position(0, 1),
+      const Position(1, 0),
     ],
     [
-      Position(0, 0),
-      Position(-1, 0),
-      Position(1, 0),
-      Position(0, -1),
+      const Position(0, 0),
+      const Position(-1, 0),
+      const Position(1, 0),
+      const Position(0, -1),
     ],
   ];
 

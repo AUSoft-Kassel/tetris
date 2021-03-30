@@ -1,13 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/foundation.dart';
 import 'package:tetris/entities/constant.dart';
 import 'package:tetris/entities/exactposition.dart';
 import 'package:tetris/entities/position.dart';
-import 'package:tetris/entities/rotation.dart';
 import 'package:tetris/entities/shape.dart';
 import 'package:tetris/entities/shapeshop.dart';
-import 'package:tetris/entities/direction.dart';
 
 @immutable
 
@@ -35,9 +31,7 @@ class Game {
         _actualSpeed = Constant.minSpeed,
         _points = 0,
         _activeShape = null,
-        _activeShapePosition = null {
-    log('Game constructed');
-  }
+        _activeShapePosition = null;
 
   /// Internal constructor
   Game._internal({
@@ -97,8 +91,9 @@ class Game {
     return shape;
   }
 
+  /// Returns true if the Row is full
   bool isRowFull(int row) {
-    for (int i = 0; i < Constant.numCols; i++) {
+    for (var i = 0; i < Constant.numCols; i++) {
       if (_grid[Position(i, row)] == null) {
         return false;
       }
@@ -106,9 +101,10 @@ class Game {
     return true;
   }
 
+  ///Returns a list of Full Rows
   List<int> whichRowsAreFull() {
-    var result = <int>[];
-    for (int i = 0; i < Constant.numRows; i++) {
+    final result = <int>[];
+    for (var i = 0; i < Constant.numRows; i++) {
       if (isRowFull(i)) {
         result.add(i);
       }
@@ -116,11 +112,21 @@ class Game {
     return result;
   }
 
-  ///getters
-
+  /*--------------------------------------------------------------------------*/
+  /* getters                                                                  */
+  /*--------------------------------------------------------------------------*/
+  /// A Map with key of type Position and Value of Shape
   Map<Position, Shape?> get grid => _grid;
+
+  /// The actual Moveable Shape
   Shape? get activeShape => _activeShape;
+
+  /// Represents the relative(0,0) position in the absolute grid
   ExactPosition? get activeShapePosition => _activeShapePosition;
+
+  /// Fallingspeed of the active Shape
   double get actualSpeed => _actualSpeed;
+
+  /// Score
   int get points => _points;
 }

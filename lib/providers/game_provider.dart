@@ -6,7 +6,9 @@ import 'package:tetris/entities/position.dart';
 import 'package:tetris/entities/rotation.dart';
 import 'package:tetris/entities/shape.dart';
 
+/// GameProvider
 class GameProvider extends StateNotifier<Game> {
+  /// GameProvider
   GameProvider() : super(Game());
 
   /*--------------------------------------------------------------------------*/
@@ -74,8 +76,8 @@ class GameProvider extends StateNotifier<Game> {
   /// Clears all full Rows
   void clearFullRows() {
     final fullRows = state.whichRowsAreFull();
+    // ignore: cascade_invocations
     fullRows.sort((a, b) => b.compareTo(a));
-    // ignore: prefer_foreach
     for (var row in fullRows) {
       clearFullRow(row);
     }

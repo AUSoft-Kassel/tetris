@@ -15,7 +15,10 @@ abstract class Shape {
   Color get color => _color;
 
   ///Our game object
-  Shape({required int shapeStateId, required Color color, required List<List<Position>> relRotatingPositions})
+  Shape(
+      {required int shapeStateId,
+      required Color color,
+      required List<List<Position>> relRotatingPositions})
       : _currentShapeStateId = shapeStateId,
         _color = color,
         _relRotatingPositions = relRotatingPositions;
@@ -37,7 +40,8 @@ abstract class Shape {
   }
 
   ///
-  List<Position> currentShapeState() => _relRotatingPositions[_currentShapeStateId];
+  List<Position> currentShapeState() =>
+      _relRotatingPositions[_currentShapeStateId];
 
   /// Gets the new State after rotating
   int newShapeStateId(Rotation? rotation) {
@@ -61,11 +65,13 @@ abstract class Shape {
   }
 
   ///Gets Absolut Positions of the currend or rotated or moved State
-  List<Position> absPositions({required Position base, Rotation? rotation, Direction? direction}) {
+  List<Position> absPositions(
+      {required Position base, Rotation? rotation, Direction? direction}) {
     final relPositions = _relRotatingPositions[newShapeStateId(rotation)];
     final absPositions = <Position>[];
     for (var relPosition in relPositions) {
-      absPositions.add(base + relPosition + (direction?.toPosition ?? Position(0, 0)));
+      absPositions.add(
+          base + relPosition + (direction?.toPosition ?? const Position(0, 0)));
     }
     return absPositions;
   }

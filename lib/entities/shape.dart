@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:tetris/entities/direction.dart';
 import 'package:tetris/entities/position.dart';
 import 'package:tetris/entities/shapeform.dart';
@@ -9,10 +8,10 @@ import 'package:tetris/entities/rotation.dart';
 abstract class Shape {
   int _currentShapeStateId;
   final List<List<Position>> _relRotatingPositions;
-  final Color _color;
+  final int _color;
 
   ///getter
-  Color get color => _color;
+  int get color => _color;
 
   /*--------------------------------------------------------------------------*/
   /* Constructor                                                              */
@@ -20,7 +19,7 @@ abstract class Shape {
   /// Standard constructor
   Shape({
     required int shapeStateId,
-    required Color color,
+    required int color,
     required List<List<Position>> relRotatingPositions,
   })   : _currentShapeStateId = shapeStateId,
         _color = color,
@@ -44,23 +43,28 @@ abstract class Shape {
   }
 
   /// currentRelativePositions
-  List<Position> currentRelativePositions() => _relRotatingPositions[_currentShapeStateId];
+  List<Position> currentRelativePositions() =>
+      _relRotatingPositions[_currentShapeStateId];
 
   /// Gets the new State after rotating
   int newShapeStateId(Rotation? rotation) {
-    if (rotation != Rotation.right && rotation != Rotation.left) return _currentShapeStateId;
-    final newShapeStateId = _currentShapeStateId + (rotation == Rotation.right ? 1 : -1);
+    if (rotation != Rotation.right && rotation != Rotation.left)
+      return _currentShapeStateId;
+    final newShapeStateId =
+        _currentShapeStateId + (rotation == Rotation.right ? 1 : -1);
     if (newShapeStateId >= _relRotatingPositions.length) return 0;
     if (newShapeStateId < 0) return _relRotatingPositions.length - 1;
     return newShapeStateId;
   }
 
   ///Gets absolut Positions of the current or rotated or moved State
-  List<Position> absPositions({required Position base, Rotation? rotation, Direction? direction}) {
+  List<Position> absPositions(
+      {required Position base, Rotation? rotation, Direction? direction}) {
     final relPositions = _relRotatingPositions[newShapeStateId(rotation)];
     final absPositions = <Position>[];
     for (var relPosition in relPositions) {
-      absPositions.add(base + relPosition + (direction?.toPosition ?? Position(0, 0)));
+      absPositions.add(
+          base + relPosition + (direction?.toPosition ?? const Position(0, 0)));
     }
     return absPositions;
   }

@@ -19,7 +19,8 @@ class ExactPosition extends Position {
   ///Getters / Setters
   double get yExact => _yExact;
 
-  Position get toPosition => Position(x, y);
+  ///Converts ExactPosition to Position
+  Position toPosition() => Position(x, y);
 
   @override
   ExactPosition operator +(Object o) {

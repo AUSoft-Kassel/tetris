@@ -127,8 +127,9 @@ class Game {
     return shape;
   }
 
+  ///Returns true if the Row is Full
   bool isRowFull(int row) {
-    for (int i = 0; i < Constant.numCols; i++) {
+    for (var i = 0; i < Constant.numCols; i++) {
       if (_grid[Position(i, row)] == null) {
         return false;
       }
@@ -136,9 +137,10 @@ class Game {
     return true;
   }
 
+  ///Retruns a list of full Rows
   List<int> whichRowsAreFull() {
-    var result = <int>[];
-    for (int i = 0; i < Constant.numRows; i++) {
+    final result = <int>[];
+    for (var i = 0; i < Constant.numRows; i++) {
       if (isRowFull(i)) {
         result.add(i);
       }
@@ -146,31 +148,3 @@ class Game {
     return result;
   }
 }
-
-///getters
-
-// /// Places the active Shape to the Grid
-// void addActiveShapeToGrid() {
-//   for (var position in _activeShape.absPositions(base: _activeShapePosition)) {
-//     _grid[position] = _activeShape;
-//   }
-//   spawnShape();
-// }
-
-// ///Moves the Active Shape
-// void moveShape(Direction direction, [double distance = 1]) {
-//   var moveToPosition = _activeShapePosition;
-
-//   if (direction == Direction.down)
-//     moveToPosition = ExactPosition(_activeShapePosition.x, (_activeShapePosition.y + distance).floor(), _activeShapePosition.y + distance);
-//   if (direction == Direction.left)
-//     moveToPosition = ExactPosition(_activeShapePosition.x - distance.floor(), _activeShapePosition.y, _activeShapePosition.yExact);
-//   if (direction == Direction.right)
-//     moveToPosition = ExactPosition(_activeShapePosition.x + distance.floor(), _activeShapePosition.y, _activeShapePosition.yExact);
-
-//   if (isPositionValid(moveToPosition)) {
-//     removeFromGrid();
-//     _activeShapePosition = moveToPosition;
-//     addActiveShapeToGrid();
-//   }
-// }

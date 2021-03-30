@@ -27,7 +27,7 @@ class GameProvider extends StateNotifier<Game> {
     var newAbsRefPosition = absRefPosition;
     if (shape == null || absRefPosition == null) return;
     final absPositions =
-        shape.absPositions(base: absRefPosition.toPosition, direction: dir);
+        shape.absPositions(base: absRefPosition.toPosition(), direction: dir);
     if (state.arePositionsEmpty(absPositions)) {
       newAbsRefPosition = absRefPosition + dir.toPosition;
     }
@@ -39,8 +39,8 @@ class GameProvider extends StateNotifier<Game> {
     final shape = state.activeShape;
     final absRefPosition = state.activeShapePosition;
     if (shape == null || absRefPosition == null) return;
-    final absPositions =
-        shape.absPositions(base: absRefPosition.toPosition, rotation: rotation);
+    final absPositions = shape.absPositions(
+        base: absRefPosition.toPosition(), rotation: rotation);
     if (state.arePositionsEmpty(absPositions)) {
       shape.rotateShape(rotation);
     }
@@ -82,11 +82,31 @@ class GameProvider extends StateNotifier<Game> {
   /*--------------------------------------------------------------------------*/
   /* Use cases (informational): Translating state to the outside              */
   /*--------------------------------------------------------------------------*/
-  /// Get the shape at a certain position (x,y)
+  /// Get the inactive shape at a certain position (x,y)
   /// Returns null if no shape is presen
-  Shape? getShapeAt(int x, int y) => state.grid[Position(x, y)];
+  Shape? getInactiveShapeAt(int x, int y) => state.grid[Position(x, y)];
 
-  /// Get color of shape at a certain position (x,y)
+  /// Get the active shape at a certain position (x,y)
   /// Returns null if no shape is presen
-  Color? getShapeColor(int x, int y) => getShapeAt(x, y)?.color;
+  Shape? getActiveShapeAt(int x, int y) {
+    Shape? shapeAt;
+    final shape = state.activeShape;
+    final pos = state.activeShapePosition;
+    if (shape == null || pos == null) return null;
+    final absActiveShapePositions = shape.absPositions(base: pos.toPosition());
+    for (var activeShapePos in absActiveShapePositions) {
+      if (activeShapePos == Position(x, y)) shapeAt = shape;
+    }
+    return shapeAt;
+  }
+
+  /// Get color of inactive shape at a certain position (x,y)
+  /// Returns null if no shape is presen
+  Color getInactiveShapeColor(int x, int y) =>
+      Color(getInactiveShapeAt(x, y)?.color ?? Colors.pink.value);
+
+  /// Get color of active shape at a certain position (x,y)
+  /// Returns null if no shape is presen
+  Color getActiveShapeColor(int x, int y) =>
+      Color(getActiveShapeAt(x, y)?.color ?? Colors.purple.value);
 }

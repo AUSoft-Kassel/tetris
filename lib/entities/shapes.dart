@@ -17,7 +17,7 @@ class ShapeO extends Shape {
   ///Constructor
   ShapeO()
       : super(
-          color: const Color(0x919191FF),
+          color: 0xFF919191,
           relRotatingPositions: _relRotatingPositions,
           shapeStateId: Random().nextInt(_relRotatingPositions.length),
         );
@@ -43,7 +43,7 @@ class ShapeI extends Shape {
   ///Constructor
   ShapeI()
       : super(
-          color: const Color(0x3617FFFF),
+          color: 0xFF3617FF,
           relRotatingPositions: _relRotatingPositions,
           shapeStateId: Random().nextInt(_relRotatingPositions.length),
         );
@@ -81,7 +81,7 @@ class ShapeL extends Shape {
   ///Constructor
   ShapeL()
       : super(
-          color: const Color(0xFF5C5CFF),
+          color: 0xFFFF5C5C,
           relRotatingPositions: _relRotatingPositions,
           shapeStateId: Random().nextInt(_relRotatingPositions.length),
         );
@@ -119,7 +119,7 @@ class ShapeJ extends Shape {
   ///Constructor
   ShapeJ()
       : super(
-          color: const Color(0xFFB536FF),
+          color: 0xFFFFB536,
           relRotatingPositions: _relRotatingPositions,
           shapeStateId: Random().nextInt(_relRotatingPositions.length),
         );
@@ -145,7 +145,7 @@ class ShapeS extends Shape {
   ///Constructor
   ShapeS()
       : super(
-          color: const Color(0xF830FFFF),
+          color: 0xFFF830FF,
           relRotatingPositions: _relRotatingPositions,
           shapeStateId: Random().nextInt(_relRotatingPositions.length),
         );
@@ -171,7 +171,7 @@ class ShapeZ extends Shape {
   ///Constructor
   ShapeZ()
       : super(
-          color: const Color(0xD9FFBBFF),
+          color: 0xFFD9FFBB,
           relRotatingPositions: _relRotatingPositions,
           shapeStateId: Random().nextInt(_relRotatingPositions.length),
         );
@@ -209,7 +209,7 @@ class ShapeT extends Shape {
   ///Constructor
   ShapeT()
       : super(
-          color: const Color(0xFAFF75FF),
+          color: 0xFFFAFF75,
           relRotatingPositions: _relRotatingPositions,
           shapeStateId: Random().nextInt(_relRotatingPositions.length),
         );

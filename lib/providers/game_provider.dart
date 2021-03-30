@@ -1,10 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tetris/entities/direction.dart';
 import 'package:tetris/entities/game.dart';
 import 'package:tetris/entities/position.dart';
+import 'package:tetris/entities/rotation.dart';
 import 'package:tetris/entities/shape.dart';
 
 /// GameProvider is a StateNotifier
@@ -25,9 +24,27 @@ class GameProvider extends StateNotifier<Game> {
   void moveShape(Direction dir) {
     final shape = state.activeShape;
     final absRefPosition = state.activeShapePosition;
+    var newAbsRefPosition = absRefPosition;
     if (shape == null || absRefPosition == null) return;
-    final absPositions = shape.absPositions(base: absRefPosition.toPosition, direction: dir);
-    for (var pos in absPositions) {}
+    final absPositions =
+        shape.absPositions(base: absRefPosition.toPosition, direction: dir);
+    if (state.arePositionsEmpty(absPositions)) {
+      newAbsRefPosition = absRefPosition + dir.toPosition;
+    }
+    state.copyWith(activeShapePosition: newAbsRefPosition);
+  }
+
+  ///Rotates the Shape in a Certain Direction
+  void rotateShape(Rotation rotation) {
+    final shape = state.activeShape;
+    final absRefPosition = state.activeShapePosition;
+    if (shape == null || absRefPosition == null) return;
+    final absPositions =
+        shape.absPositions(base: absRefPosition.toPosition, rotation: rotation);
+    if (state.arePositionsEmpty(absPositions)) {
+      shape.rotateShape(rotation);
+    }
+    state.copyWith(activeShape: shape);
   }
 
   /*--------------------------------------------------------------------------*/
@@ -71,14 +88,5 @@ class GameProvider extends StateNotifier<Game> {
 
   /// Get color of shape at a certain position (x,y)
   /// Returns null if no shape is presen
-  Color? getShapeColor(int x, int y) {
-    log('getShapeColor: $x, $y');
-    var col = getShapeAt(x, y)?.color;
-    if (col != null) {
-      log("got color");
-    } else {
-      log("got no color");
-    }
-    return col;
-  }
+  Color? getShapeColor(int x, int y) => getShapeAt(x, y)?.color;
 }

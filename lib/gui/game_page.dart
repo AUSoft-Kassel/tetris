@@ -24,7 +24,7 @@ class GamePage extends HookWidget {
         child: Container(
           child: Flex(
             direction: Axis.vertical,
-            children: [...buildRows(context, gameProvider)],
+            children: [..._buildRows(context, gameProvider)],
           ),
         ),
       ),
@@ -39,7 +39,9 @@ class GamePage extends HookWidget {
         log('buildCell: $x, $y');
         list.add(
           Container(
-            decoration: BoxDecoration(border: Border(top: BorderSide(), left: BorderSide()), color: gameProvider.getShapeColor(x, y) ?? Colors.grey),
+            decoration: BoxDecoration(
+                border: Border(top: BorderSide(), left: BorderSide()),
+                color: gameProvider.getShapeColor(x, y) ?? Colors.grey),
             child: Center(child: Text("X")),
           ),
         );

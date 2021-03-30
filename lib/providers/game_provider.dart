@@ -37,7 +37,7 @@ class GameProvider extends StateNotifier<Game> {
     final absPositions =
         shape.absPositions(base: absRefPosition.toPosition, rotation: rotation);
     if (state.arePositionsEmpty(absPositions)) {
-      shape.rotateShape(rotation);
+      shape.rotate(rotation);
     }
     state.copyWith(activeShape: shape);
   }
@@ -52,10 +52,23 @@ class GameProvider extends StateNotifier<Game> {
 
   /// Get color of shape at a certain position (x,y)
   /// Returns null if no shape is presen
-  Color? getShapeColor(int x, int y) => getShapeAt(x, y)?.color;
+  Color? getShapeColor(int x, int y) {
+    var color = getShapeAt(x, y)?.color;
+    final activeShape = state.activeShape;
+    final absRefPosition = state.activeShapePosition;
+    if (activeShape == null || absRefPosition == null) {
+      return color;
+    }
+    final absPositions =
+        activeShape.absPositions(base: absRefPosition.toPosition);
+    for (var pos in absPositions) {
+      if (pos == Position(x, y)) color = activeShape.color;
+    }
+    return color;
+  }
 
   /*--------------------------------------------------------------------------*/
-  /* Funktions                                                                */
+  /* Functions                                                                */
   /*--------------------------------------------------------------------------*/
 
   /// Clears One Row and moves all above one row down.

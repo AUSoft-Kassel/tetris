@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tetris/entities/shape.dart';
 import 'package:tetris/entities/shapeshop.dart';
@@ -61,10 +59,8 @@ void main() {
       final runtimeTypeName = shape.runtimeType.toString();
       map[runtimeTypeName] = (map[runtimeTypeName] ?? 0) + 1;
     }
-    log('$map');
     expect(map.length, 7);
     map.forEach((key, value) {
-      log('$key -> $value');
       expect(value, 2);
     });
   });

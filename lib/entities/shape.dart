@@ -35,7 +35,7 @@ abstract class Shape {
   }
 
   /// Rotate a shape.
-  void rotateShape(Rotation rotation) {
+  void rotate(Rotation rotation) {
     _currentShapeStateId = newShapeStateId(rotation);
   }
 

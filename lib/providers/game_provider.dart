@@ -111,27 +111,6 @@ class GameProvider extends StateNotifier<Game> {
   Color getActiveShapeColor(int x, int y) =>
       Color(getActiveShapeAt(x, y)?.color ?? Colors.purple.value);
 
-  /// Gets a list of all X values of the active Shape
-  List<int>? getActiveShapePositionsX() {
-    final positions = state.activeShapePositions();
-    final listX = <int>[];
-    if (positions == null) return null;
-    for (var pos in positions) {
-      listX.add(pos.x);
-    }
-    return listX;
-  }
-
-  /// Gets a list of all Y values of the active Shape
-  List<int>? getActiveShapePositionsY() {
-    final positions = state.activeShapePositions();
-    final listX = <int>[];
-    if (positions == null) return null;
-    for (var pos in positions) {
-      listX.add(pos.y);
-    }
-    return listX;
-  }
 
   void spawnShape() {
     final shape = state.shapeShop.giveShape();

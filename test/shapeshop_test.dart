@@ -20,6 +20,7 @@ void main() {
     final shapeShop = ShapeShop();
     final shape1 = shapeShop.showShape();
     final shape2 = shapeShop.showShape(
+        // ignore: avoid_redundant_argument_values
         0); // It should accept empty and 0, both for the first element
     expect(shape1 == shape2, true);
   });
@@ -40,7 +41,6 @@ void main() {
       'ShapeShop.showShape alwas is able to show the next 14 pieces (but never more, by definition, otherwise we would have 14-28)',
       () {
     final shapeShop = ShapeShop();
-    final shown = <Shape>[];
     for (var x = 0; x < 100; x++) {
       final Shape? shape = shapeShop.showShape(x);
       if (x < 13) {
@@ -55,8 +55,7 @@ void main() {
       'ShapeShop.showShape returns 14 shapes in random order, consisting of 2 pieces * 7 kinds of shapes',
       () {
     final shapeShop = ShapeShop();
-    final shown = <Shape>[];
-    final Map<String, int> map = {};
+    final map = <String, int>{};
     for (var x = 0; x < 14; x++) {
       final shape = shapeShop.showShape(x);
       final runtimeTypeName = shape.runtimeType.toString();
@@ -89,11 +88,10 @@ void main() {
       'After giving out 14 shapes, ShapeShop.showShape returns 14 shapes in random order, consisting of 2 pieces * 7 kinds of shapes',
       () {
     final shapeShop = ShapeShop();
-    final shown = <Shape>[];
     for (var x = 0; x < 14; x++) {
       shapeShop.giveShape();
     }
-    final Map<String, int> map = {};
+    final map = <String, int>{};
     for (var x = 0; x < 14; x++) {
       final shape = shapeShop.showShape(x);
       final runtimeTypeName = shape.runtimeType.toString();

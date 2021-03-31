@@ -5,14 +5,12 @@ import 'package:tetris/entities/constant.dart';
 import 'package:tetris/providers/_providers.dart';
 import 'package:tetris/providers/game_provider.dart';
 
-import 'dart:developer';
-
+///Our GamePage
 class GamePage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final gameProvider = useProvider(providerGameProvider);
     final game = useProvider(providerGameProvider.state);
-    log('Sreen build running');
 
     return Material(
       child: Container(
@@ -113,15 +111,15 @@ class GamePage extends HookWidget {
   }
 
   List<Widget> _buildRows(BuildContext context, GameProvider gameProvider) {
-    log('Build a row');
     final list = <Widget>[];
     for (var y = Constant.numRows - 1; y >= 0; y--) {
       for (var x = 0; x < Constant.numCols; x++) {
-        log('buildCell: $x, $y');
         list.add(
           Container(
-            decoration: BoxDecoration(border: Border(top: BorderSide(), left: BorderSide()), color: gameProvider.getShapeColorAt(x, y) ?? Colors.grey),
-            child: Center(child: Text("X")),
+            decoration: BoxDecoration(
+                border: const Border(top: BorderSide(), left: BorderSide()),
+                color: gameProvider.getInactiveShapeColor(x, y)),
+            child: const Center(child: Text('X')),
           ),
         );
       }

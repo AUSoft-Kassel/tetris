@@ -8,6 +8,7 @@ void main() {
   runApp(ProviderScope(child: MyApp()));
 }
 
+///Our App
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override

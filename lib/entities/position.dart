@@ -31,8 +31,10 @@ class Position {
   String toString() => '$_x,$_y';
 
   @override
+  // ignore: avoid_equals_and_hash_code_on_mutable_classes
   bool operator ==(Object o) => o is Position && o.y == _y && o.x == _x;
 
   @override
+  // ignore: avoid_equals_and_hash_code_on_mutable_classes
   int get hashCode => _x * 1000 + _y;
 }

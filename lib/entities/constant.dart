@@ -1,3 +1,5 @@
+import 'package:tetris/entities/position.dart';
+
 /// Class which holds static data - more or less global variables
 abstract class Constant {
   /// Minimum gamespeed
@@ -11,4 +13,7 @@ abstract class Constant {
 
   /// The number of columns of a standard Tetris field
   static const numCols = 10;
+
+  static const Position spawnPosition =
+      Position(Constant.numCols ~/ 2, Constant.numRows);
 }

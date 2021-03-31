@@ -1,5 +1,6 @@
+import 'dart:html';
+
 import 'package:tetris/entities/constant.dart';
-import 'package:tetris/entities/exactposition.dart';
 import 'package:tetris/entities/position.dart';
 import 'package:tetris/entities/shape.dart';
 import 'package:tetris/entities/shapeshop.dart';
@@ -19,12 +20,10 @@ class Game {
   /*--------------------------------------------------------------------------*/
   final ShapeShop _shapeShop; //private
   final Shape? _activeShape; //ro
-  final ExactPosition? _activeShapePosition; //ro
+  final Position? _activeShapePosition; //ro
   final Map<Position, Shape?> _grid; //ro
   final double _actualSpeed; //ro
   final int _points; //ro
-  final Position _spawnPosition =
-      Position((Constant.numCols / 2).floor(), Constant.numRows);
 
   /*--------------------------------------------------------------------------*/
   /* Constructors                                                             */
@@ -45,7 +44,7 @@ class Game {
   Game._internal({
     required ShapeShop shapeShop,
     required Shape? activeShape,
-    required ExactPosition? activeShapePosition,
+    required Position? activeShapePosition,
     required Map<Position, Shape?> grid,
     required double actualSpeed,
     required int points,
@@ -64,7 +63,7 @@ class Game {
   Game copyWith({
     ShapeShop? shapeShop,
     Shape? activeShape,
-    ExactPosition? activeShapePosition,
+    Position? activeShapePosition,
     Map<Position, Shape?>? grid,
     double? actualSpeed,
     int? points,
@@ -88,7 +87,7 @@ class Game {
   Shape? get activeShape => _activeShape;
 
   /// Position of currently active shape
-  ExactPosition? get activeShapePosition => _activeShapePosition;
+  Position? get activeShapePosition => _activeShapePosition;
 
   /// Game speed
   double get actualSpeed => _actualSpeed;
@@ -96,9 +95,8 @@ class Game {
   /// Points within the current game
   int get points => _points;
 
-  /// Position at which new shapes are spawned
-  Position get spawnPosition => _spawnPosition;
-
+  ///Handeling the shape output.
+  ShapeShop get shapeShop => _shapeShop;
   /*--------------------------------------------------------------------------*/
   /* Methods for getting further data from Game objects                       */
   /* (These methods could also be located in GameProvider)                    */
@@ -146,5 +144,12 @@ class Game {
       }
     }
     return result;
+  }
+
+  ///Returns a List of all parts of the active shape in absPosition
+  List<Position>? activeShapePositions() {
+    if (_activeShape == null) _activeShape;
+    _activeShape?.absPositions(
+        base: activeShapePosition ?? const Position(0, 0));
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tetris/entities/constant.dart';
 import 'package:tetris/entities/direction.dart';
 import 'package:tetris/entities/game.dart';
 import 'package:tetris/entities/position.dart';
@@ -27,7 +28,7 @@ class GameProvider extends StateNotifier<Game> {
     var newAbsRefPosition = absRefPosition;
     if (shape == null || absRefPosition == null) return;
     final absPositions =
-        shape.absPositions(base: absRefPosition.toPosition(), direction: dir);
+        shape.absPositions(base: absRefPosition, direction: dir);
     if (state.arePositionsEmpty(absPositions)) {
       newAbsRefPosition = absRefPosition + dir.toPosition;
     }
@@ -39,8 +40,8 @@ class GameProvider extends StateNotifier<Game> {
     final shape = state.activeShape;
     final absRefPosition = state.activeShapePosition;
     if (shape == null || absRefPosition == null) return;
-    final absPositions = shape.absPositions(
-        base: absRefPosition.toPosition(), rotation: rotation);
+    final absPositions =
+        shape.absPositions(base: absRefPosition, rotation: rotation);
     if (state.arePositionsEmpty(absPositions)) {
       shape.rotateShape(rotation);
     }
@@ -93,7 +94,7 @@ class GameProvider extends StateNotifier<Game> {
     final shape = state.activeShape;
     final pos = state.activeShapePosition;
     if (shape == null || pos == null) return null;
-    final absActiveShapePositions = shape.absPositions(base: pos.toPosition());
+    final absActiveShapePositions = shape.absPositions(base: pos);
     for (var activeShapePos in absActiveShapePositions) {
       if (activeShapePos == Position(x, y)) shapeAt = shape;
     }
@@ -109,4 +110,32 @@ class GameProvider extends StateNotifier<Game> {
   /// Returns null if no shape is presen
   Color getActiveShapeColor(int x, int y) =>
       Color(getActiveShapeAt(x, y)?.color ?? Colors.purple.value);
+
+  /// Gets a list of all X values of the active Shape
+  List<int>? getActiveShapePositionsX() {
+    final positions = state.activeShapePositions();
+    final listX = <int>[];
+    if (positions == null) return null;
+    for (var pos in positions) {
+      listX.add(pos.x);
+    }
+    return listX;
+  }
+
+  /// Gets a list of all Y values of the active Shape
+  List<int>? getActiveShapePositionsY() {
+    final positions = state.activeShapePositions();
+    final listX = <int>[];
+    if (positions == null) return null;
+    for (var pos in positions) {
+      listX.add(pos.y);
+    }
+    return listX;
+  }
+
+  void spawnShape() {
+    final shape = state.shapeShop.giveShape();
+    state.copyWith(
+        activeShape: shape, activeShapePosition: Constant.spawnPosition);
+  }
 }

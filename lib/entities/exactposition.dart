@@ -20,4 +20,13 @@ class ExactPosition extends Position {
   double get yExact => _yExact;
 
   Position get toPosition => Position(x, y);
+
+  @override
+  ExactPosition operator +(Object o) {
+    if (o is Position)
+      return ExactPosition(x + o.x, y + o.y, yExact + o.y.toDouble());
+    if (o is ExactPosition)
+      return ExactPosition(x + o.x, y + o.y, yExact + o.yExact);
+    return this;
+  }
 }

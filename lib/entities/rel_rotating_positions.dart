@@ -1,10 +1,15 @@
 // TODO: Check if it is obsolete. If so, remove the whole file
 import 'package:tetris/entities/position.dart';
 
-
 /// Description of the class which define all relative positions in one rotation of a shape
-// class RelRotatingpositions {
-//   Position _position(int x) {
-//     return Position(x, 0);
-//   }
-// }
+class RelRotatedpositions {
+  List<Position> _position = [];
+
+  ///setter
+  void addPos(Position pos) {
+    _position.add(pos);
+  }
+
+  ///getter
+  Position getPos(int i) => _position[i];
+}

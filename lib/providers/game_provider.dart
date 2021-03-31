@@ -71,7 +71,7 @@ class GameProvider extends StateNotifier<Game> {
 
   /// Get color of shape at a certain position (x,y)
   /// Returns null if no shape is presen
-  Color? getShapeColor(int x, int y) {
+  Color? getShapeColorAt(int x, int y) {
     log('getShapeColor: $x, $y');
     var col = getShapeAt(x, y)?.color;
     if (col != null) {

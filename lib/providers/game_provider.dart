@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tetris/entities/constant.dart';
@@ -73,6 +75,7 @@ class GameProvider extends StateNotifier<Game> {
   /// (also checks if there are full rows at all)
   /// Private method because it'll be invoked as part of an automatic routine,
   /// not by anything external
+  // ignore: unused_element
   void _clearFullRows() {
     final fullRows = state.whichRowsAreFull()..sort((a, b) => b.compareTo(a));
     for (var row in fullRows) {
@@ -111,9 +114,30 @@ class GameProvider extends StateNotifier<Game> {
   Color getActiveShapeColor(int x, int y) =>
       Color(getActiveShapeAt(x, y)?.color ?? Colors.purple.value);
 
-
+  ///Spawns the next Shape in right Position.
   void spawnShape() {
     final shape = state.shapeShop.giveShape();
+    state.copyWith(
+        activeShape: shape, activeShapePosition: Constant.spawnPosition);
+  }
+
+  List<Position> getActiveShapePositions() {
+    if (state.activeShape == null || state.activeShapePosition == null) {
+      final list = <Position>[];
+      list.add(Position(0, 1));
+      list.add(Position(0, 2));
+      list.add(Position(0, 3));
+      list.add(Position(0, 4));
+      return list;
+    }
+
+    return state.activeShape!.absPositions(base: state.activeShapePosition!);
+  }
+
+  void startGame() {
+    Shape shape = state.shapeShop.giveShape();
+    log('Start Game!');
+
     state.copyWith(
         activeShape: shape, activeShapePosition: Constant.spawnPosition);
   }

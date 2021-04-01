@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:tetris/entities/constant.dart';
 import 'package:tetris/entities/position.dart';
 import 'package:tetris/entities/shape.dart';
@@ -147,9 +145,6 @@ class Game {
   }
 
   ///Returns a List of all parts of the active shape in absPosition
-  List<Position>? activeShapePositions() {
-    if (_activeShape == null) _activeShape;
-    _activeShape?.absPositions(
-        base: activeShapePosition ?? const Position(0, 0));
-  }
+  List<Position>? activeShapePositions() => _activeShape?.absPositions(
+      base: activeShapePosition ?? const Position(0, 0));
 }

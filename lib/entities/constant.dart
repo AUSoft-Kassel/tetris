@@ -14,6 +14,7 @@ abstract class Constant {
   /// The number of columns of a standard Tetris field
   static const numCols = 10;
 
+  /// Starting point of a shape in the Grid
   static const Position spawnPosition =
       Position(Constant.numCols ~/ 2, Constant.numRows);
 }

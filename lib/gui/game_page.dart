@@ -1,10 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tetris/entities/constant.dart';
-import 'package:tetris/entities/position.dart';
 import 'package:tetris/providers/_providers.dart';
 import 'package:tetris/providers/game_provider.dart';
 
@@ -46,14 +43,8 @@ class GamePage extends HookWidget {
                           color: Colors.amber,
                           child: Stack(
                             children: [
-                              ..._buildRows(
-                                  context: context,
-                                  gameProvider: gameProvider,
-                                  blockSize: blockSize),
-                              ..._buildActiveShape(
-                                  context: context,
-                                  gameProvider: gameProvider,
-                                  blockSize: blockSize),
+                              ..._buildRows(context: context, gameProvider: gameProvider, blockSize: blockSize),
+                              ..._buildActiveShape(context: context, gameProvider: gameProvider, blockSize: blockSize),
                             ],
                           ),
                         ),
@@ -92,18 +83,9 @@ class GamePage extends HookWidget {
                                       color: Colors.blue,
                                     ),
                                   ),
-                                  _buttonBox(
-                                      alignment: Alignment(-0.8, -0.75),
-                                      icon: Icons.keyboard_arrow_left_rounded,
-                                      size: bottomSizeY / 2),
-                                  _buttonBox(
-                                      alignment: Alignment(0.8, -0.75),
-                                      icon: Icons.keyboard_arrow_right_rounded,
-                                      size: bottomSizeY / 2),
-                                  _buttonBox(
-                                      alignment: Alignment(0, 0.6),
-                                      icon: Icons.keyboard_arrow_down_rounded,
-                                      size: bottomSizeY / 2),
+                                  _buttonBox(alignment: Alignment(-0.8, -0.75), icon: Icons.keyboard_arrow_left_rounded, size: bottomSizeY / 2),
+                                  _buttonBox(alignment: Alignment(0.8, -0.75), icon: Icons.keyboard_arrow_right_rounded, size: bottomSizeY / 2),
+                                  _buttonBox(alignment: Alignment(0, 0.6), icon: Icons.keyboard_arrow_down_rounded, size: bottomSizeY / 2),
                                 ],
                               ),
                             ),
@@ -115,14 +97,8 @@ class GamePage extends HookWidget {
                                       color: Colors.yellow,
                                     ),
                                   ),
-                                  _buttonBox(
-                                      alignment: Alignment(-0.75, 0.6),
-                                      icon: Icons.rotate_left_rounded,
-                                      size: bottomSizeY / 2.25),
-                                  _buttonBox(
-                                      alignment: Alignment(0.75, -0.6),
-                                      icon: Icons.rotate_right_rounded,
-                                      size: bottomSizeY / 2.25),
+                                  _buttonBox(alignment: Alignment(-0.75, 0.6), icon: Icons.rotate_left_rounded, size: bottomSizeY / 2.25),
+                                  _buttonBox(alignment: Alignment(0.75, -0.6), icon: Icons.rotate_right_rounded, size: bottomSizeY / 2.25),
                                 ],
                               ),
                             ),
@@ -130,18 +106,12 @@ class GamePage extends HookWidget {
                         ))
                   ],
                 ),
-                Center(
-                    child: TextButton(
-                        onPressed: gameProvider.startGame,
-                        child: Text('Start'))),
+                Center(child: TextButton(onPressed: gameProvider.startGame, child: Text('Start'))),
               ]);
             })));
   }
 
-  List<Widget> _buildRows(
-      {required BuildContext context,
-      required GameProvider gameProvider,
-      required double blockSize}) {
+  List<Widget> _buildRows({required BuildContext context, required GameProvider gameProvider, required double blockSize}) {
     final list = <Widget>[];
     for (var y = Constant.numRows - 1; y >= 0; y--) {
       for (var x = 0; x < Constant.numCols; x++) {
@@ -164,10 +134,7 @@ class GamePage extends HookWidget {
     return list;
   }
 
-  List<Widget> _buildActiveShape(
-      {required BuildContext context,
-      required GameProvider gameProvider,
-      required double blockSize}) {
+  List<Widget> _buildActiveShape({required BuildContext context, required GameProvider gameProvider, required double blockSize}) {
     final list = <Widget>[];
     final positions = gameProvider.getActiveShapePositions();
     for (var pos in positions) {
@@ -189,11 +156,7 @@ class GamePage extends HookWidget {
     return list;
   }
 
-  Widget _buttonBox(
-          {required Alignment alignment,
-          required IconData icon,
-          required double size}) =>
-      Align(
+  Widget _buttonBox({required Alignment alignment, required IconData icon, required double size}) => Align(
         alignment: alignment,
         child: Container(
           width: size,

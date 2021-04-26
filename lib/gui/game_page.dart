@@ -109,7 +109,7 @@ class GamePage extends HookWidget {
                                 children: [
                                   // Expanded(
                                   //   child: Container(
-                                  //     color: Colors.yellow,
+                                  //     color: Colo.yellow,
                                   //   ),
                                   // ),
                                   _buttonBox(

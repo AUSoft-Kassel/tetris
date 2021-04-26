@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tetris/entities/constant.dart';
+import 'package:tetris/entities/direction.dart';
+import 'package:tetris/entities/rotation.dart';
 import 'package:tetris/providers/_providers.dart';
 import 'package:tetris/providers/game_provider.dart';
 
@@ -92,17 +94,23 @@ class GamePage extends HookWidget {
                                   //   ),
                                   // ),
                                   _buttonBox(
-                                      alignment: Alignment(-0.8, -0.75),
-                                      icon: Icons.keyboard_arrow_left_rounded,
-                                      size: bottomSizeY / 2),
+                                    alignment: const Alignment(-0.8, -0.75),
+                                    icon: Icons.keyboard_arrow_left_rounded,
+                                    size: bottomSizeY / 2,
+                                    direction: Direction.left,
+                                  ),
                                   _buttonBox(
-                                      alignment: Alignment(0.8, -0.75),
-                                      icon: Icons.keyboard_arrow_right_rounded,
-                                      size: bottomSizeY / 2),
+                                    alignment: const Alignment(0.8, -0.75),
+                                    icon: Icons.keyboard_arrow_right_rounded,
+                                    size: bottomSizeY / 2,
+                                    direction: Direction.right,
+                                  ),
                                   _buttonBox(
-                                      alignment: Alignment(0, 0.6),
-                                      icon: Icons.keyboard_arrow_down_rounded,
-                                      size: bottomSizeY / 2),
+                                    alignment: const Alignment(0, 0.6),
+                                    icon: Icons.keyboard_arrow_down_rounded,
+                                    size: bottomSizeY / 2,
+                                    direction: Direction.down,
+                                  ),
                                 ],
                               ),
                             ),
@@ -115,13 +123,17 @@ class GamePage extends HookWidget {
                                   //   ),
                                   // ),
                                   _buttonBox(
-                                      alignment: Alignment(-0.75, 0.6),
-                                      icon: Icons.rotate_left_rounded,
-                                      size: bottomSizeY / 2.25),
+                                    alignment: const Alignment(-0.75, 0.6),
+                                    icon: Icons.rotate_left_rounded,
+                                    size: bottomSizeY / 2.25,
+                                    rotation: Rotation.left,
+                                  ),
                                   _buttonBox(
-                                      alignment: Alignment(0.75, -0.6),
-                                      icon: Icons.rotate_right_rounded,
-                                      size: bottomSizeY / 2.25),
+                                    alignment: const Alignment(0.75, -0.6),
+                                    icon: Icons.rotate_right_rounded,
+                                    size: bottomSizeY / 2.25,
+                                    rotation: Rotation.right,
+                                  ),
                                 ],
                               ),
                             ),
@@ -201,6 +213,13 @@ class GamePage extends HookWidget {
     return list;
   }
 
+  Widget _buttonBox({
+    required Alignment alignment,
+    required IconData icon,
+    required double size,
+    Direction? direction,
+    Rotation? rotation,
+  }) =>
   Widget _buttonBox(
           {required Alignment alignment,
           required IconData icon,
@@ -210,9 +229,18 @@ class GamePage extends HookWidget {
         child: Container(
           width: size,
           height: size,
-          child: FittedBox(
-            fit: BoxFit.fill,
-            child: Icon(icon),
+          child: GestureDetector(
+            onTap: () {
+              if (direction != null) {
+                log('Button: Direction: ${direction}');
+              } else if (rotation != null) {
+                log('Button: Rotation: ${rotation}');
+              }
+            },
+            child: FittedBox(
+              fit: BoxFit.fill,
+              child: Icon(icon),
+            ),
           ),
         ),
       );

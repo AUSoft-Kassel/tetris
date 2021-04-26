@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -143,21 +145,24 @@ class GamePage extends HookWidget {
   List<Widget> _buildActiveShape({required BuildContext context, required GameProvider gameProvider, required double blockSize}) {
     final list = <Widget>[];
     final positions = gameProvider.getActiveShapePositions();
+    log('$positions');
     for (var pos in positions) {
-      list.add(
-        Positioned(
-          bottom: blockSize * (Constant.numRows - pos.y - 1),
-          right: blockSize * (Constant.numCols - pos.x - 1),
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border.all(),
-              color: gameProvider.getActiveShapeColor(pos.x, pos.y),
+      if (pos.y < Constant.numRows) {
+        list.add(
+          Positioned(
+            bottom: blockSize * pos.y,
+            left: blockSize * pos.x,
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(),
+                color: gameProvider.getActiveShapeColor(pos.x, pos.y),
+              ),
+              height: blockSize,
+              width: blockSize,
             ),
-            height: blockSize,
-            width: blockSize,
           ),
-        ),
-      );
+        );
+      }
     }
     return list;
   }

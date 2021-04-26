@@ -47,8 +47,14 @@ class GamePage extends HookWidget {
                           color: Colors.amber,
                           child: Stack(
                             children: [
-                              ..._buildRows(context: context, gameProvider: gameProvider, blockSize: blockSize),
-                              ..._buildActiveShape(context: context, gameProvider: gameProvider, blockSize: blockSize),
+                              ..._buildRows(
+                                  context: context,
+                                  gameProvider: gameProvider,
+                                  blockSize: blockSize),
+                              ..._buildActiveShape(
+                                  context: context,
+                                  gameProvider: gameProvider,
+                                  blockSize: blockSize),
                             ],
                           ),
                         ),
@@ -72,7 +78,7 @@ class GamePage extends HookWidget {
                       ],
                     ),
 
-                    ///Buttom
+                    ///Button
                     Container(
                         height: bottomSizeY,
                         color: Colors.pink,
@@ -138,15 +144,25 @@ class GamePage extends HookWidget {
                 if (!game.gameRunning)
                   Center(
                       child: TextButton(
-                          onPressed: () {
-                            gameProvider.startGame();
-                          },
-                          child: const Text('Start'))),
+                    onPressed: () {
+                      gameProvider.startGame();
+                    },
+                    child: Container(
+                        color: Colors.blue,
+                        child: const Text('Start Game',
+                            style: TextStyle(
+                              color: Colors.black87,
+                              backgroundColor: Colors.blue,
+                            ))),
+                  ))
               ]);
             })));
   }
 
-  List<Widget> _buildRows({required BuildContext context, required GameProvider gameProvider, required double blockSize}) {
+  List<Widget> _buildRows(
+      {required BuildContext context,
+      required GameProvider gameProvider,
+      required double blockSize}) {
     final list = <Widget>[];
     for (var y = Constant.numRows - 1; y >= 0; y--) {
       for (var x = 0; x < Constant.numCols; x++) {
@@ -169,7 +185,10 @@ class GamePage extends HookWidget {
     return list;
   }
 
-  List<Widget> _buildActiveShape({required BuildContext context, required GameProvider gameProvider, required double blockSize}) {
+  List<Widget> _buildActiveShape(
+      {required BuildContext context,
+      required GameProvider gameProvider,
+      required double blockSize}) {
     final list = <Widget>[];
     final positions = gameProvider.getActiveShapePositions();
     log('$positions');
@@ -201,6 +220,10 @@ class GamePage extends HookWidget {
     Direction? direction,
     Rotation? rotation,
   }) =>
+  Widget _buttonBox(
+          {required Alignment alignment,
+          required IconData icon,
+          required double size}) =>
       Align(
         alignment: alignment,
         child: Container(

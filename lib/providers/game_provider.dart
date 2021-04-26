@@ -133,7 +133,7 @@ class GameProvider extends StateNotifier<Game> {
     Shape shape = state.shapeShop.giveShape();
     log('Start Game!');
 
-    state.copyWith(
+    state = state.copyWith(
       activeShape: shape,
       activeShapePosition: Constant.spawnPosition,
       gameRunning: true,

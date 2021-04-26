@@ -51,20 +51,16 @@ abstract class Shape {
   int newShapeStateId(Rotation? rotation) {
     if (rotation != Rotation.right && rotation != Rotation.left) return _currentShapeStateId;
     var newShapeStateId = _currentShapeStateId + (rotation == Rotation.right ? 1 : -1);
-    log('rotateShape: relRotationsPositions.length: ${_relRotatingPositions.length}');
-    log('$this');
     if (newShapeStateId >= _relRotatingPositions.length) {
       newShapeStateId = 0;
     } else if (newShapeStateId < 0) {
       newShapeStateId = _relRotatingPositions.length - 1;
     }
-    log('newShapeId: $newShapeStateId');
     return newShapeStateId;
   }
 
   ///Gets absolut Positions of the current or rotated or moved State
   List<Position> absPositions({required Position base, Rotation? rotation, Direction? direction}) {
-    log('absPositions: $base + $rotation + $direction');
     final relPositions = _relRotatingPositions[newShapeStateId(rotation)];
     final absPositions = <Position>[];
     for (var relPosition in relPositions) {

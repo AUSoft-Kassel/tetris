@@ -185,7 +185,6 @@ class GamePage extends HookWidget {
   List<Widget> _buildActiveShape({required BuildContext context, required GameProvider gameProvider, required double blockSize}) {
     final list = <Widget>[];
     final positions = gameProvider.getActiveShapePositions();
-    log('$positions');
     for (var pos in positions) {
       if (pos.y < Constant.numRows) {
         list.add(
@@ -223,10 +222,8 @@ class GamePage extends HookWidget {
           child: GestureDetector(
             onTap: () {
               if (direction != null) {
-                log('Button: Direction: ${direction}');
                 gameProvider.moveShape(direction);
               } else if (rotation != null) {
-                log('Button: Rotation: ${rotation}');
                 gameProvider.rotateShape(rotation);
               }
             },

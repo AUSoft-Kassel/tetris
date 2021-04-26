@@ -25,7 +25,6 @@ class GameProvider extends StateNotifier<Game> {
   /*--------------------------------------------------------------------------*/
   /// Moves a shape into Direction dir. It is usually invoked after an user input
   void moveShape(Direction dir) {
-    log('Tyring to move to $dir');
     final shape = state.activeShape;
     final absRefPosition = state.activeShapePosition;
     var newAbsRefPosition = absRefPosition;
@@ -45,7 +44,6 @@ class GameProvider extends StateNotifier<Game> {
 
   ///Rotates the Shape in a Certain Direction
   void rotateShape(Rotation rotation) {
-    log('rotateShape: $rotation');
     final shape = state.activeShape;
     final absRefPosition = state.activeShapePosition;
     if (shape == null || absRefPosition == null) return;
@@ -135,6 +133,10 @@ class GameProvider extends StateNotifier<Game> {
     var gameRunning = state.gameRunning;
     if (state.arePositionsEmpty(nextShape.absPositions(base: nextShapePosition))) {
       state.addActiveShapeToGrid();
+      var fullRows = state.whichRowsAreFull()..sort((a, b) => b.compareTo(a));
+      for (var row in fullRows) {
+        deleteRow(row);
+      }
     } else {
       gameRunning = false;
     }
@@ -148,12 +150,24 @@ class GameProvider extends StateNotifier<Game> {
 
   void startGame() {
     Shape shape = state.shapeShop.giveShape();
-    log('Start Game!');
-
     state = state.copyWith(
       activeShape: shape,
       activeShapePosition: Constant.spawnPosition,
       gameRunning: true,
     );
+  }
+
+  void deleteRow(int row) {
+    var newGrid = <Position, Shape>{};
+    state.grid.forEach((pos, shape) {
+      if (shape != null) {
+        if (pos.y < row) {
+          newGrid[pos] = shape;
+        } else if (pos.y > row) {
+          newGrid[Position(pos.x, pos.y - 1)] = shape;
+        }
+      }
+    });
+    state = state.copyWith(grid: newGrid);
   }
 }

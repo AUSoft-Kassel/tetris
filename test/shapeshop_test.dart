@@ -25,9 +25,7 @@ void main() {
     expect(shape1 == shape2, true);
   });
 
-  test(
-      'ShapeShop.showShape returns 14 shapes in random order, and every piece is an individual',
-      () {
+  test('ShapeShop.showShape returns 14 shapes in random order, and every piece is an individual', () {
     final shapeShop = ShapeShop();
     final shown = <Shape>[];
     for (var x = 0; x < 14; x++) {
@@ -37,9 +35,7 @@ void main() {
     }
   });
 
-  test(
-      'ShapeShop.showShape alwas is able to show the next 14 pieces (but never more, by definition, otherwise we would have 14-28)',
-      () {
+  test('ShapeShop.showShape alwas is able to show the next 14 pieces (but never more, by definition, otherwise we would have 14-28)', () {
     final shapeShop = ShapeShop();
     for (var x = 0; x < 100; x++) {
       final Shape? shape = shapeShop.showShape(x);
@@ -51,9 +47,7 @@ void main() {
     }
   });
 
-  test(
-      'ShapeShop.showShape returns 14 shapes in random order, consisting of 2 pieces * 7 kinds of shapes',
-      () {
+  test('ShapeShop.showShape returns 14 shapes in random order, consisting of 2 pieces * 7 kinds of shapes', () {
     final shapeShop = ShapeShop();
     final map = <String, int>{};
     for (var x = 0; x < 14; x++) {
@@ -61,10 +55,8 @@ void main() {
       final runtimeTypeName = shape.runtimeType.toString();
       map[runtimeTypeName] = (map[runtimeTypeName] ?? 0) + 1;
     }
-    log('$map');
     expect(map.length, 7);
     map.forEach((key, value) {
-      log('$key -> $value');
       expect(value, 2);
     });
   });
@@ -84,9 +76,7 @@ void main() {
     }
   });
 
-  test(
-      'After giving out 14 shapes, ShapeShop.showShape returns 14 shapes in random order, consisting of 2 pieces * 7 kinds of shapes',
-      () {
+  test('After giving out 14 shapes, ShapeShop.showShape returns 14 shapes in random order, consisting of 2 pieces * 7 kinds of shapes', () {
     final shapeShop = ShapeShop();
     for (var x = 0; x < 14; x++) {
       shapeShop.giveShape();

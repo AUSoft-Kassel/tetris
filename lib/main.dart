@@ -14,7 +14,6 @@ class MyApp extends StatelessWidget {
   @override
   // ignore: prefer_expression_function_bodies
   Widget build(BuildContext context) {
-    log('build MaterialApp');
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(

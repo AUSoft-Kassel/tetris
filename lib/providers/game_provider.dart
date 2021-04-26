@@ -116,18 +116,7 @@ class GameProvider extends StateNotifier<Game> {
     state.copyWith(activeShape: shape, activeShapePosition: Constant.spawnPosition);
   }
 
-  List<Position> getActiveShapePositions() {
-    if (state.activeShape == null || state.activeShapePosition == null) {
-      final list = <Position>[];
-      list.add(Position(0, 1));
-      list.add(Position(0, 2));
-      list.add(Position(0, 3));
-      list.add(Position(0, 4));
-      return list;
-    }
-
-    return state.activeShape!.absPositions(base: state.activeShapePosition!);
-  }
+  List<Position> getActiveShapePositions() => state.activeShape?.absPositions(base: state.activeShapePosition!) ?? <Position>[];
 
   void startGame() {
     Shape shape = state.shapeShop.giveShape();

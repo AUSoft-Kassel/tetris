@@ -29,8 +29,7 @@ class GameProvider extends StateNotifier<Game> {
     final absRefPosition = state.activeShapePosition;
     var newAbsRefPosition = absRefPosition;
     if (shape == null || absRefPosition == null) return;
-    final absPositions =
-        shape.absPositions(base: absRefPosition, direction: dir);
+    final absPositions = shape.absPositions(base: absRefPosition, direction: dir);
     if (state.arePositionsEmpty(absPositions)) {
       newAbsRefPosition = absRefPosition + dir.toPosition;
     }
@@ -42,8 +41,7 @@ class GameProvider extends StateNotifier<Game> {
     final shape = state.activeShape;
     final absRefPosition = state.activeShapePosition;
     if (shape == null || absRefPosition == null) return;
-    final absPositions =
-        shape.absPositions(base: absRefPosition, rotation: rotation);
+    final absPositions = shape.absPositions(base: absRefPosition, rotation: rotation);
     if (state.arePositionsEmpty(absPositions)) {
       shape.rotateShape(rotation);
     }
@@ -106,19 +104,16 @@ class GameProvider extends StateNotifier<Game> {
 
   /// Get color of inactive shape at a certain position (x,y)
   /// Returns null if no shape is presen
-  Color getInactiveShapeColor(int x, int y) =>
-      Color(getInactiveShapeAt(x, y)?.color ?? Colors.pink.value);
+  Color getInactiveShapeColor(int x, int y) => Color(getInactiveShapeAt(x, y)?.color ?? Colors.pink.value);
 
   /// Get color of active shape at a certain position (x,y)
   /// Returns null if no shape is presen
-  Color getActiveShapeColor(int x, int y) =>
-      Color(getActiveShapeAt(x, y)?.color ?? Colors.purple.value);
+  Color getActiveShapeColor(int x, int y) => Color(getActiveShapeAt(x, y)?.color ?? Colors.purple.value);
 
   ///Spawns the next Shape in right Position.
   void spawnShape() {
     final shape = state.shapeShop.giveShape();
-    state.copyWith(
-        activeShape: shape, activeShapePosition: Constant.spawnPosition);
+    state.copyWith(activeShape: shape, activeShapePosition: Constant.spawnPosition);
   }
 
   List<Position> getActiveShapePositions() {
@@ -139,6 +134,9 @@ class GameProvider extends StateNotifier<Game> {
     log('Start Game!');
 
     state.copyWith(
-        activeShape: shape, activeShapePosition: Constant.spawnPosition);
+      activeShape: shape,
+      activeShapePosition: Constant.spawnPosition,
+      gameRunning: true,
+    );
   }
 }

@@ -9,9 +9,8 @@ import 'package:tetris/providers/game_provider.dart';
 class GamePage extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    final gameProvider = useProvider(providerGameProvider);
-    // ignore: unused_local_variable
-    final game = useProvider(providerGameProvider.state);
+    final gameProvider = useProvider(providerGameProvider.notifier);
+    final game = useProvider(providerGameProvider);
 
     return Material(
         child: Container(
@@ -33,6 +32,7 @@ class GamePage extends HookWidget {
                 Flex(
                   direction: Axis.vertical,
                   children: [
+                    // Oberer Bereich
                     Flex(
                       direction: Axis.horizontal,
                       children: [
@@ -78,11 +78,11 @@ class GamePage extends HookWidget {
                             Expanded(
                               child: Stack(
                                 children: [
-                                  Expanded(
-                                    child: Container(
-                                      color: Colors.blue,
-                                    ),
-                                  ),
+                                  // Expanded(
+                                  //   child: Container(
+                                  //     color: Colors.blue,
+                                  //   ),
+                                  // ),
                                   _buttonBox(alignment: Alignment(-0.8, -0.75), icon: Icons.keyboard_arrow_left_rounded, size: bottomSizeY / 2),
                                   _buttonBox(alignment: Alignment(0.8, -0.75), icon: Icons.keyboard_arrow_right_rounded, size: bottomSizeY / 2),
                                   _buttonBox(alignment: Alignment(0, 0.6), icon: Icons.keyboard_arrow_down_rounded, size: bottomSizeY / 2),
@@ -92,11 +92,11 @@ class GamePage extends HookWidget {
                             Expanded(
                               child: Stack(
                                 children: [
-                                  Expanded(
-                                    child: Container(
-                                      color: Colors.yellow,
-                                    ),
-                                  ),
+                                  // Expanded(
+                                  //   child: Container(
+                                  //     color: Colors.yellow,
+                                  //   ),
+                                  // ),
                                   _buttonBox(alignment: Alignment(-0.75, 0.6), icon: Icons.rotate_left_rounded, size: bottomSizeY / 2.25),
                                   _buttonBox(alignment: Alignment(0.75, -0.6), icon: Icons.rotate_right_rounded, size: bottomSizeY / 2.25),
                                 ],
@@ -106,7 +106,13 @@ class GamePage extends HookWidget {
                         ))
                   ],
                 ),
-                Center(child: TextButton(onPressed: gameProvider.startGame, child: Text('Start'))),
+                if (!game.gameRunning)
+                  Center(
+                      child: TextButton(
+                          onPressed: () {
+                            gameProvider.startGame();
+                          },
+                          child: const Text('Start'))),
               ]);
             })));
   }

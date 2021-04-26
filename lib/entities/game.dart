@@ -22,6 +22,7 @@ class Game {
   final Map<Position, Shape?> _grid; //ro
   final double _actualSpeed; //ro
   final int _points; //ro
+  final bool _gameRunning; //ro
 
   /*--------------------------------------------------------------------------*/
   /* Constructors                                                             */
@@ -34,7 +35,8 @@ class Game {
         _actualSpeed = Constant.minSpeed,
         _points = 0,
         _activeShape = null,
-        _activeShapePosition = null;
+        _activeShapePosition = null,
+        _gameRunning = false;
 
   /// Internal constructor
   /// Used for creating a specific instance of Game
@@ -46,12 +48,14 @@ class Game {
     required Map<Position, Shape?> grid,
     required double actualSpeed,
     required int points,
+    required bool gameRunning,
   })   : _shapeShop = shapeShop,
         _activeShape = activeShape,
         _activeShapePosition = activeShapePosition,
         _grid = grid,
         _actualSpeed = actualSpeed,
-        _points = points;
+        _points = points,
+        _gameRunning = gameRunning;
 
   /*--------------------------------------------------------------------------*/
   /* Methods                                                                  */
@@ -65,6 +69,7 @@ class Game {
     Map<Position, Shape?>? grid,
     double? actualSpeed,
     int? points,
+    bool? gameRunning,
   }) =>
       Game._internal(
         shapeShop: shapeShop ?? _shapeShop,
@@ -73,6 +78,7 @@ class Game {
         grid: grid ?? _grid,
         actualSpeed: actualSpeed ?? _actualSpeed,
         points: points ?? _points,
+        gameRunning: gameRunning ?? _gameRunning,
       );
 
   /*--------------------------------------------------------------------------*/
@@ -95,6 +101,10 @@ class Game {
 
   ///Handeling the shape output.
   ShapeShop get shapeShop => _shapeShop;
+
+  // Returns true if game is running
+  bool get gameRunning => _gameRunning;
+
   /*--------------------------------------------------------------------------*/
   /* Methods for getting further data from Game objects                       */
   /* (These methods could also be located in GameProvider)                    */
@@ -145,6 +155,5 @@ class Game {
   }
 
   ///Returns a List of all parts of the active shape in absPosition
-  List<Position>? activeShapePositions() => _activeShape?.absPositions(
-      base: activeShapePosition ?? const Position(0, 0));
+  List<Position>? activeShapePositions() => _activeShape?.absPositions(base: activeShapePosition ?? const Position(0, 0));
 }

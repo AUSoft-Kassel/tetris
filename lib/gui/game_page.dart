@@ -81,7 +81,7 @@ class GamePage extends HookWidget {
                     ///Button
                     Container(
                         height: bottomSizeY,
-                        color: Colors.pink,
+                        color: Colors.black,
                         child: Flex(
                           direction: Axis.horizontal,
                           children: [
@@ -94,23 +94,17 @@ class GamePage extends HookWidget {
                                   //   ),
                                   // ),
                                   _buttonBox(
-                                    alignment: const Alignment(-0.8, -0.75),
-                                    icon: Icons.keyboard_arrow_left_rounded,
-                                    size: bottomSizeY / 2,
-                                    direction: Direction.left,
-                                  ),
+                                      alignment: Alignment(-0.8, -0.75),
+                                      icon: Icons.keyboard_arrow_left_rounded,
+                                      size: bottomSizeY / 2),
                                   _buttonBox(
-                                    alignment: const Alignment(0.8, -0.75),
-                                    icon: Icons.keyboard_arrow_right_rounded,
-                                    size: bottomSizeY / 2,
-                                    direction: Direction.right,
-                                  ),
+                                      alignment: Alignment(0.8, -0.75),
+                                      icon: Icons.keyboard_arrow_right_rounded,
+                                      size: bottomSizeY / 2),
                                   _buttonBox(
-                                    alignment: const Alignment(0, 0.6),
-                                    icon: Icons.keyboard_arrow_down_rounded,
-                                    size: bottomSizeY / 2,
-                                    direction: Direction.down,
-                                  ),
+                                      alignment: Alignment(0, 0.6),
+                                      icon: Icons.keyboard_arrow_down_rounded,
+                                      size: bottomSizeY / 2),
                                 ],
                               ),
                             ),
@@ -119,21 +113,17 @@ class GamePage extends HookWidget {
                                 children: [
                                   // Expanded(
                                   //   child: Container(
-                                  //     color: Colors.yellow,
+                                  //     color: Colo.yellow,
                                   //   ),
                                   // ),
                                   _buttonBox(
-                                    alignment: const Alignment(-0.75, 0.6),
-                                    icon: Icons.rotate_left_rounded,
-                                    size: bottomSizeY / 2.25,
-                                    rotation: Rotation.left,
-                                  ),
+                                      alignment: Alignment(-0.75, 0.6),
+                                      icon: Icons.rotate_left_rounded,
+                                      size: bottomSizeY / 2.25),
                                   _buttonBox(
-                                    alignment: const Alignment(0.75, -0.6),
-                                    icon: Icons.rotate_right_rounded,
-                                    size: bottomSizeY / 2.25,
-                                    rotation: Rotation.right,
-                                  ),
+                                      alignment: Alignment(0.75, -0.6),
+                                      icon: Icons.rotate_right_rounded,
+                                      size: bottomSizeY / 2.25),
                                 ],
                               ),
                             ),
@@ -220,10 +210,6 @@ class GamePage extends HookWidget {
     Direction? direction,
     Rotation? rotation,
   }) =>
-  Widget _buttonBox(
-          {required Alignment alignment,
-          required IconData icon,
-          required double size}) =>
       Align(
         alignment: alignment,
         child: Container(
@@ -239,7 +225,7 @@ class GamePage extends HookWidget {
             },
             child: FittedBox(
               fit: BoxFit.fill,
-              child: Icon(icon),
+              child: Icon(icon, color: Colors.orange),
             ),
           ),
         ),

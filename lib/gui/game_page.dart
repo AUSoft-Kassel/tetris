@@ -77,7 +77,7 @@ class GamePage extends HookWidget {
                     ///Buttom
                     Container(
                         height: bottomSizeY,
-                        color: Colors.black26,
+                        color: Colors.black,
                         child: Flex(
                           direction: Axis.horizontal,
                           children: [

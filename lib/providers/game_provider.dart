@@ -41,14 +41,17 @@ class GameProvider extends StateNotifier<Game> {
 
   ///Rotates the Shape in a Certain Direction
   void rotateShape(Rotation rotation) {
+    log('rotateShape: $rotation');
     final shape = state.activeShape;
     final absRefPosition = state.activeShapePosition;
     if (shape == null || absRefPosition == null) return;
     final absPositions = shape.absPositions(base: absRefPosition, rotation: rotation);
-    if (state.arePositionsEmpty(absPositions)) {
-      shape.rotateShape(rotation);
+    if (state.arePositionsInGrid(absPositions)) {
+      if (state.arePositionsEmpty(absPositions)) {
+        shape.rotateShape(rotation);
+        state = state.copyWith();
+      }
     }
-    state = state.copyWith(activeShape: shape);
   }
 
   /*--------------------------------------------------------------------------*/

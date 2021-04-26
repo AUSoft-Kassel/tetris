@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:tetris/entities/direction.dart';
 import 'package:tetris/entities/position.dart';
 import 'package:tetris/entities/shapeform.dart';
@@ -43,28 +45,30 @@ abstract class Shape {
   }
 
   /// currentRelativePositions
-  List<Position> currentRelativePositions() =>
-      _relRotatingPositions[_currentShapeStateId];
+  List<Position> currentRelativePositions() => _relRotatingPositions[_currentShapeStateId];
 
   /// Gets the new State after rotating
   int newShapeStateId(Rotation? rotation) {
-    if (rotation != Rotation.right && rotation != Rotation.left)
-      return _currentShapeStateId;
-    final newShapeStateId =
-        _currentShapeStateId + (rotation == Rotation.right ? 1 : -1);
-    if (newShapeStateId >= _relRotatingPositions.length) return 0;
-    if (newShapeStateId < 0) return _relRotatingPositions.length - 1;
+    if (rotation != Rotation.right && rotation != Rotation.left) return _currentShapeStateId;
+    var newShapeStateId = _currentShapeStateId + (rotation == Rotation.right ? 1 : -1);
+    log('rotateShape: relRotationsPositions.length: ${_relRotatingPositions.length}');
+    log('$this');
+    if (newShapeStateId >= _relRotatingPositions.length) {
+      newShapeStateId = 0;
+    } else if (newShapeStateId < 0) {
+      newShapeStateId = _relRotatingPositions.length - 1;
+    }
+    log('newShapeId: $newShapeStateId');
     return newShapeStateId;
   }
 
   ///Gets absolut Positions of the current or rotated or moved State
-  List<Position> absPositions(
-      {required Position base, Rotation? rotation, Direction? direction}) {
+  List<Position> absPositions({required Position base, Rotation? rotation, Direction? direction}) {
+    log('absPositions: $base + $rotation + $direction');
     final relPositions = _relRotatingPositions[newShapeStateId(rotation)];
     final absPositions = <Position>[];
     for (var relPosition in relPositions) {
-      absPositions.add(
-          base + relPosition + (direction?.toPosition ?? const Position(0, 0)));
+      absPositions.add(base + relPosition + (direction?.toPosition ?? const Position(0, 0)));
     }
     return absPositions;
   }

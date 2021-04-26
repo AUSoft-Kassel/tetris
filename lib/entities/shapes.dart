@@ -9,7 +9,7 @@ class ShapeO extends Shape {
       const Position(0, 0),
       const Position(0, 1),
       const Position(1, 0),
-      const Position(1, -1),
+      const Position(1, 1),
     ],
   ];
 

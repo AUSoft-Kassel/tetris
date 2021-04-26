@@ -6,6 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tetris/entities/constant.dart';
 import 'package:tetris/entities/direction.dart';
 import 'package:tetris/entities/rotation.dart';
+import 'package:tetris/entities/shape.dart';
 import 'package:tetris/providers/_providers.dart';
 import 'package:tetris/providers/game_provider.dart';
 
@@ -61,11 +62,11 @@ class GamePage extends HookWidget {
                           child: Flex(
                             direction: Axis.vertical,
                             children: [
-                              _sidebarBox('Highscore'),
-                              _sidebarBox('Personal score'),
-                              _sidebarBox('Next Shape'),
-                              _sidebarBox('Lvl/Speed'),
-                              _sidebarBox('Nickname'),
+                              _sidebarBox('Highscore', valueInt: 99999),
+                              _sidebarBox('Personal score', valueInt: game.points),
+                              _sidebarBox('Next Shape', valueShape: game.shapeShop.showShape()),
+                              _sidebarBox('Lvl/Speed', valueInt: game.actualSpeed.toInt()),
+                              _sidebarBox('Nickname', valueString: 'Heinz'),
                             ],
                           ),
                         )
@@ -235,10 +236,35 @@ class GamePage extends HookWidget {
         ),
       );
 
-  Widget _sidebarBox(String text) => Expanded(
-        child: FittedBox(
-          fit: BoxFit.fitWidth,
-          child: Text(text),
+  Widget _sidebarBox(String title, {String? valueString, int? valueInt, Shape? valueShape}) => Expanded(
+        child: Flex(
+          direction: Axis.vertical,
+          children: [
+            FittedBox(
+              fit: BoxFit.fitWidth,
+              child: Text(title),
+            ),
+            if (valueString != null)
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  valueString,
+                  style: TextStyle(
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+            if (valueInt != null)
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  valueInt.toString(),
+                  style: TextStyle(
+                    fontSize: 18,
+                  ),
+                ),
+              )
+          ],
         ),
       );
 }

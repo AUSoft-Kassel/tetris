@@ -131,9 +131,13 @@ class GameProvider extends StateNotifier<Game> {
     var nextSpeed = state.actualSpeed * 1.01;
     var nextShapePosition = Constant.spawnPosition;
     var gameRunning = state.gameRunning;
+    var points = state.points;
     if (state.arePositionsEmpty(nextShape.absPositions(base: nextShapePosition))) {
       state.addActiveShapeToGrid();
       var fullRows = state.whichRowsAreFull()..sort((a, b) => b.compareTo(a));
+      if (fullRows.isNotEmpty) {
+        points += 10 * fullRows.length * fullRows.length;
+      }
       for (var row in fullRows) {
         deleteRow(row);
       }
@@ -145,6 +149,7 @@ class GameProvider extends StateNotifier<Game> {
       activeShapePosition: nextShapePosition,
       actualSpeed: nextSpeed,
       gameRunning: gameRunning,
+      points: points,
     );
   }
 

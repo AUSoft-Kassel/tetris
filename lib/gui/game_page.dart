@@ -47,14 +47,8 @@ class GamePage extends HookWidget {
                           color: Colors.amber,
                           child: Stack(
                             children: [
-                              ..._buildRows(
-                                  context: context,
-                                  gameProvider: gameProvider,
-                                  blockSize: blockSize),
-                              ..._buildActiveShape(
-                                  context: context,
-                                  gameProvider: gameProvider,
-                                  blockSize: blockSize),
+                              ..._buildRows(context: context, gameProvider: gameProvider, blockSize: blockSize),
+                              ..._buildActiveShape(context: context, gameProvider: gameProvider, blockSize: blockSize),
                             ],
                           ),
                         ),
@@ -94,17 +88,26 @@ class GamePage extends HookWidget {
                                   //   ),
                                   // ),
                                   _buttonBox(
-                                      alignment: Alignment(-0.8, -0.75),
-                                      icon: Icons.keyboard_arrow_left_rounded,
-                                      size: bottomSizeY / 2),
+                                    gameProvider,
+                                    alignment: const Alignment(-0.8, -0.75),
+                                    icon: Icons.keyboard_arrow_left_rounded,
+                                    size: bottomSizeY / 2,
+                                    direction: Direction.left,
+                                  ),
                                   _buttonBox(
-                                      alignment: Alignment(0.8, -0.75),
-                                      icon: Icons.keyboard_arrow_right_rounded,
-                                      size: bottomSizeY / 2),
+                                    gameProvider,
+                                    alignment: const Alignment(0.8, -0.75),
+                                    icon: Icons.keyboard_arrow_right_rounded,
+                                    size: bottomSizeY / 2,
+                                    direction: Direction.right,
+                                  ),
                                   _buttonBox(
-                                      alignment: Alignment(0, 0.6),
-                                      icon: Icons.keyboard_arrow_down_rounded,
-                                      size: bottomSizeY / 2),
+                                    gameProvider,
+                                    alignment: const Alignment(0, 0.6),
+                                    icon: Icons.keyboard_arrow_down_rounded,
+                                    size: bottomSizeY / 2,
+                                    direction: Direction.down,
+                                  ),
                                 ],
                               ),
                             ),
@@ -117,13 +120,19 @@ class GamePage extends HookWidget {
                                   //   ),
                                   // ),
                                   _buttonBox(
-                                      alignment: Alignment(-0.75, 0.6),
-                                      icon: Icons.rotate_left_rounded,
-                                      size: bottomSizeY / 2.25),
+                                    gameProvider,
+                                    alignment: const Alignment(-0.75, 0.6),
+                                    icon: Icons.rotate_left_rounded,
+                                    size: bottomSizeY / 2.25,
+                                    rotation: Rotation.left,
+                                  ),
                                   _buttonBox(
-                                      alignment: Alignment(0.75, -0.6),
-                                      icon: Icons.rotate_right_rounded,
-                                      size: bottomSizeY / 2.25),
+                                    gameProvider,
+                                    alignment: const Alignment(0.75, -0.6),
+                                    icon: Icons.rotate_right_rounded,
+                                    size: bottomSizeY / 2.25,
+                                    rotation: Rotation.right,
+                                  ),
                                 ],
                               ),
                             ),
@@ -149,10 +158,7 @@ class GamePage extends HookWidget {
             })));
   }
 
-  List<Widget> _buildRows(
-      {required BuildContext context,
-      required GameProvider gameProvider,
-      required double blockSize}) {
+  List<Widget> _buildRows({required BuildContext context, required GameProvider gameProvider, required double blockSize}) {
     final list = <Widget>[];
     for (var y = Constant.numRows - 1; y >= 0; y--) {
       for (var x = 0; x < Constant.numCols; x++) {
@@ -175,10 +181,7 @@ class GamePage extends HookWidget {
     return list;
   }
 
-  List<Widget> _buildActiveShape(
-      {required BuildContext context,
-      required GameProvider gameProvider,
-      required double blockSize}) {
+  List<Widget> _buildActiveShape({required BuildContext context, required GameProvider gameProvider, required double blockSize}) {
     final list = <Widget>[];
     final positions = gameProvider.getActiveShapePositions();
     log('$positions');
@@ -203,7 +206,8 @@ class GamePage extends HookWidget {
     return list;
   }
 
-  Widget _buttonBox({
+  Widget _buttonBox(
+    GameProvider gameProvider, {
     required Alignment alignment,
     required IconData icon,
     required double size,
@@ -219,8 +223,10 @@ class GamePage extends HookWidget {
             onTap: () {
               if (direction != null) {
                 log('Button: Direction: ${direction}');
+                gameProvider.moveShape(direction);
               } else if (rotation != null) {
                 log('Button: Rotation: ${rotation}');
+                gameProvider.rotateShape(rotation);
               }
             },
             child: FittedBox(

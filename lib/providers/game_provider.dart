@@ -25,6 +25,7 @@ class GameProvider extends StateNotifier<Game> {
   /*--------------------------------------------------------------------------*/
   /// Moves a shape into Direction dir. It is usually invoked after an user input
   void moveShape(Direction dir) {
+    log('Tyring to move to $dir');
     final shape = state.activeShape;
     final absRefPosition = state.activeShapePosition;
     var newAbsRefPosition = absRefPosition;
@@ -33,7 +34,7 @@ class GameProvider extends StateNotifier<Game> {
     if (state.arePositionsEmpty(absPositions)) {
       newAbsRefPosition = absRefPosition + dir.toPosition;
     }
-    state.copyWith(activeShapePosition: newAbsRefPosition);
+    state = state.copyWith(activeShapePosition: newAbsRefPosition);
   }
 
   ///Rotates the Shape in a Certain Direction
@@ -45,7 +46,7 @@ class GameProvider extends StateNotifier<Game> {
     if (state.arePositionsEmpty(absPositions)) {
       shape.rotateShape(rotation);
     }
-    state.copyWith(activeShape: shape);
+    state = state.copyWith(activeShape: shape);
   }
 
   /*--------------------------------------------------------------------------*/

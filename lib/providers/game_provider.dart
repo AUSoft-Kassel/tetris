@@ -31,10 +31,12 @@ class GameProvider extends StateNotifier<Game> {
     var newAbsRefPosition = absRefPosition;
     if (shape == null || absRefPosition == null) return;
     final absPositions = shape.absPositions(base: absRefPosition, direction: dir);
-    if (state.arePositionsEmpty(absPositions)) {
-      newAbsRefPosition = absRefPosition + dir.toPosition;
+    if (state.arePositionsInGrid(absPositions)) {
+      if (state.arePositionsEmpty(absPositions)) {
+        newAbsRefPosition = absRefPosition + dir.toPosition;
+        state = state.copyWith(activeShapePosition: newAbsRefPosition);
+      }
     }
-    state = state.copyWith(activeShapePosition: newAbsRefPosition);
   }
 
   ///Rotates the Shape in a Certain Direction

@@ -121,6 +121,17 @@ class Game {
     return true;
   }
 
+  /// Returns true if every position is still on the grid
+  bool arePositionsInGrid(List<Position> positions) {
+    for (var pos in positions) {
+      if (pos.x < 0) return false;
+      if (pos.y < 0) return false;
+      if (pos.x >= Constant.numCols) return false;
+      // if (pos.y >= Constant.numRows) return false;
+    }
+    return true;
+  }
+
   /// Check if a certain position is Empty
   bool isPositionEmpty(Position pos) {
     if (shapeFromGrid(pos) != null) return false;

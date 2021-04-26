@@ -160,12 +160,13 @@ class GamePage extends HookWidget {
 
   List<Widget> _buildRows({required BuildContext context, required GameProvider gameProvider, required double blockSize}) {
     final list = <Widget>[];
+    final grid = gameProvider.state.grid;
     for (var y = Constant.numRows - 1; y >= 0; y--) {
       for (var x = 0; x < Constant.numCols; x++) {
         list.add(
           Positioned(
-            bottom: blockSize * (Constant.numRows - y - 1),
-            right: blockSize * (Constant.numCols - x - 1),
+            bottom: blockSize * y,
+            left: blockSize * x,
             child: Container(
               decoration: BoxDecoration(
                 border: Border.all(),
@@ -194,7 +195,7 @@ class GamePage extends HookWidget {
             child: Container(
               decoration: BoxDecoration(
                 border: Border.all(),
-                color: gameProvider.getActiveShapeColor(pos.x, pos.y),
+                color: Color(gameProvider.state.activeShape?.color ?? Color.fromARGB(255, 255, 255, 255).value),
               ),
               height: blockSize,
               width: blockSize,

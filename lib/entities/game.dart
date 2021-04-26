@@ -165,6 +165,13 @@ class Game {
     return result;
   }
 
+  void addActiveShapeToGrid() {
+    var positions = _activeShape?.absPositions(base: _activeShapePosition!) ?? [];
+    for (var pos in positions) {
+      _grid[pos] = _activeShape;
+    }
+  }
+
   ///Returns a List of all parts of the active shape in absPosition
   List<Position>? activeShapePositions() => _activeShape?.absPositions(base: activeShapePosition ?? const Position(0, 0));
 }

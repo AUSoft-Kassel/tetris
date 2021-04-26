@@ -35,7 +35,11 @@ class GameProvider extends StateNotifier<Game> {
       if (state.arePositionsEmpty(absPositions)) {
         newAbsRefPosition = absRefPosition + dir.toPosition;
         state = state.copyWith(activeShapePosition: newAbsRefPosition);
+        return;
       }
+    }
+    if (dir == Direction.down) {
+      spawnNextShape();
     }
   }
 
@@ -110,11 +114,11 @@ class GameProvider extends StateNotifier<Game> {
 
   /// Get color of inactive shape at a certain position (x,y)
   /// Returns null if no shape is presen
-  Color getInactiveShapeColor(int x, int y) => Color(getInactiveShapeAt(x, y)?.color ?? Colors.pink.value);
+  Color getInactiveShapeColor(int x, int y) => Color(getInactiveShapeAt(x, y)?.color ?? Color.fromARGB(255, 230, 230, 230).value);
 
-  /// Get color of active shape at a certain position (x,y)
-  /// Returns null if no shape is presen
-  Color getActiveShapeColor(int x, int y) => Color(getActiveShapeAt(x, y)?.color ?? Colors.purple.value);
+  // /// Get color of active shape at a certain position (x,y)
+  // /// Returns null if no shape is presen
+  // Color getActiveShapeColor(int x, int y) => Color(getActiveShapeAt(x, y)?.color ?? Color.fromARGB(255, 13, 250, 250).value);
 
   ///Spawns the next Shape in right Position.
   void spawnShape() {
@@ -123,6 +127,24 @@ class GameProvider extends StateNotifier<Game> {
   }
 
   List<Position> getActiveShapePositions() => state.activeShape?.absPositions(base: state.activeShapePosition!) ?? <Position>[];
+
+  void spawnNextShape() {
+    var nextShape = state.shapeShop.giveShape();
+    var nextSpeed = state.actualSpeed * 1.01;
+    var nextShapePosition = Constant.spawnPosition;
+    var gameRunning = state.gameRunning;
+    if (state.arePositionsEmpty(nextShape.absPositions(base: nextShapePosition))) {
+      state.addActiveShapeToGrid();
+    } else {
+      gameRunning = false;
+    }
+    state = state.copyWith(
+      activeShape: nextShape,
+      activeShapePosition: nextShapePosition,
+      actualSpeed: nextSpeed,
+      gameRunning: gameRunning,
+    );
+  }
 
   void startGame() {
     Shape shape = state.shapeShop.giveShape();

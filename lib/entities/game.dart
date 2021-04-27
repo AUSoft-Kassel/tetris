@@ -19,6 +19,7 @@ class Game {
   final bool _gameRunning;
   final int _level;
   final int _shapesPlaced;
+  final List<int> _linesToBeDeleted;
 
   /*--------------------------------------------------------------------------*/
   /* Constructors                                                             */
@@ -35,7 +36,8 @@ class Game {
         _activeShapePosition = null,
         _gameRunning = gameRunning,
         _level = 1,
-        _shapesPlaced = 0;
+        _shapesPlaced = 0,
+        _linesToBeDeleted = [];
 
   /// Internal constructor
   /// Used for creating a specific instance of Game
@@ -50,6 +52,7 @@ class Game {
     required bool gameRunning,
     required int level,
     required int shapesPlaced,
+    required List<int> linesToBeDeleted,
   })   : _shapeShop = shapeShop,
         _activeShape = activeShape,
         _activeShapePosition = activeShapePosition,
@@ -58,7 +61,8 @@ class Game {
         _points = points,
         _gameRunning = gameRunning,
         _level = level,
-        _shapesPlaced = shapesPlaced;
+        _shapesPlaced = shapesPlaced,
+        _linesToBeDeleted = linesToBeDeleted;
 
   /*--------------------------------------------------------------------------*/
   /* Methods                                                                  */
@@ -75,6 +79,7 @@ class Game {
     bool? gameRunning,
     int? level,
     int? shapesPlaced,
+    List<int>? linesToBeDeleted,
   }) =>
       Game._internal(
         shapeShop: shapeShop ?? _shapeShop,
@@ -86,6 +91,7 @@ class Game {
         gameRunning: gameRunning ?? _gameRunning,
         level: level ?? _level,
         shapesPlaced: shapesPlaced ?? _shapesPlaced,
+        linesToBeDeleted: linesToBeDeleted ?? _linesToBeDeleted,
       );
 
   /*--------------------------------------------------------------------------*/
@@ -117,4 +123,7 @@ class Game {
 
   /// Returns shapes placed
   int get shapesPlaced => _shapesPlaced;
+
+  /// Returns the lines that will be deleted soon
+  List<int> get linesToBeDeleted => _linesToBeDeleted;
 }

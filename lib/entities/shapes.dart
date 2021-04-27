@@ -18,7 +18,7 @@ class ShapeO extends Shape {
       : super(
           color: 0xFF919191,
           relRotatingPositions: _relRotatingPositions,
-          shapeStateId: Random().nextInt(_relRotatingPositions.length),
+          rotation: Random().nextInt(_relRotatingPositions.length),
         );
 }
 
@@ -44,7 +44,7 @@ class ShapeI extends Shape {
       : super(
           color: 0xFF3617FF,
           relRotatingPositions: _relRotatingPositions,
-          shapeStateId: Random().nextInt(_relRotatingPositions.length),
+          rotation: Random().nextInt(_relRotatingPositions.length),
         );
 }
 
@@ -82,7 +82,7 @@ class ShapeL extends Shape {
       : super(
           color: 0xFFFF5C5C,
           relRotatingPositions: _relRotatingPositions,
-          shapeStateId: Random().nextInt(_relRotatingPositions.length),
+          rotation: Random().nextInt(_relRotatingPositions.length),
         );
 }
 
@@ -120,7 +120,7 @@ class ShapeJ extends Shape {
       : super(
           color: 0xFFFFB536,
           relRotatingPositions: _relRotatingPositions,
-          shapeStateId: Random().nextInt(_relRotatingPositions.length),
+          rotation: Random().nextInt(_relRotatingPositions.length),
         );
 }
 
@@ -146,7 +146,7 @@ class ShapeS extends Shape {
       : super(
           color: 0xFFF830FF,
           relRotatingPositions: _relRotatingPositions,
-          shapeStateId: Random().nextInt(_relRotatingPositions.length),
+          rotation: Random().nextInt(_relRotatingPositions.length),
         );
 }
 
@@ -172,7 +172,7 @@ class ShapeZ extends Shape {
       : super(
           color: 0xFFD9FFBB,
           relRotatingPositions: _relRotatingPositions,
-          shapeStateId: Random().nextInt(_relRotatingPositions.length),
+          rotation: Random().nextInt(_relRotatingPositions.length),
         );
 }
 
@@ -210,6 +210,6 @@ class ShapeT extends Shape {
       : super(
           color: 0xFFFAFF75,
           relRotatingPositions: _relRotatingPositions,
-          shapeStateId: Random().nextInt(_relRotatingPositions.length),
+          rotation: Random().nextInt(_relRotatingPositions.length),
         );
 }

@@ -49,7 +49,10 @@ class GamePage extends HookWidget {
                           color: Colors.amber,
                           child: Stack(
                             children: [
-                              ..._buildRows(context: context, gameProvider: gameProvider, blockSize: blockSize),
+                              ..._buildRows(
+                                  context: context,
+                                  gameProvider: gameProvider,
+                                  blockSize: blockSize),
                               // ..._buildActiveShape(context: context, gameProvider: gameProvider, blockSize: blockSize),
                             ],
                           ),
@@ -64,9 +67,12 @@ class GamePage extends HookWidget {
                             direction: Axis.vertical,
                             children: [
                               _sidebarBox('Highscore', valueInt: 99999),
-                              _sidebarBox('Personal score', valueInt: game.points),
-                              _sidebarBox('Next Shape', valueShape: game.shapeShop.showShape()),
-                              _sidebarBox('Lvl/Speed', valueInt: game.actualSpeed.toInt()),
+                              _sidebarBox('Personal score',
+                                  valueInt: game.points),
+
+                              /// _sidebarNextShape(game.shapeShop.showShape()),
+                              _sidebarBox('Lvl/Speed',
+                                  valueInt: game.actualSpeed.toInt()),
                               _sidebarBox('Nickname', valueString: 'Heinz'),
                             ],
                           ),
@@ -160,7 +166,10 @@ class GamePage extends HookWidget {
             })));
   }
 
-  List<Widget> _buildRows({required BuildContext context, required GameProvider gameProvider, required double blockSize}) {
+  List<Widget> _buildRows(
+      {required BuildContext context,
+      required GameProvider gameProvider,
+      required double blockSize}) {
     final list = <Widget>[];
     final grid = gameProvider.state.grid;
     for (var y = Constant.numRows - 1; y >= 0; y--) {
@@ -172,7 +181,8 @@ class GamePage extends HookWidget {
             child: Container(
               decoration: BoxDecoration(
                 border: Border.all(),
-                color: gameProvider.getShapeColorAt(Position(x, y)) ?? Colors.grey[200],
+                color: gameProvider.getShapeColorAt(Position(x, y)) ??
+                    Colors.grey[200],
               ),
               height: blockSize,
               width: blockSize,
@@ -237,7 +247,9 @@ class GamePage extends HookWidget {
         ),
       );
 
-  Widget _sidebarBox(String title, {String? valueString, int? valueInt, Shape? valueShape}) => Expanded(
+  Widget _sidebarBox(String title,
+          {String? valueString, int? valueInt, Shape? valueShape}) =>
+      Expanded(
         child: Flex(
           direction: Axis.vertical,
           children: [

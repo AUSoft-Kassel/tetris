@@ -13,9 +13,6 @@ import 'package:tetris/providers/_providers.dart';
 import 'package:tetris/providers/game_provider.dart';
 
 class SettingsPage extends HookWidget {
-  final gameProvider = useProvider(providerGameProvider.notifier);
-  final game = useProvider(providerGameProvider);
-
   ///@Override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,42 +56,40 @@ class SettingsPage extends HookWidget {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 100),
-            child: Positioned(
-              child: Center(
-                child: Column(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Color.fromRGBO(255, 155, 0, 1),
-                        ),
-                        color: Color.fromRGBO(255, 155, 0, 0.2),
+          Positioned(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 100, left: 33),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Color.fromRGBO(255, 155, 0, 1),
                       ),
-                      child: Text(
-                        'SOUNDS',
-                        style: TextStyle(fontSize: 33),
-                      ),
+                      color: Color.fromRGBO(255, 155, 0, 0.2),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 33),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Color.fromRGBO(255, 155, 0, 1),
-                          ),
-                          color: Color.fromRGBO(255, 155, 0, 0.2),
-                        ),
-                        child: Text(
-                          'Music',
-                          style: TextStyle(fontSize: 33),
-                        ),
-                      ),
+                    child: Text(
+                      'SOUNDS',
+                      style: TextStyle(fontSize: 33),
                     ),
-                  ],
+                  ),
                 ),
-              ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 33, left: 8),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Color.fromRGBO(255, 155, 0, 1),
+                      ),
+                      color: Color.fromRGBO(255, 155, 0, 0.2),
+                    ),
+                    child: Text(
+                      'MUSIC',
+                      style: TextStyle(fontSize: 33),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],

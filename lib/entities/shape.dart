@@ -23,7 +23,7 @@ abstract class Shape {
     required int shapeStateId,
     required int color,
     required List<List<Position>> relRotatingPositions,
-  })   : _currentShapeStateId = shapeStateId,
+  })  : _currentShapeStateId = shapeStateId,
         _color = color,
         _relRotatingPositions = relRotatingPositions;
 
@@ -45,12 +45,15 @@ abstract class Shape {
   }
 
   /// currentRelativePositions
-  List<Position> currentRelativePositions() => _relRotatingPositions[_currentShapeStateId];
+  List<Position> currentRelativePositions() =>
+      _relRotatingPositions[_currentShapeStateId];
 
   /// Gets the new State after rotating
   int newShapeStateId(Rotation? rotation) {
-    if (rotation != Rotation.right && rotation != Rotation.left) return _currentShapeStateId;
-    var newShapeStateId = _currentShapeStateId + (rotation == Rotation.right ? 1 : -1);
+    if (rotation != Rotation.right && rotation != Rotation.left)
+      return _currentShapeStateId;
+    var newShapeStateId =
+        _currentShapeStateId + (rotation == Rotation.right ? 1 : -1);
     if (newShapeStateId >= _relRotatingPositions.length) {
       newShapeStateId = 0;
     } else if (newShapeStateId < 0) {
@@ -60,11 +63,13 @@ abstract class Shape {
   }
 
   ///Gets absolut Positions of the current or rotated or moved State
-  List<Position> absPositions({required Position base, Rotation? rotation, Direction? direction}) {
+  List<Position> absPositions(
+      {required Position base, Rotation? rotation, Direction? direction}) {
     final relPositions = _relRotatingPositions[newShapeStateId(rotation)];
     final absPositions = <Position>[];
     for (var relPosition in relPositions) {
-      absPositions.add(base + relPosition + (direction?.toPosition ?? const Position(0, 0)));
+      absPositions.add(
+          base + relPosition + (direction?.toPosition ?? const Position(0, 0)));
     }
     return absPositions;
   }

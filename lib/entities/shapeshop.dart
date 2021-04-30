@@ -31,7 +31,7 @@ class ShapeShop {
     final shape = _currentBag[0];
     _currentBag.removeAt(0);
     if (_currentBag.isEmpty) {
-      _currentBag = _nextBag;
+      _currentBag = [..._nextBag];
       _nextBag = [];
       _fillBag(_nextBag);
     }

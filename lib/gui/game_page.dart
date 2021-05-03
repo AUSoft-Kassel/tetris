@@ -5,6 +5,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tetris/entities/constant.dart';
 import 'package:tetris/entities/direction.dart';
+import 'package:tetris/entities/position.dart';
 import 'package:tetris/entities/rotation.dart';
 import 'package:tetris/entities/shape.dart';
 import 'package:tetris/providers/_providers.dart';
@@ -48,8 +49,11 @@ class GamePage extends HookWidget {
                           color: Colors.amber,
                           child: Stack(
                             children: [
-                              ..._buildRows(context: context, gameProvider: gameProvider, blockSize: blockSize),
-                              ..._buildActiveShape(context: context, gameProvider: gameProvider, blockSize: blockSize),
+                              ..._buildRows(
+                                  context: context,
+                                  gameProvider: gameProvider,
+                                  blockSize: blockSize),
+                              // ..._buildActiveShape(context: context, gameProvider: gameProvider, blockSize: blockSize),
                             ],
                           ),
                         ),
@@ -63,9 +67,12 @@ class GamePage extends HookWidget {
                             direction: Axis.vertical,
                             children: [
                               _sidebarBox('Highscore', valueInt: 99999),
-                              _sidebarBox('Personal score', valueInt: game.points),
-                              _sidebarBox('Next Shape', valueShape: game.shapeShop.showShape()),
-                              _sidebarBox('Lvl/Speed', valueInt: game.actualSpeed.toInt()),
+                              _sidebarBox('Personal score',
+                                  valueInt: game.points),
+
+                              /// _sidebarNextShape(game.shapeShop.showShape()),
+                              _sidebarBox('Lvl/Speed',
+                                  valueInt: game.actualSpeed.toInt()),
                               _sidebarBox('Nickname', valueString: 'Heinz'),
                             ],
                           ),
@@ -159,7 +166,10 @@ class GamePage extends HookWidget {
             })));
   }
 
-  List<Widget> _buildRows({required BuildContext context, required GameProvider gameProvider, required double blockSize}) {
+  List<Widget> _buildRows(
+      {required BuildContext context,
+      required GameProvider gameProvider,
+      required double blockSize}) {
     final list = <Widget>[];
     final grid = gameProvider.state.grid;
     for (var y = Constant.numRows - 1; y >= 0; y--) {
@@ -171,7 +181,8 @@ class GamePage extends HookWidget {
             child: Container(
               decoration: BoxDecoration(
                 border: Border.all(),
-                color: gameProvider.getInactiveShapeColor(x, y),
+                color: gameProvider.getShapeColorAt(Position(x, y)) ??
+                    Colors.grey[200],
               ),
               height: blockSize,
               width: blockSize,
@@ -183,29 +194,29 @@ class GamePage extends HookWidget {
     return list;
   }
 
-  List<Widget> _buildActiveShape({required BuildContext context, required GameProvider gameProvider, required double blockSize}) {
-    final list = <Widget>[];
-    final positions = gameProvider.getActiveShapePositions();
-    for (var pos in positions) {
-      if (pos.y < Constant.numRows) {
-        list.add(
-          Positioned(
-            bottom: blockSize * pos.y,
-            left: blockSize * pos.x,
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(),
-                color: Color(gameProvider.state.activeShape?.color ?? Color.fromARGB(255, 255, 255, 255).value),
-              ),
-              height: blockSize,
-              width: blockSize,
-            ),
-          ),
-        );
-      }
-    }
-    return list;
-  }
+  // List<Widget> _buildActiveShape({required BuildContext context, required GameProvider gameProvider, required double blockSize}) {
+  //   final list = <Widget>[];
+  //   final positions = gameProvider.getActiveShapePositions();
+  //   for (var pos in positions) {
+  //     if (pos.y < Constant.numRows) {
+  //       list.add(
+  //         Positioned(
+  //           bottom: blockSize * pos.y,
+  //           left: blockSize * pos.x,
+  //           child: Container(
+  //             decoration: BoxDecoration(
+  //               border: Border.all(),
+  //               color: Color(gameProvider.state.activeShape?.color ?? Color.fromARGB(255, 255, 255, 255).value),
+  //             ),
+  //             height: blockSize,
+  //             width: blockSize,
+  //           ),
+  //         ),
+  //       );
+  //     }
+  //   }
+  //   return list;
+  // }
 
   Widget _buttonBox(
     GameProvider gameProvider, {
@@ -223,9 +234,9 @@ class GamePage extends HookWidget {
           child: GestureDetector(
             onTap: () {
               if (direction != null) {
-                gameProvider.moveShape(direction);
+                gameProvider.moveActiveShape(direction);
               } else if (rotation != null) {
-                gameProvider.rotateShape(rotation);
+                gameProvider.rotateActiveShape(rotation);
               }
             },
             child: FittedBox(
@@ -236,7 +247,9 @@ class GamePage extends HookWidget {
         ),
       );
 
-  Widget _sidebarBox(String title, {String? valueString, int? valueInt, Shape? valueShape}) => Expanded(
+  Widget _sidebarBox(String title,
+          {String? valueString, int? valueInt, Shape? valueShape}) =>
+      Expanded(
         child: Flex(
           direction: Axis.vertical,
           children: [
@@ -249,7 +262,7 @@ class GamePage extends HookWidget {
                 fit: BoxFit.scaleDown,
                 child: Text(
                   valueString,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 18,
                   ),
                 ),
@@ -259,7 +272,7 @@ class GamePage extends HookWidget {
                 fit: BoxFit.scaleDown,
                 child: Text(
                   valueInt.toString(),
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 18,
                   ),
                 ),

@@ -3,40 +3,41 @@ import 'package:tetris/entities/position.dart';
 import 'package:tetris/entities/shape.dart';
 import 'package:tetris/entities/shapeshop.dart';
 
-// AH: I had to remove this, because our core entities should be
-// completely independent of anything. Immutable annotation is defined in
-// flutter-foundation ... Not acceptable. Now that we got rid of this
-// dependency, we can easily switch the framework
-//@immutable
-
 /// Class that holds the state of the game
 /// Objects are immutable, so no changes occur in this class, because all
-/// variables are final
+/// variables are final. Pure data class.
 class Game {
   /*--------------------------------------------------------------------------*/
   /* Attributes                                                               */
   /*--------------------------------------------------------------------------*/
-  final ShapeShop _shapeShop; //private
-  final Shape? _activeShape; //ro
-  final Position? _activeShapePosition; //ro
-  final Map<Position, Shape?> _grid; //ro
-  final double _actualSpeed; //ro
-  final int _points; //ro
-  final bool _gameRunning; //ro
+  final ShapeShop _shapeShop;
+  final Shape? _activeShape;
+  final Position? _activeShapePosition;
+  final Map<Position, Shape?> _grid;
+  final double _actualSpeed;
+  final int _points;
+  final bool _gameRunning;
+  final int _level;
+  final int _shapesPlaced;
+  final List<int> _linesToBeDeleted;
 
   /*--------------------------------------------------------------------------*/
   /* Constructors                                                             */
   /*--------------------------------------------------------------------------*/
   /// Standard constructor
   /// Constructs quite an empty game
-  Game()
+  // ignore: avoid_positional_boolean_parameters
+  Game(bool gameRunning)
       : _shapeShop = ShapeShop(),
         _grid = <Position, Shape?>{},
         _actualSpeed = Constant.minSpeed,
         _points = 0,
         _activeShape = null,
         _activeShapePosition = null,
-        _gameRunning = false;
+        _gameRunning = gameRunning,
+        _level = 1,
+        _shapesPlaced = 0,
+        _linesToBeDeleted = [];
 
   /// Internal constructor
   /// Used for creating a specific instance of Game
@@ -49,13 +50,19 @@ class Game {
     required double actualSpeed,
     required int points,
     required bool gameRunning,
+    required int level,
+    required int shapesPlaced,
+    required List<int> linesToBeDeleted,
   })   : _shapeShop = shapeShop,
         _activeShape = activeShape,
         _activeShapePosition = activeShapePosition,
         _grid = grid,
         _actualSpeed = actualSpeed,
         _points = points,
-        _gameRunning = gameRunning;
+        _gameRunning = gameRunning,
+        _level = level,
+        _shapesPlaced = shapesPlaced,
+        _linesToBeDeleted = linesToBeDeleted;
 
   /*--------------------------------------------------------------------------*/
   /* Methods                                                                  */
@@ -70,6 +77,9 @@ class Game {
     double? actualSpeed,
     int? points,
     bool? gameRunning,
+    int? level,
+    int? shapesPlaced,
+    List<int>? linesToBeDeleted,
   }) =>
       Game._internal(
         shapeShop: shapeShop ?? _shapeShop,
@@ -79,6 +89,9 @@ class Game {
         actualSpeed: actualSpeed ?? _actualSpeed,
         points: points ?? _points,
         gameRunning: gameRunning ?? _gameRunning,
+        level: level ?? _level,
+        shapesPlaced: shapesPlaced ?? _shapesPlaced,
+        linesToBeDeleted: linesToBeDeleted ?? _linesToBeDeleted,
       );
 
   /*--------------------------------------------------------------------------*/
@@ -99,79 +112,18 @@ class Game {
   /// Points within the current game
   int get points => _points;
 
-  ///Handeling the shape output.
+  /// Handeling the shape output.
   ShapeShop get shapeShop => _shapeShop;
 
-  // Returns true if game is running
+  /// Returns true if game is running
   bool get gameRunning => _gameRunning;
 
-  /*--------------------------------------------------------------------------*/
-  /* Methods for getting further data from Game objects                       */
-  /* (These methods could also be located in GameProvider)                    */
-  /*--------------------------------------------------------------------------*/
-  /// Creates a new Game object which is a copy of this Game object, except
-  /// for the attributes which are provided as arguments to this method
-  ///Checks if a List of Positions are Empty
-  bool arePositionsEmpty(List<Position> positions) {
-    bool isValid;
-    for (var pos in positions) {
-      isValid = isPositionEmpty(pos);
-      if (!isValid) return false;
-    }
-    return true;
-  }
+  /// Returns level
+  int get level => _level;
 
-  /// Returns true if every position is still on the grid
-  bool arePositionsInGrid(List<Position> positions) {
-    for (var pos in positions) {
-      if (pos.x < 0) return false;
-      if (pos.y < 0) return false;
-      if (pos.x >= Constant.numCols) return false;
-      // if (pos.y >= Constant.numRows) return false;
-    }
-    return true;
-  }
+  /// Returns shapes placed
+  int get shapesPlaced => _shapesPlaced;
 
-  /// Check if a certain position is Empty
-  bool isPositionEmpty(Position pos) {
-    if (shapeFromGrid(pos) != null) return false;
-    return true;
-  }
-
-  /// Gets the Shape of a certain position
-  Shape? shapeFromGrid(Position pos) {
-    final shape = _grid[pos];
-    return shape;
-  }
-
-  ///Returns true if the Row is Full
-  bool isRowFull(int row) {
-    for (var i = 0; i < Constant.numCols; i++) {
-      if (_grid[Position(i, row)] == null) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  ///Retruns a list of full Rows
-  List<int> whichRowsAreFull() {
-    final result = <int>[];
-    for (var i = 0; i < Constant.numRows; i++) {
-      if (isRowFull(i)) {
-        result.add(i);
-      }
-    }
-    return result;
-  }
-
-  void addActiveShapeToGrid() {
-    var positions = _activeShape?.absPositions(base: _activeShapePosition!) ?? [];
-    for (var pos in positions) {
-      _grid[pos] = _activeShape;
-    }
-  }
-
-  ///Returns a List of all parts of the active shape in absPosition
-  List<Position>? activeShapePositions() => _activeShape?.absPositions(base: activeShapePosition ?? const Position(0, 0));
+  /// Returns the lines that will be deleted soon
+  List<int> get linesToBeDeleted => _linesToBeDeleted;
 }

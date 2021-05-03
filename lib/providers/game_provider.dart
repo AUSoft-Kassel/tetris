@@ -18,51 +18,104 @@ import 'package:tetris/entities/shape.dart';
 class GameProvider extends StateNotifier<Game> {
   /// Standard constructor. A Game object is created and handed to the super
   /// class where it gets stored in the state attribute.
-  GameProvider() : super(Game());
+  GameProvider() : super(Game(false));
 
   /*--------------------------------------------------------------------------*/
   /* Use cases (external): Manipulating state for external reasons            */
   /*--------------------------------------------------------------------------*/
-  /// Moves a shape into Direction dir. It is usually invoked after an user input
-  void moveShape(Direction dir) {
+  /// Moves active shape into Direction dir.
+  /// It is usually invoked after an user input.
+  void moveActiveShape(Direction dir) {
     final shape = state.activeShape;
     final absRefPosition = state.activeShapePosition;
     var newAbsRefPosition = absRefPosition;
     if (shape == null || absRefPosition == null) return;
-    final absPositions = shape.absPositions(base: absRefPosition, direction: dir);
-    if (state.arePositionsInGrid(absPositions)) {
-      if (state.arePositionsEmpty(absPositions)) {
+    final absPositions =
+        shape.absolutePositions(base: absRefPosition, direction: dir);
+    if (_arePositionsInGrid(absPositions)) {
+      if (_arePositionsEmpty(absPositions)) {
         newAbsRefPosition = absRefPosition + dir.toPosition;
         state = state.copyWith(activeShapePosition: newAbsRefPosition);
         return;
       }
     }
     if (dir == Direction.down) {
-      spawnNextShape();
+      log('moveActiveShape: 1: ${state.shapeShop.currentBag.length} / ${state.shapeShop.nextBag.length}');
+      _spawnNextShape();
+      log('moveActiveShape: 2: ${state.shapeShop.currentBag.length} / ${state.shapeShop.nextBag.length}');
     }
   }
 
   ///Rotates the Shape in a Certain Direction
-  void rotateShape(Rotation rotation) {
+  void rotateActiveShape(Rotation rotation) {
     final shape = state.activeShape;
     final absRefPosition = state.activeShapePosition;
     if (shape == null || absRefPosition == null) return;
-    final absPositions = shape.absPositions(base: absRefPosition, rotation: rotation);
-    if (state.arePositionsInGrid(absPositions)) {
-      if (state.arePositionsEmpty(absPositions)) {
+    final absPositions =
+        shape.absolutePositions(base: absRefPosition, rotation: rotation);
+    if (_arePositionsInGrid(absPositions)) {
+      if (_arePositionsEmpty(absPositions)) {
         shape.rotateShape(rotation);
         state = state.copyWith();
       }
     }
   }
 
+  void startGame() {
+    state = Game(true);
+    _spawnNextShape();
+  }
+
   /*--------------------------------------------------------------------------*/
   /* Use cases (internal): Manipulating state for internal reasons            */
   /*--------------------------------------------------------------------------*/
-  /// Moves a shape into Direction dir. It is usually invoked after an user input
-  /// Clears one specific row
-  /// No checks are performed, which is why the routine is private and
-  /// should only be invoked after checking
+  void _addActiveShapeToGrid() {
+    var positions = state.activeShape
+            ?.absolutePositions(base: state.activeShapePosition!) ??
+        [];
+    var newGrid = <Position, Shape?>{};
+    state.grid.forEach((pos, shape) {
+      newGrid[pos] = shape;
+    });
+    for (var pos in positions) {
+      newGrid[pos] = state.activeShape;
+    }
+    state = state.copyWith(grid: newGrid);
+  }
+
+  void _addPoints(int points) {
+    state = state.copyWith(points: state.points + points);
+  }
+
+  void _addPointsForClearedRows(int rows) {
+    if (rows == 1) _addPoints(10 * (state.level ~/ 4 + 1));
+    if (rows == 2) _addPoints(25 * (state.level ~/ 4 + 1));
+    if (rows == 3) _addPoints(50 * (state.level ~/ 4 + 1));
+    if (rows == 4) _addPoints(100 * (state.level ~/ 4 + 1));
+  }
+
+  /// Clear all rows which are currently filled.
+  void _clearAllFullRows() {
+    /// Find out which rows are full
+    final fullRows = <int>[];
+    for (var i = 0; i < Constant.numRows; i++) {
+      if (_isRowFull(i)) {
+        fullRows.add(i);
+      }
+    }
+    if (fullRows.isNotEmpty) {
+      // Sort lines because we have to delete higher lines before we delete
+      // lower lines
+      fullRows.sort((a, b) => b.compareTo(a));
+      _addPointsForClearedRows(fullRows.length);
+      for (var row in fullRows) {
+        _clearFullRow(row);
+      }
+    }
+  }
+
+  /// Clears one specific row. No checks are performed, which is why the routine
+  /// is private and should only be invoked after checking
   void _clearFullRow(int row) {
     final newGrid = <Position, Shape?>{};
     state.grid.forEach((pos, shape) {
@@ -77,92 +130,7 @@ class GameProvider extends StateNotifier<Game> {
     state = state.copyWith(grid: newGrid);
   }
 
-  /// Clear all rows which are currently filled
-  /// (also checks if there are full rows at all)
-  /// Private method because it'll be invoked as part of an automatic routine,
-  /// not by anything external
-  // ignore: unused_element
-  void _clearFullRows() {
-    final fullRows = state.whichRowsAreFull()..sort((a, b) => b.compareTo(a));
-    for (var row in fullRows) {
-      _clearFullRow(row);
-    }
-  }
-
-  /*--------------------------------------------------------------------------*/
-  /* Use cases (informational): Translating state to the outside              */
-  /*--------------------------------------------------------------------------*/
-  /// Get the inactive shape at a certain position (x,y)
-  /// Returns null if no shape is presen
-  Shape? getInactiveShapeAt(int x, int y) => state.grid[Position(x, y)];
-
-  /// Get the active shape at a certain position (x,y)
-  /// Returns null if no shape is presen
-  Shape? getActiveShapeAt(int x, int y) {
-    Shape? shapeAt;
-    final shape = state.activeShape;
-    final pos = state.activeShapePosition;
-    if (shape == null || pos == null) return null;
-    final absActiveShapePositions = shape.absPositions(base: pos);
-    for (var activeShapePos in absActiveShapePositions) {
-      if (activeShapePos == Position(x, y)) shapeAt = shape;
-    }
-    return shapeAt;
-  }
-
-  /// Get color of inactive shape at a certain position (x,y)
-  /// Returns null if no shape is presen
-  Color getInactiveShapeColor(int x, int y) => Color(getInactiveShapeAt(x, y)?.color ?? Color.fromARGB(255, 230, 230, 230).value);
-
-  // /// Get color of active shape at a certain position (x,y)
-  // /// Returns null if no shape is presen
-  // Color getActiveShapeColor(int x, int y) => Color(getActiveShapeAt(x, y)?.color ?? Color.fromARGB(255, 13, 250, 250).value);
-
-  ///Spawns the next Shape in right Position.
-  void spawnShape() {
-    final shape = state.shapeShop.giveShape();
-    state.copyWith(activeShape: shape, activeShapePosition: Constant.spawnPosition);
-  }
-
-  List<Position> getActiveShapePositions() => state.activeShape?.absPositions(base: state.activeShapePosition!) ?? <Position>[];
-
-  void spawnNextShape() {
-    var nextShape = state.shapeShop.giveShape();
-    var nextSpeed = state.actualSpeed * 1.01;
-    var nextShapePosition = Constant.spawnPosition;
-    var gameRunning = state.gameRunning;
-    var points = state.points;
-    if (state.arePositionsEmpty(nextShape.absPositions(base: nextShapePosition))) {
-      state.addActiveShapeToGrid();
-      var fullRows = state.whichRowsAreFull()..sort((a, b) => b.compareTo(a));
-      if (fullRows.isNotEmpty) {
-        points += 10 * fullRows.length * fullRows.length;
-      }
-      for (var row in fullRows) {
-        deleteRow(row);
-      }
-    } else {
-      gameRunning = false;
-    }
-    state = state.copyWith(
-      activeShape: nextShape,
-      activeShapePosition: nextShapePosition,
-      actualSpeed: nextSpeed,
-      gameRunning: gameRunning,
-      points: points,
-    );
-  }
-
-  void startGame() {
-    Shape shape = state.shapeShop.giveShape();
-    state = state.copyWith(
-      activeShape: shape,
-      activeShapePosition: Constant.spawnPosition,
-      gameRunning: true,
-    );
-  }
-
-  void deleteRow(int row) {
+  void _deleteRow(int row) {
     var newGrid = <Position, Shape>{};
     state.grid.forEach((pos, shape) {
       if (shape != null) {
@@ -175,4 +143,105 @@ class GameProvider extends StateNotifier<Game> {
     });
     state = state.copyWith(grid: newGrid);
   }
+
+  void _spawnNextShape() {
+    // log('SpawnNextShape: 1: ${state.shapeShop.currentBag.length} / ${state.shapeShop.nextBag.length}');
+    var nextShape = state.shapeShop.giveShape();
+    // log('SpawnNextShape: 2: ${state.shapeShop.currentBag.length} / ${state.shapeShop.nextBag.length}');
+    var nextShapesPlaced = state.shapesPlaced + 1;
+    var nextLevel = nextShapesPlaced ~/ 10;
+    var nextSpeed = 1.0 + 0.1 * nextLevel;
+    var nextShapePosition = Constant.spawnPosition;
+    var gameRunning = state.gameRunning;
+    var points = state.points;
+    _addActiveShapeToGrid();
+    if (_arePositionsEmpty(
+        nextShape.absolutePositions(base: nextShapePosition))) {
+      _clearAllFullRows();
+    } else {
+      gameRunning = false;
+    }
+    state = state.copyWith(
+      activeShape: nextShape,
+      activeShapePosition: nextShapePosition,
+      actualSpeed: nextSpeed,
+      gameRunning: gameRunning,
+      points: points,
+    );
+    // log('SpawnNextShape: 3: ${state.shapeShop.currentBag.length} / ${state.shapeShop.nextBag.length}');
+  }
+
+  /*--------------------------------------------------------------------------*/
+  /* Use cases (informational): Translating state to the outside              */
+  /*--------------------------------------------------------------------------*/
+  /// Get the shape at a certain position. Returns null if no shape is present.
+  Shape? getShapeAt(Position pos) {
+    final inactiveShape = state.grid[pos];
+    if (inactiveShape != null)
+      return inactiveShape; // Inactive shape if found at pos
+    final activeShape = state.activeShape;
+    if (activeShape == null) return null; // null if no activeShape at all
+    final activeShapePositions =
+        activeShape.absolutePositions(base: state.activeShapePosition!);
+    for (var activeShapePos in activeShapePositions) {
+      if (activeShapePos == pos)
+        return activeShape; // activeShape if found at pos
+    }
+    return null; // null if nothing else
+  }
+
+  /// Get color of shape at a certain position (or null if no shape is present)
+  Color? getShapeColorAt(Position pos) {
+    var shape = getShapeAt(pos);
+    if (shape == null) return null;
+    return Color(shape.color);
+  }
+
+  /*--------------------------------------------------------------------------*/
+  /* Methods for getting further data from Game objects                       */
+  /* (These methods could also be located in GameProvider)                    */
+  /*--------------------------------------------------------------------------*/
+  /// Creates a new Game object which is a copy of this Game object, except
+  /// for the attributes which are provided as arguments to this method
+  ///Checks if a List of Positions are Empty
+  bool _arePositionsEmpty(List<Position> positions) {
+    bool isValid;
+    for (var pos in positions) {
+      isValid = _isPositionEmpty(pos);
+      if (!isValid) return false;
+    }
+    return true;
+  }
+
+  /// Returns true if every position is still on the grid
+  bool _arePositionsInGrid(List<Position> positions) {
+    for (var pos in positions) {
+      if (pos.x < 0) return false;
+      if (pos.y < 0) return false;
+      if (pos.x >= Constant.numCols) return false;
+      // if (pos.y >= Constant.numRows) return false;
+    }
+    return true;
+  }
+
+  /// Check if a certain position is Empty
+  bool _isPositionEmpty(Position pos) {
+    if (state.grid[pos] == null) return true;
+    return false;
+  }
+
+  ///Returns true if the Row is Full
+  bool _isRowFull(int row) {
+    for (var i = 0; i < Constant.numCols; i++) {
+      if (state.grid[Position(i, row)] == null) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  ///Returns a List of all parts of the active shape in absPosition
+  List<Position>? activeShapePositions() =>
+      state.activeShape?.absolutePositions(
+          base: state.activeShapePosition ?? const Position(0, 0));
 }

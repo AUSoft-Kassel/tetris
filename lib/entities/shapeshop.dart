@@ -1,11 +1,15 @@
-import 'dart:math';
 import 'shape.dart';
 import 'shapeform.dart';
+import 'dart:developer' as dev;
+import 'dart:math';
 
 /// ShapeShop is our Shop which is storing shapes and preparing them for the game.
 class ShapeShop {
   List<Shape> _currentBag = [];
   List<Shape> _nextBag = [];
+
+  List<Shape> get currentBag => _currentBag;
+  List<Shape> get nextBag => _nextBag;
 
   ///Descriptes a function which is filling our bag with shapes.
   ShapeShop() {
@@ -28,6 +32,8 @@ class ShapeShop {
 
   /// Descriptes a function which is giving us the next game shape, and auto-fill the currentBag from the nextBag which get filled by RNG if empty.
   Shape giveShape() {
+    // dev.log(
+    //     'giveShape vorher: current: ${_currentBag.length}, next: ${_nextBag.length}');
     final shape = _currentBag[0];
     _currentBag.removeAt(0);
     if (_currentBag.isEmpty) {
@@ -35,13 +41,15 @@ class ShapeShop {
       _nextBag = [];
       _fillBag(_nextBag);
     }
+    // dev.log(
+    //     'giveShape nachher: current: ${_currentBag.length}, next: ${_nextBag.length}');
     return shape;
   }
 
   /// Is going to show us the next 14 Shapes at any time if code done
   Shape showShape([int x = 0]) {
     var shapesToShow = <Shape>[];
-    shapesToShow = _currentBag;
+    shapesToShow = [..._currentBag];
     for (var i = 0; shapesToShow.length < 14; i++) {
       shapesToShow.add(_nextBag[i]);
     }

@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tetris/entities/constant.dart';
 import 'package:tetris/entities/direction.dart';
@@ -8,6 +9,7 @@ import 'package:tetris/entities/game.dart';
 import 'package:tetris/entities/position.dart';
 import 'package:tetris/entities/rotation.dart';
 import 'package:tetris/entities/shape.dart';
+import 'package:tetris/providers/_providers.dart';
 
 /// GameProvider is a StateNotifier
 /// It always hold a reference to the currently active state of the underlying
@@ -20,12 +22,16 @@ class GameProvider extends StateNotifier<Game> {
   /// class where it gets stored in the state attribute.
   GameProvider() : super(Game(false));
 
+  final _sounds = ProviderContainer().read(providerSoundProvider);
+  int _currentGameLoopId = 0;
+
   /*--------------------------------------------------------------------------*/
   /* Use cases (external): Manipulating state for external reasons            */
   /*--------------------------------------------------------------------------*/
   /// Moves active shape into Direction dir.
   /// It is usually invoked after an user input.
   void moveActiveShape(Direction dir) {
+    if (state.gameRunning == false) return;
     final shape = state.activeShape;
     final absRefPosition = state.activeShapePosition;
     var newAbsRefPosition = absRefPosition;
@@ -40,9 +46,8 @@ class GameProvider extends StateNotifier<Game> {
       }
     }
     if (dir == Direction.down) {
-      log('moveActiveShape: 1: ${state.shapeShop.currentBag.length} / ${state.shapeShop.nextBag.length}');
+      _sounds.playShapeSetOnGround();
       _spawnNextShape();
-      log('moveActiveShape: 2: ${state.shapeShop.currentBag.length} / ${state.shapeShop.nextBag.length}');
     }
   }
 
@@ -55,6 +60,7 @@ class GameProvider extends StateNotifier<Game> {
         shape.absolutePositions(base: absRefPosition, rotation: rotation);
     if (_arePositionsInGrid(absPositions)) {
       if (_arePositionsEmpty(absPositions)) {
+        _sounds.playSoundRotate(rotation);
         shape.rotateShape(rotation);
         state = state.copyWith();
       }
@@ -64,7 +70,23 @@ class GameProvider extends StateNotifier<Game> {
   void startGame() {
     state = Game(true);
     _spawnNextShape();
+    _currentGameLoopId++;
+    Future.delayed(_getDelay(), () {
+      _gameLoop(_currentGameLoopId);
+    });
   }
+
+  void _gameLoop(int thisGameLoopId) {
+    if (state.gameRunning == false || _currentGameLoopId > thisGameLoopId)
+      return;
+
+    moveActiveShape(Direction.down);
+    Future.delayed(_getDelay(), () {
+      _gameLoop(thisGameLoopId);
+    });
+  }
+
+  Duration _getDelay() => Duration(milliseconds: 1000 ~/ state.actualSpeed);
 
   /*--------------------------------------------------------------------------*/
   /* Use cases (internal): Manipulating state for internal reasons            */
@@ -84,7 +106,9 @@ class GameProvider extends StateNotifier<Game> {
   }
 
   void _addPoints(int points) {
+    log('Add points: $points');
     state = state.copyWith(points: state.points + points);
+    log('Nun Punkte: ${state.points}');
   }
 
   void _addPointsForClearedRows(int rows) {
@@ -107,10 +131,12 @@ class GameProvider extends StateNotifier<Game> {
       // Sort lines because we have to delete higher lines before we delete
       // lower lines
       fullRows.sort((a, b) => b.compareTo(a));
+      log('Punkte sollten addiert werden');
       _addPointsForClearedRows(fullRows.length);
       for (var row in fullRows) {
         _clearFullRow(row);
       }
+      _sounds.playSoundDestroy(fullRows.length);
     }
   }
 
@@ -130,44 +156,49 @@ class GameProvider extends StateNotifier<Game> {
     state = state.copyWith(grid: newGrid);
   }
 
-  void _deleteRow(int row) {
-    var newGrid = <Position, Shape>{};
-    state.grid.forEach((pos, shape) {
-      if (shape != null) {
-        if (pos.y < row) {
-          newGrid[pos] = shape;
-        } else if (pos.y > row) {
-          newGrid[Position(pos.x, pos.y - 1)] = shape;
-        }
-      }
-    });
-    state = state.copyWith(grid: newGrid);
-  }
-
   void _spawnNextShape() {
     // log('SpawnNextShape: 1: ${state.shapeShop.currentBag.length} / ${state.shapeShop.nextBag.length}');
     var nextShape = state.shapeShop.giveShape();
     // log('SpawnNextShape: 2: ${state.shapeShop.currentBag.length} / ${state.shapeShop.nextBag.length}');
     var nextShapesPlaced = state.shapesPlaced + 1;
     var nextLevel = nextShapesPlaced ~/ 10;
-    var nextSpeed = 1.0 + 0.1 * nextLevel;
+    var nextSpeed = 1.0 + 0.2 * nextLevel;
+
     var nextShapePosition = Constant.spawnPosition;
     var gameRunning = state.gameRunning;
-    var points = state.points;
+    log('level: ${state.level}');
+    log('shapesPlaced: ${state.shapesPlaced}');
+    if (state.actualSpeed ~/ 1 < nextSpeed ~/ 1) {
+      _sounds.playSoundDifficultyUp();
+    }
+    log('level: ${state.level}');
+    log('shapesPlaced: ${state.shapesPlaced}');
+
     _addActiveShapeToGrid();
+    log('level: ${state.level}');
+    log('shapesPlaced: ${state.shapesPlaced}');
     if (_arePositionsEmpty(
         nextShape.absolutePositions(base: nextShapePosition))) {
       _clearAllFullRows();
-    } else {
+      log('level: ${state.level}');
+      log('shapesPlaced: ${state.shapesPlaced}');
+      _sounds.playSoundSpawnOfShapes();
+    } else if (gameRunning == true) {
       gameRunning = false;
+      _sounds.playSoundGameover();
     }
+    log('level: ${state.level}');
+    log('shapesPlaced: ${state.shapesPlaced}');
     state = state.copyWith(
       activeShape: nextShape,
       activeShapePosition: nextShapePosition,
+      shapesPlaced: nextShapesPlaced,
+      level: nextLevel,
       actualSpeed: nextSpeed,
       gameRunning: gameRunning,
-      points: points,
     );
+    log('level: ${state.level}');
+    log('shapesPlaced: ${state.shapesPlaced}');
     // log('SpawnNextShape: 3: ${state.shapeShop.currentBag.length} / ${state.shapeShop.nextBag.length}');
   }
 

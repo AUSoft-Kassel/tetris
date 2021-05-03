@@ -71,8 +71,7 @@ class GamePage extends HookWidget {
                                   valueInt: game.points),
 
                               /// _sidebarNextShape(game.shapeShop.showShape()),
-                              _sidebarBox('Lvl/Speed',
-                                  valueInt: game.actualSpeed.toInt()),
+                              _sidebarBox('Lvl/Speed', valueInt: game.level),
                               _sidebarBox('Nickname', valueString: 'Heinz'),
                             ],
                           ),

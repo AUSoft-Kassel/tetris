@@ -62,7 +62,8 @@ abstract class Shape {
     final relPositions = _relRotatingPositions[_nextRotationState(rotation)];
     final absPositions = <Position>[];
     for (var relPosition in relPositions) {
-      absPositions.add(base + relPosition + (direction?.toPosition ?? const Position(0, 0)));
+      absPositions.add(
+          base + relPosition + (direction?.toPosition ?? const Position(0, 0)));
     }
     return absPositions;
   }

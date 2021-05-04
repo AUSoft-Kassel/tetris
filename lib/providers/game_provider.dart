@@ -36,8 +36,7 @@ class GameProvider extends StateNotifier<Game> {
     final absRefPosition = state.activeShapePosition;
     var newAbsRefPosition = absRefPosition;
     if (shape == null || absRefPosition == null) return;
-    final absPositions =
-        shape.absolutePositions(base: absRefPosition, direction: dir);
+    final absPositions = shape.absolutePositions(base: absRefPosition, direction: dir);
     if (_arePositionsInGrid(absPositions)) {
       if (_arePositionsEmpty(absPositions)) {
         newAbsRefPosition = absRefPosition + dir.toPosition;
@@ -56,8 +55,7 @@ class GameProvider extends StateNotifier<Game> {
     final shape = state.activeShape;
     final absRefPosition = state.activeShapePosition;
     if (shape == null || absRefPosition == null) return;
-    final absPositions =
-        shape.absolutePositions(base: absRefPosition, rotation: rotation);
+    final absPositions = shape.absolutePositions(base: absRefPosition, rotation: rotation);
     if (_arePositionsInGrid(absPositions)) {
       if (_arePositionsEmpty(absPositions)) {
         _sounds.playSoundRotate(rotation);
@@ -77,8 +75,7 @@ class GameProvider extends StateNotifier<Game> {
   }
 
   void _gameLoop(int thisGameLoopId) {
-    if (state.gameRunning == false || _currentGameLoopId > thisGameLoopId)
-      return;
+    if (state.gameRunning == false || _currentGameLoopId > thisGameLoopId) return;
 
     moveActiveShape(Direction.down);
     Future.delayed(_getDelay(), () {
@@ -92,9 +89,7 @@ class GameProvider extends StateNotifier<Game> {
   /* Use cases (internal): Manipulating state for internal reasons            */
   /*--------------------------------------------------------------------------*/
   void _addActiveShapeToGrid() {
-    var positions = state.activeShape
-            ?.absolutePositions(base: state.activeShapePosition!) ??
-        [];
+    var positions = state.activeShape?.absolutePositions(base: state.activeShapePosition!) ?? [];
     var newGrid = <Position, Shape?>{};
     state.grid.forEach((pos, shape) {
       newGrid[pos] = shape;
@@ -161,34 +156,22 @@ class GameProvider extends StateNotifier<Game> {
     var nextShape = state.shapeShop.giveShape();
     // log('SpawnNextShape: 2: ${state.shapeShop.currentBag.length} / ${state.shapeShop.nextBag.length}');
     var nextShapesPlaced = state.shapesPlaced + 1;
-    var nextLevel = nextShapesPlaced ~/ 10;
+    var nextLevel = (nextShapesPlaced ~/ 10) + 1;
     var nextSpeed = 1.0 + 0.2 * nextLevel;
 
     var nextShapePosition = Constant.spawnPosition;
     var gameRunning = state.gameRunning;
-    log('level: ${state.level}');
-    log('shapesPlaced: ${state.shapesPlaced}');
     if (state.actualSpeed ~/ 1 < nextSpeed ~/ 1) {
       _sounds.playSoundDifficultyUp();
     }
-    log('level: ${state.level}');
-    log('shapesPlaced: ${state.shapesPlaced}');
-
     _addActiveShapeToGrid();
-    log('level: ${state.level}');
-    log('shapesPlaced: ${state.shapesPlaced}');
-    if (_arePositionsEmpty(
-        nextShape.absolutePositions(base: nextShapePosition))) {
+    if (_arePositionsEmpty(nextShape.absolutePositions(base: nextShapePosition))) {
       _clearAllFullRows();
-      log('level: ${state.level}');
-      log('shapesPlaced: ${state.shapesPlaced}');
       _sounds.playSoundSpawnOfShapes();
     } else if (gameRunning == true) {
       gameRunning = false;
       _sounds.playSoundGameover();
     }
-    log('level: ${state.level}');
-    log('shapesPlaced: ${state.shapesPlaced}');
     state = state.copyWith(
       activeShape: nextShape,
       activeShapePosition: nextShapePosition,
@@ -197,9 +180,6 @@ class GameProvider extends StateNotifier<Game> {
       actualSpeed: nextSpeed,
       gameRunning: gameRunning,
     );
-    log('level: ${state.level}');
-    log('shapesPlaced: ${state.shapesPlaced}');
-    // log('SpawnNextShape: 3: ${state.shapeShop.currentBag.length} / ${state.shapeShop.nextBag.length}');
   }
 
   /*--------------------------------------------------------------------------*/
@@ -208,15 +188,12 @@ class GameProvider extends StateNotifier<Game> {
   /// Get the shape at a certain position. Returns null if no shape is present.
   Shape? getShapeAt(Position pos) {
     final inactiveShape = state.grid[pos];
-    if (inactiveShape != null)
-      return inactiveShape; // Inactive shape if found at pos
+    if (inactiveShape != null) return inactiveShape; // Inactive shape if found at pos
     final activeShape = state.activeShape;
     if (activeShape == null) return null; // null if no activeShape at all
-    final activeShapePositions =
-        activeShape.absolutePositions(base: state.activeShapePosition!);
+    final activeShapePositions = activeShape.absolutePositions(base: state.activeShapePosition!);
     for (var activeShapePos in activeShapePositions) {
-      if (activeShapePos == pos)
-        return activeShape; // activeShape if found at pos
+      if (activeShapePos == pos) return activeShape; // activeShape if found at pos
     }
     return null; // null if nothing else
   }
@@ -272,7 +249,5 @@ class GameProvider extends StateNotifier<Game> {
   }
 
   ///Returns a List of all parts of the active shape in absPosition
-  List<Position>? activeShapePositions() =>
-      state.activeShape?.absolutePositions(
-          base: state.activeShapePosition ?? const Position(0, 0));
+  List<Position>? activeShapePositions() => state.activeShape?.absolutePositions(base: state.activeShapePosition ?? const Position(0, 0));
 }

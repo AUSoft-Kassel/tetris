@@ -3,10 +3,22 @@ import 'package:tetris/entities/position.dart';
 /// Class which holds static data - more or less global variables
 abstract class Constant {
   /// Minimum gamespeed
-  static const minSpeed = 10.0;
+  //static const minSpeed = 0.0; //test speed
+
+  static const minSpeed = 1.0;
 
   /// Maximum gamespeed
-  static const maxSpeed = 100.0;
+  static const maxSpeed = 10.0;
+
+  /// Speed Increse per Level
+  static const speedPerLevel =
+      (Constant.minSpeed - Constant.maxSpeed) / Constant.maxLevel;
+
+  /// Maximum level
+  static const maxLevel = 50;
+
+  /// After how many Shapes landed the level increase by 1
+  static const shapesPerLevel = 5;
 
   /// The number of rows of a standard Tetris field
   static const numRows = 20;
@@ -16,5 +28,5 @@ abstract class Constant {
 
   /// Starting point of a shape in the Grid
   static const Position spawnPosition =
-      Position(Constant.numCols ~/ 2, Constant.numRows);
+      Position(Constant.numCols ~/ 2, Constant.numRows - 1);
 }

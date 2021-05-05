@@ -58,15 +58,34 @@ class GameProvider extends StateNotifier<Game> {
     if (shape == null || absRefPosition == null) return;
     final absPositions =
         shape.absolutePositions(base: absRefPosition, rotation: rotation);
-    if (_arePositionsInGrid(absPositions)) {
-      if (_arePositionsEmpty(absPositions)) {
-        _sounds.playSoundRotate(rotation);
-        shape.rotateShape(rotation);
-        state = state.copyWith();
-      }
+    if (_arePositionsInGrid(absPositions) && _arePositionsEmpty(absPositions)) {
+      _sounds.playSoundRotate(rotation);
+      shape.rotateShape(rotation);
+      state = state.copyWith();
+      return;
+    }
+
+    final altDir =
+        _oppositeHorizontalDirection(_wichPositionIsInvalid(absPositions));
+    final altAbsPositions = shape.absolutePositions(
+      base: absRefPosition,
+      direction: altDir,
+      rotation: rotation,
+    );
+    if (_arePositionsInGrid(altAbsPositions) &&
+        _arePositionsEmpty(altAbsPositions)) {
+      _sounds.playSoundRotate(rotation);
+
+      shape.rotateShape(rotation);
+      state = state.copyWith(
+          activeShapePosition: state.activeShapePosition! + altDir.toPosition);
+
+      //T-Spin!!
+      return;
     }
   }
 
+  /// Start a Game round
   void startGame() {
     state = Game(true);
     _spawnNextShape();
@@ -92,10 +111,10 @@ class GameProvider extends StateNotifier<Game> {
   /* Use cases (internal): Manipulating state for internal reasons            */
   /*--------------------------------------------------------------------------*/
   void _addActiveShapeToGrid() {
-    var positions = state.activeShape
+    final positions = state.activeShape
             ?.absolutePositions(base: state.activeShapePosition!) ??
         [];
-    var newGrid = <Position, Shape?>{};
+    final newGrid = <Position, Shape?>{};
     state.grid.forEach((pos, shape) {
       newGrid[pos] = shape;
     });
@@ -158,37 +177,31 @@ class GameProvider extends StateNotifier<Game> {
 
   void _spawnNextShape() {
     // log('SpawnNextShape: 1: ${state.shapeShop.currentBag.length} / ${state.shapeShop.nextBag.length}');
-    var nextShape = state.shapeShop.giveShape();
+    final nextShape = state.shapeShop.giveShape();
     // log('SpawnNextShape: 2: ${state.shapeShop.currentBag.length} / ${state.shapeShop.nextBag.length}');
-    var nextShapesPlaced = state.shapesPlaced + 1;
-    var nextLevel = nextShapesPlaced ~/ 10;
-    var nextSpeed = 1.0 + 0.2 * nextLevel;
+    final nextShapesPlaced = state.shapesPlaced + 1;
+    final int nextLevel;
+    if (state.level < Constant.maxLevel)
+      nextLevel = nextShapesPlaced ~/ Constant.shapesPerLevel;
+    else
+      nextLevel = state.level;
+    final nextSpeed = Constant.minSpeed + Constant.speedPerLevel * nextLevel;
+    final nextShapePosition = Constant.spawnPosition;
 
-    var nextShapePosition = Constant.spawnPosition;
     var gameRunning = state.gameRunning;
-    log('level: ${state.level}');
-    log('shapesPlaced: ${state.shapesPlaced}');
     if (state.actualSpeed ~/ 1 < nextSpeed ~/ 1) {
       _sounds.playSoundDifficultyUp();
     }
-    log('level: ${state.level}');
-    log('shapesPlaced: ${state.shapesPlaced}');
 
     _addActiveShapeToGrid();
-    log('level: ${state.level}');
-    log('shapesPlaced: ${state.shapesPlaced}');
     if (_arePositionsEmpty(
         nextShape.absolutePositions(base: nextShapePosition))) {
       _clearAllFullRows();
-      log('level: ${state.level}');
-      log('shapesPlaced: ${state.shapesPlaced}');
       _sounds.playSoundSpawnOfShapes();
     } else if (gameRunning == true) {
       gameRunning = false;
       _sounds.playSoundGameover();
     }
-    log('level: ${state.level}');
-    log('shapesPlaced: ${state.shapesPlaced}');
     state = state.copyWith(
       activeShape: nextShape,
       activeShapePosition: nextShapePosition,
@@ -197,8 +210,6 @@ class GameProvider extends StateNotifier<Game> {
       actualSpeed: nextSpeed,
       gameRunning: gameRunning,
     );
-    log('level: ${state.level}');
-    log('shapesPlaced: ${state.shapesPlaced}');
     // log('SpawnNextShape: 3: ${state.shapeShop.currentBag.length} / ${state.shapeShop.nextBag.length}');
   }
 
@@ -223,7 +234,7 @@ class GameProvider extends StateNotifier<Game> {
 
   /// Get color of shape at a certain position (or null if no shape is present)
   Color? getShapeColorAt(Position pos) {
-    var shape = getShapeAt(pos);
+    final shape = getShapeAt(pos);
     if (shape == null) return null;
     return Color(shape.color);
   }
@@ -236,12 +247,36 @@ class GameProvider extends StateNotifier<Game> {
   /// for the attributes which are provided as arguments to this method
   ///Checks if a List of Positions are Empty
   bool _arePositionsEmpty(List<Position> positions) {
-    bool isValid;
     for (var pos in positions) {
-      isValid = _isPositionEmpty(pos);
-      if (!isValid) return false;
+      if (_isPositionEmpty(pos) == false) return false;
     }
     return true;
+  }
+
+  Direction _oppositeHorizontalDirection(Position pos) {
+    Direction? dir;
+    if (pos.x > 0) dir = Direction.left;
+    return dir ??= Direction.right;
+  }
+
+  Position _wichPositionIsInvalid(List<Position> positions) {
+    Position? position;
+    for (var pos in positions) {
+      if (_isPositionEmpty(pos) == false) position = pos;
+    }
+
+    for (var pos in positions) {
+      if (pos.x < 0) return position = pos;
+      if (pos.y < 0) return position = pos;
+      if (pos.x >= Constant.numCols) return position = pos;
+      // if (pos.y >= Constant.numRows) return false;
+    }
+    if (position == null) {
+      log('Invalid useage of _wichPositionIsInvalid.');
+      log('Be sure any Position is invalid.');
+      position = const Position(0, 0);
+    }
+    return position;
   }
 
   /// Returns true if every position is still on the grid

@@ -36,7 +36,8 @@ class GameProvider extends StateNotifier<Game> {
     final absRefPosition = state.activeShapePosition;
     var newAbsRefPosition = absRefPosition;
     if (shape == null || absRefPosition == null) return;
-    final absPositions = shape.absolutePositions(base: absRefPosition, direction: dir);
+    final absPositions =
+        shape.absolutePositions(base: absRefPosition, direction: dir);
     if (_arePositionsInGrid(absPositions)) {
       if (_arePositionsEmpty(absPositions)) {
         newAbsRefPosition = absRefPosition + dir.toPosition;
@@ -57,30 +58,12 @@ class GameProvider extends StateNotifier<Game> {
     if (shape == null || absRefPosition == null) return;
     final absPositions =
         shape.absolutePositions(base: absRefPosition, rotation: rotation);
-    if (_arePositionsInGrid(absPositions) && _arePositionsEmpty(absPositions)) {
-      _sounds.playSoundRotate(rotation);
-      shape.rotateShape(rotation);
-      state = state.copyWith();
-      return;
-    }
-
-    final altDir =
-        _oppositeHorizontalDirection(_wichPositionIsInvalid(absPositions));
-    final altAbsPositions = shape.absolutePositions(
-      base: absRefPosition,
-      direction: altDir,
-      rotation: rotation,
-    );
-    if (_arePositionsInGrid(altAbsPositions) &&
-        _arePositionsEmpty(altAbsPositions)) {
-      _sounds.playSoundRotate(rotation);
-
-      shape.rotateShape(rotation);
-      state = state.copyWith(
-          activeShapePosition: state.activeShapePosition! + altDir.toPosition);
-
-      //T-Spin!!
-      return;
+    if (_arePositionsInGrid(absPositions)) {
+      if (_arePositionsEmpty(absPositions)) {
+        _sounds.playSoundRotate(rotation);
+        shape.rotateShape(rotation);
+        state = state.copyWith();
+      }
     }
   }
 
@@ -95,7 +78,8 @@ class GameProvider extends StateNotifier<Game> {
   }
 
   void _gameLoop(int thisGameLoopId) {
-    if (state.gameRunning == false || _currentGameLoopId > thisGameLoopId) return;
+    if (state.gameRunning == false || _currentGameLoopId > thisGameLoopId)
+      return;
 
     moveActiveShape(Direction.down);
     Future.delayed(_getDelay(), () {
@@ -109,10 +93,10 @@ class GameProvider extends StateNotifier<Game> {
   /* Use cases (internal): Manipulating state for internal reasons            */
   /*--------------------------------------------------------------------------*/
   void _addActiveShapeToGrid() {
-    final positions = state.activeShape
+    var positions = state.activeShape
             ?.absolutePositions(base: state.activeShapePosition!) ??
         [];
-    final newGrid = <Position, Shape?>{};
+    var newGrid = <Position, Shape?>{};
     state.grid.forEach((pos, shape) {
       newGrid[pos] = shape;
     });
@@ -123,9 +107,7 @@ class GameProvider extends StateNotifier<Game> {
   }
 
   void _addPoints(int points) {
-    log('Add points: $points');
     state = state.copyWith(points: state.points + points);
-    log('Nun Punkte: ${state.points}');
   }
 
   void _addPointsForClearedRows(int rows) {
@@ -148,12 +130,19 @@ class GameProvider extends StateNotifier<Game> {
       // Sort lines because we have to delete higher lines before we delete
       // lower lines
       fullRows.sort((a, b) => b.compareTo(a));
-      log('Punkte sollten addiert werden');
+
+      state = state.copyWith(linesToBeDeleted: fullRows);
+
       _addPointsForClearedRows(fullRows.length);
-      for (var row in fullRows) {
-        _clearFullRow(row);
-      }
-      _sounds.playSoundDestroy(fullRows.length);
+
+      Future.delayed(Duration(milliseconds: 1000), () {
+        for (var row in fullRows) {
+          _clearFullRow(row);
+        }
+        _sounds.playSoundDestroy(fullRows.length);
+
+        state = state.copyWith(linesToBeDeleted: []);
+      });
     }
   }
 
@@ -216,12 +205,15 @@ class GameProvider extends StateNotifier<Game> {
   /// Get the shape at a certain position. Returns null if no shape is present.
   Shape? getShapeAt(Position pos) {
     final inactiveShape = state.grid[pos];
-    if (inactiveShape != null) return inactiveShape; // Inactive shape if found at pos
+    if (inactiveShape != null)
+      return inactiveShape; // Inactive shape if found at pos
     final activeShape = state.activeShape;
     if (activeShape == null) return null; // null if no activeShape at all
-    final activeShapePositions = activeShape.absolutePositions(base: state.activeShapePosition!);
+    final activeShapePositions =
+        activeShape.absolutePositions(base: state.activeShapePosition!);
     for (var activeShapePos in activeShapePositions) {
-      if (activeShapePos == pos) return activeShape; // activeShape if found at pos
+      if (activeShapePos == pos)
+        return activeShape; // activeShape if found at pos
     }
     return null; // null if nothing else
   }
@@ -300,6 +292,15 @@ class GameProvider extends StateNotifier<Game> {
     return true;
   }
 
+  bool isRowToClear(int row) {
+    for (var rowToClear in state.rowsToClear) {
+      if (row == rowToClear) return true;
+    }
+    return false;
+  }
+
   ///Returns a List of all parts of the active shape in absPosition
-  List<Position>? activeShapePositions() => state.activeShape?.absolutePositions(base: state.activeShapePosition ?? const Position(0, 0));
+  List<Position>? activeShapePositions() =>
+      state.activeShape?.absolutePositions(
+          base: state.activeShapePosition ?? const Position(0, 0));
 }

@@ -125,5 +125,5 @@ class Game {
   int get shapesPlaced => _shapesPlaced;
 
   /// Returns the lines that will be deleted soon
-  List<int> get linesToBeDeleted => _linesToBeDeleted;
+  List<int> get rowsToClear => _linesToBeDeleted;
 }

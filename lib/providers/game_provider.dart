@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tetris/entities/constant.dart';
 import 'package:tetris/entities/direction.dart';
@@ -36,8 +35,7 @@ class GameProvider extends StateNotifier<Game> {
     final absRefPosition = state.activeShapePosition;
     var newAbsRefPosition = absRefPosition;
     if (shape == null || absRefPosition == null) return;
-    final absPositions =
-        shape.absolutePositions(base: absRefPosition, direction: dir);
+    final absPositions = shape.absolutePositions(base: absRefPosition, direction: dir);
     if (_arePositionsInGrid(absPositions)) {
       if (_arePositionsEmpty(absPositions)) {
         newAbsRefPosition = absRefPosition + dir.toPosition;
@@ -56,8 +54,7 @@ class GameProvider extends StateNotifier<Game> {
     final shape = state.activeShape;
     final absRefPosition = state.activeShapePosition;
     if (shape == null || absRefPosition == null) return;
-    final absPositions =
-        shape.absolutePositions(base: absRefPosition, rotation: rotation);
+    final absPositions = shape.absolutePositions(base: absRefPosition, rotation: rotation);
     if (_arePositionsInGrid(absPositions)) {
       if (_arePositionsEmpty(absPositions)) {
         _sounds.playSoundRotate(rotation);
@@ -78,8 +75,7 @@ class GameProvider extends StateNotifier<Game> {
   }
 
   void _gameLoop(int thisGameLoopId) {
-    if (state.gameRunning == false || _currentGameLoopId > thisGameLoopId)
-      return;
+    if (state.gameRunning == false || _currentGameLoopId > thisGameLoopId) return;
 
     moveActiveShape(Direction.down);
     Future.delayed(_getDelay(), () {
@@ -93,9 +89,7 @@ class GameProvider extends StateNotifier<Game> {
   /* Use cases (internal): Manipulating state for internal reasons            */
   /*--------------------------------------------------------------------------*/
   void _addActiveShapeToGrid() {
-    var positions = state.activeShape
-            ?.absolutePositions(base: state.activeShapePosition!) ??
-        [];
+    var positions = state.activeShape?.absolutePositions(base: state.activeShapePosition!) ?? [];
     var newGrid = <Position, Shape?>{};
     state.grid.forEach((pos, shape) {
       newGrid[pos] = shape;
@@ -180,8 +174,7 @@ class GameProvider extends StateNotifier<Game> {
       _sounds.playSoundDifficultyUp();
     }
     _addActiveShapeToGrid();
-    if (_arePositionsEmpty(
-        nextShape.absolutePositions(base: nextShapePosition))) {
+    if (_arePositionsEmpty(nextShape.absolutePositions(base: nextShapePosition))) {
       _clearAllFullRows();
       _sounds.playSoundSpawnOfShapes();
     } else if (gameRunning == true) {
@@ -205,15 +198,12 @@ class GameProvider extends StateNotifier<Game> {
   /// Get the shape at a certain position. Returns null if no shape is present.
   Shape? getShapeAt(Position pos) {
     final inactiveShape = state.grid[pos];
-    if (inactiveShape != null)
-      return inactiveShape; // Inactive shape if found at pos
+    if (inactiveShape != null) return inactiveShape; // Inactive shape if found at pos
     final activeShape = state.activeShape;
     if (activeShape == null) return null; // null if no activeShape at all
-    final activeShapePositions =
-        activeShape.absolutePositions(base: state.activeShapePosition!);
+    final activeShapePositions = activeShape.absolutePositions(base: state.activeShapePosition!);
     for (var activeShapePos in activeShapePositions) {
-      if (activeShapePos == pos)
-        return activeShape; // activeShape if found at pos
+      if (activeShapePos == pos) return activeShape; // activeShape if found at pos
     }
     return null; // null if nothing else
   }
@@ -300,7 +290,5 @@ class GameProvider extends StateNotifier<Game> {
   }
 
   ///Returns a List of all parts of the active shape in absPosition
-  List<Position>? activeShapePositions() =>
-      state.activeShape?.absolutePositions(
-          base: state.activeShapePosition ?? const Position(0, 0));
+  List<Position>? activeShapePositions() => state.activeShape?.absolutePositions(base: state.activeShapePosition ?? const Position(0, 0));
 }

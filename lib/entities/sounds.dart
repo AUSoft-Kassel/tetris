@@ -22,16 +22,16 @@ class Sounds {
   }
 
   void _loadSounds() async {
-    _idRowDestroy1 = await _loadSound('sfx/singlerow.mp3');
-    _idRowDestroy2 = await _loadSound('sfx/doublerow.mp3');
-    _idRowDestroy3 = await _loadSound('sfx/tripplerow.mp3');
-    _idRowDestroy4 = await _loadSound('sfx/tetris.mp3');
-    _idRotateLeft = await _loadSound('sfx/rotate_left.mp3');
-    _idRotateRight = await _loadSound('sfx/rotate_right.mp3');
-    _idShapeSetOnGround = await _loadSound('sfx/shape_set_on_ground.mp3');
-    _idSpawnOfShapes = await _loadSound('sfx/spawn_of_shapes.mp3');
-    _idDifficultyUp = await _loadSound('sfx/difficultyup.mp3');
-    _idGameover = await _loadSound('sfx/gameover.mp3');
+    _idRowDestroy1 = await _loadSound('assets/sfx/singlerow.mp3');
+    _idRowDestroy2 = await _loadSound('assets/sfx/doublerow.mp3');
+    _idRowDestroy3 = await _loadSound('assets/sfx/triplerow.mp3');
+    _idRowDestroy4 = await _loadSound('assets/sfx/tetris.mp3');
+    _idRotateLeft = await _loadSound('assets/sfx/rotate_left.mp3');
+    _idRotateRight = await _loadSound('assets/sfx/rotate_right.mp3');
+    _idShapeSetOnGround = await _loadSound('assets/sfx/shape_set_on_ground.mp3');
+    _idSpawnOfShapes = await _loadSound('assets/sfx/spawn_of_shapes.mp3');
+    _idDifficultyUp = await _loadSound('assets/sfx/difficultyup.mp3');
+    _idGameover = await _loadSound('assets/sfx/gameover.mp3');
   }
 
   Future<void> playSoundDestroy(int n) async {

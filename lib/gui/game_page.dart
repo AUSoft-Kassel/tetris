@@ -17,23 +17,8 @@ class GamePage extends HookWidget {
   Widget build(BuildContext context) {
     final gameProvider = useProvider(providerGameProvider.notifier);
     final game = useProvider(providerGameProvider);
-
-    final controller = useAnimationController(
-      duration: const Duration(milliseconds: 1000),
-    );
     final _rowsToClear = useProvider(providerGameProvider).rowsToClear;
 
-    controller.addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        log('Stop Animation');
-        controller.reset();
-      }
-    });
-    useValueChanged(_rowsToClear, (a, dynamic b) {
-      log('Start Animation');
-      controller.forward();
-    });
-    log('Value of Animation ${controller.value}');
     return Material(
       child: Container(
         width: double.infinity,
@@ -67,12 +52,7 @@ class GamePage extends HookWidget {
                           color: Colors.amber,
                           child: Stack(
                             children: [
-                              ..._buildRows(
-                                  context: context,
-                                  gameProvider: gameProvider,
-                                  blockSize: blockSize,
-                                  controller: controller),
-                              // ..._buildActiveShape(context: context, gameProvider: gameProvider, blockSize: blockSize),
+                              ..._buildRows(context: context, gameProvider: gameProvider, blockSize: blockSize),
                             ],
                           ),
                         ),
@@ -86,10 +66,8 @@ class GamePage extends HookWidget {
                             direction: Axis.vertical,
                             children: [
                               _sidebarBox('Highscore', valueInt: 99999),
-                              _sidebarBox('Personal score',
-                                  valueInt: game.points),
-
-                              /// _sidebarNextShape(game.shapeShop.showShape()),
+                              _sidebarBox('Personal score', valueInt: game.points),
+                              _sidebarNextShape(game.shapeShop.showShape()),
                               _sidebarBox('Lvl/Speed', valueInt: game.level),
                               _sidebarBox('Nickname', valueString: 'Heinz'),
                             ],
@@ -183,11 +161,7 @@ class GamePage extends HookWidget {
     );
   }
 
-  List<Widget> _buildRows(
-      {required BuildContext context,
-      required GameProvider gameProvider,
-      required double blockSize,
-      required AnimationController controller}) {
+  List<Widget> _buildRows({required BuildContext context, required GameProvider gameProvider, required double blockSize}) {
     final list = <Widget>[];
     for (var y = Constant.numRows - 1; y >= 0; y--) {
       for (var x = 0; x < Constant.numCols; x++) {
@@ -196,11 +170,9 @@ class GamePage extends HookWidget {
             bottom: blockSize * y,
             left: blockSize * x,
             child: AnimatedBox(
-              color: gameProvider.getShapeColorAt(Position(x, y)) ??
-                  Colors.grey[200]!,
+              color: gameProvider.getShapeColorAt(Position(x, y)) ?? Colors.grey[200]!,
               height: blockSize,
               width: blockSize,
-              controller: controller,
               lineToClear: gameProvider.isRowToClear(y),
             ),
           ),
@@ -239,9 +211,7 @@ class GamePage extends HookWidget {
         ),
       );
 
-  Widget _sidebarBox(String title,
-          {String? valueString, int? valueInt, Shape? valueShape}) =>
-      Expanded(
+  Widget _sidebarBox(String title, {String? valueString, int? valueInt, Shape? valueShape}) => Expanded(
         child: Flex(
           direction: Axis.vertical,
           children: [
@@ -272,6 +242,29 @@ class GamePage extends HookWidget {
           ],
         ),
       );
+
+  Widget _sidebarNextShape(Shape next) => Expanded(
+        child: GridView.count(
+          shrinkWrap: true,
+          crossAxisCount: 4,
+          children: _sidebarNextShapeTiles(next),
+        ),
+      );
+
+  List<Widget> _sidebarNextShapeTiles(Shape next) {
+    var widgets = <Widget>[];
+    widgets.add(LayoutBuilder(builder: (context, constraints) {
+      var maxH = constraints.maxHeight;
+      var maxW = constraints.maxWidth;
+      var max = maxH < maxW ? maxH : maxW;
+      return Container(
+        height: max,
+        width: max,
+        decoration: BoxDecoration(color: Colors.red),
+      );
+    }));
+    return widgets;
+  }
 }
 
 class AnimatedBox extends HookWidget {
@@ -279,36 +272,44 @@ class AnimatedBox extends HookWidget {
   final double _width;
   final Color _color;
   final bool _lineToClear;
-  final AnimationController _controller;
 
   late double _opacityValue;
 
-  AnimatedBox(
-      {required double height,
-      required double width,
-      required Color color,
-      required AnimationController controller,
-      bool lineToClear = false})
+  AnimatedBox({required double height, required double width, required Color color, bool lineToClear = false})
       : _height = height,
         _width = width,
         _color = color,
-        _lineToClear = lineToClear,
-        _controller = controller;
+        _lineToClear = lineToClear;
 
   @override
   Widget build(BuildContext context) {
-    if (_lineToClear) {
-      _opacityValue = _controller.value;
-    } else {
-      _opacityValue = 1;
-    }
+    final animationController = useAnimationController(duration: const Duration(milliseconds: 1000));
+    // animationController
+    // ..addStatusListener((status) {
+    //   if (status == AnimationStatus.completed) {
+    //     log('Stop Animation');
+    //     animationController.reset();
+    //   }
+    // })
+    // ..addListener(() {
+    //   log('Tst: ${animationController.value}');
+    // });
+
+    useValueChanged(_lineToClear, (a, dynamic b) {
+      if (_lineToClear) {
+        log('Start Animation: $a -> $b');
+        animationController.reset();
+        animationController.forward();
+      }
+    });
 
     return AnimatedBuilder(
-      animation: _controller,
+      animation: animationController,
       builder: (context, child) => Center(
         child: Container(
           decoration: BoxDecoration(
-            color: _color.withOpacity(_opacityValue),
+            color: _lineToClear ? Colors.black.withOpacity(animationController.value) : _color,
+            // _color.withOpacity(_lineToClear ? animationController.value : 1),
             border: Border.all(),
           ),
           height: _height,

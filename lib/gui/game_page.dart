@@ -17,7 +17,6 @@ class GamePage extends HookWidget {
   Widget build(BuildContext context) {
     final gameProvider = useProvider(providerGameProvider.notifier);
     final game = useProvider(providerGameProvider);
-    final _rowsToClear = useProvider(providerGameProvider).rowsToClear;
 
     return Material(
       child: Container(
@@ -52,7 +51,10 @@ class GamePage extends HookWidget {
                           color: Colors.amber,
                           child: Stack(
                             children: [
-                              ..._buildRows(context: context, gameProvider: gameProvider, blockSize: blockSize),
+                              ..._buildRows(
+                                  context: context,
+                                  gameProvider: gameProvider,
+                                  blockSize: blockSize),
                             ],
                           ),
                         ),
@@ -66,7 +68,8 @@ class GamePage extends HookWidget {
                             direction: Axis.vertical,
                             children: [
                               _sidebarBox('Highscore', valueInt: 99999),
-                              _sidebarBox('Personal score', valueInt: game.points),
+                              _sidebarBox('Personal score',
+                                  valueInt: game.points),
                               _sidebarNextShape(game.shapeShop.showShape()),
                               _sidebarBox('Lvl/Speed', valueInt: game.level),
                               _sidebarBox('Nickname', valueString: 'Heinz'),
@@ -161,7 +164,10 @@ class GamePage extends HookWidget {
     );
   }
 
-  List<Widget> _buildRows({required BuildContext context, required GameProvider gameProvider, required double blockSize}) {
+  List<Widget> _buildRows(
+      {required BuildContext context,
+      required GameProvider gameProvider,
+      required double blockSize}) {
     final list = <Widget>[];
     for (var y = Constant.numRows - 1; y >= 0; y--) {
       for (var x = 0; x < Constant.numCols; x++) {
@@ -170,7 +176,8 @@ class GamePage extends HookWidget {
             bottom: blockSize * y,
             left: blockSize * x,
             child: AnimatedBox(
-              color: gameProvider.getShapeColorAt(Position(x, y)) ?? Colors.grey[200]!,
+              color: gameProvider.getShapeColorAt(Position(x, y)) ??
+                  Colors.grey[200]!,
               height: blockSize,
               width: blockSize,
               lineToClear: gameProvider.isRowToClear(y),
@@ -211,7 +218,9 @@ class GamePage extends HookWidget {
         ),
       );
 
-  Widget _sidebarBox(String title, {String? valueString, int? valueInt, Shape? valueShape}) => Expanded(
+  Widget _sidebarBox(String title,
+          {String? valueString, int? valueInt, Shape? valueShape}) =>
+      Expanded(
         child: Flex(
           direction: Axis.vertical,
           children: [
@@ -238,7 +247,7 @@ class GamePage extends HookWidget {
                     fontSize: 18,
                   ),
                 ),
-              )
+              ),
           ],
         ),
       );
@@ -253,16 +262,20 @@ class GamePage extends HookWidget {
 
   List<Widget> _sidebarNextShapeTiles(Shape next) {
     var widgets = <Widget>[];
-    widgets.add(LayoutBuilder(builder: (context, constraints) {
-      var maxH = constraints.maxHeight;
-      var maxW = constraints.maxWidth;
-      var max = maxH < maxW ? maxH : maxW;
-      return Container(
-        height: max,
-        width: max,
-        decoration: BoxDecoration(color: Colors.red),
-      );
-    }));
+    widgets.add(
+      LayoutBuilder(
+        builder: (context, constraints) {
+          var maxH = constraints.maxHeight;
+          var maxW = constraints.maxWidth;
+          var max = maxH < maxW ? maxH : maxW;
+          return Container(
+            height: max,
+            width: max,
+            decoration: BoxDecoration(color: Colors.red),
+          );
+        },
+      ),
+    );
     return widgets;
   }
 }
@@ -273,9 +286,11 @@ class AnimatedBox extends HookWidget {
   final Color _color;
   final bool _lineToClear;
 
-  late double _opacityValue;
-
-  AnimatedBox({required double height, required double width, required Color color, bool lineToClear = false})
+  AnimatedBox(
+      {required double height,
+      required double width,
+      required Color color,
+      bool lineToClear = false})
       : _height = height,
         _width = width,
         _color = color,
@@ -283,17 +298,10 @@ class AnimatedBox extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final animationController = useAnimationController(duration: const Duration(milliseconds: 1000));
-    // animationController
-    // ..addStatusListener((status) {
-    //   if (status == AnimationStatus.completed) {
-    //     log('Stop Animation');
-    //     animationController.reset();
-    //   }
-    // })
-    // ..addListener(() {
-    //   log('Tst: ${animationController.value}');
-    // });
+    final animationController = useAnimationController(
+        duration: const Duration(milliseconds: 1000),
+        lowerBound: 0,
+        upperBound: 255);
 
     useValueChanged(_lineToClear, (a, dynamic b) {
       if (_lineToClear) {
@@ -308,8 +316,12 @@ class AnimatedBox extends HookWidget {
       builder: (context, child) => Center(
         child: Container(
           decoration: BoxDecoration(
-            color: _lineToClear ? Colors.black.withOpacity(animationController.value) : _color,
-            // _color.withOpacity(_lineToClear ? animationController.value : 1),
+            color: _lineToClear
+                ? _color
+                    .withBlue(animationController.value.toInt())
+                    .withGreen(animationController.value.toInt())
+                    .withRed(animationController.value.toInt())
+                : _color,
             border: Border.all(),
           ),
           height: _height,

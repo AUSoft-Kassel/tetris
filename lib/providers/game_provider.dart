@@ -23,7 +23,6 @@ class GameProvider extends StateNotifier<Game> {
   GameProvider() : super(Game(false));
 
   final _sounds = ProviderContainer().read(providerSoundProvider);
-  final _animations = ProviderContainer().read(providerAnimationProvider);
   int _currentGameLoopId = 0;
 
   /*--------------------------------------------------------------------------*/
@@ -32,7 +31,6 @@ class GameProvider extends StateNotifier<Game> {
   /// Moves active shape into Direction dir.
   /// It is usually invoked after an user input.
   void moveActiveShape(Direction dir) {
-    _animations.clearRow.increase();
     if (state.gameRunning == false) return;
     final shape = state.activeShape;
     final absRefPosition = state.activeShapePosition;
@@ -131,12 +129,19 @@ class GameProvider extends StateNotifier<Game> {
       // Sort lines because we have to delete higher lines before we delete
       // lower lines
       fullRows.sort((a, b) => b.compareTo(a));
-      log('Punkte sollten addiert werden');
+
+      state = state.copyWith(linesToBeDeleted: fullRows);
+
       _addPointsForClearedRows(fullRows.length);
-      for (var row in fullRows) {
-        _clearFullRow(row);
-      }
-      _sounds.playSoundDestroy(fullRows.length);
+
+      Future.delayed(Duration(milliseconds: 1000), () {
+        for (var row in fullRows) {
+          _clearFullRow(row);
+        }
+        _sounds.playSoundDestroy(fullRows.length);
+
+        state = state.copyWith(linesToBeDeleted: []);
+      });
     }
   }
 
@@ -255,6 +260,13 @@ class GameProvider extends StateNotifier<Game> {
       }
     }
     return true;
+  }
+
+  bool isRowToClear(int row) {
+    for (var rowToClear in state.rowsToClear) {
+      if (row == rowToClear) return true;
+    }
+    return false;
   }
 
   ///Returns a List of all parts of the active shape in absPosition

@@ -18,23 +18,41 @@ class GamePage extends HookWidget {
     final gameProvider = useProvider(providerGameProvider.notifier);
     final game = useProvider(providerGameProvider);
 
+    final controller = useAnimationController(
+      duration: const Duration(milliseconds: 1000),
+    );
+    final _rowsToClear = useProvider(providerGameProvider).rowsToClear;
+
+    controller.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        log('Stop Animation');
+        controller.reset();
+      }
+    });
+    useValueChanged(_rowsToClear, (a, dynamic b) {
+      log('Start Animation');
+      controller.forward();
+    });
+    log('Value of Animation ${controller.value}');
     return Material(
-        child: Container(
-            width: double.infinity,
-            height: double.infinity,
-            child: LayoutBuilder(builder: (context, constraints) {
-              final maxX = constraints.maxWidth;
-              final maxY = constraints.maxHeight;
-              final gridSizeX = maxX * 3 / 4;
-              final gridSizeY = maxY * 4 / 5;
-              final sidebarSizeX = maxX - gridSizeX;
-              final bottomSizeY = maxY - gridSizeY;
-              final double blockSize;
-              if (gridSizeX / Constant.numCols < gridSizeY / Constant.numRows)
-                blockSize = gridSizeX / Constant.numCols;
-              else
-                blockSize = gridSizeY / Constant.numRows;
-              return Stack(children: [
+      child: Container(
+        width: double.infinity,
+        height: double.infinity,
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final maxX = constraints.maxWidth;
+            final maxY = constraints.maxHeight;
+            final gridSizeX = maxX * 3 / 4;
+            final gridSizeY = maxY * 4 / 5;
+            final sidebarSizeX = maxX - gridSizeX;
+            final bottomSizeY = maxY - gridSizeY;
+            final double blockSize;
+            if (gridSizeX / Constant.numCols < gridSizeY / Constant.numRows)
+              blockSize = gridSizeX / Constant.numCols;
+            else
+              blockSize = gridSizeY / Constant.numRows;
+            return Stack(
+              children: [
                 Flex(
                   direction: Axis.vertical,
                   children: [
@@ -52,7 +70,8 @@ class GamePage extends HookWidget {
                               ..._buildRows(
                                   context: context,
                                   gameProvider: gameProvider,
-                                  blockSize: blockSize),
+                                  blockSize: blockSize,
+                                  controller: controller),
                               // ..._buildActiveShape(context: context, gameProvider: gameProvider, blockSize: blockSize),
                             ],
                           ),
@@ -81,110 +100,108 @@ class GamePage extends HookWidget {
 
                     ///Button
                     Container(
-                        height: bottomSizeY,
-                        color: Colors.black,
-                        child: Flex(
-                          direction: Axis.horizontal,
-                          children: [
-                            Expanded(
-                              child: Stack(
-                                children: [
-                                  // Expanded(
-                                  //   child: Container(
-                                  //     color: Colors.blue,
-                                  //   ),
-                                  // ),
-                                  _buttonBox(
-                                    gameProvider,
-                                    alignment: const Alignment(-0.8, -0.75),
-                                    icon: Icons.keyboard_arrow_left_rounded,
-                                    size: bottomSizeY / 2,
-                                    direction: Direction.left,
-                                  ),
-                                  _buttonBox(
-                                    gameProvider,
-                                    alignment: const Alignment(0.8, -0.75),
-                                    icon: Icons.keyboard_arrow_right_rounded,
-                                    size: bottomSizeY / 2,
-                                    direction: Direction.right,
-                                  ),
-                                  _buttonBox(
-                                    gameProvider,
-                                    alignment: const Alignment(0, 0.6),
-                                    icon: Icons.keyboard_arrow_down_rounded,
-                                    size: bottomSizeY / 2,
-                                    direction: Direction.down,
-                                  ),
-                                ],
-                              ),
+                      height: bottomSizeY,
+                      color: Colors.black,
+                      child: Flex(
+                        direction: Axis.horizontal,
+                        children: [
+                          Expanded(
+                            child: Stack(
+                              children: [
+                                _buttonBox(
+                                  gameProvider,
+                                  alignment: const Alignment(-0.8, -0.75),
+                                  icon: Icons.keyboard_arrow_left_rounded,
+                                  size: bottomSizeY / 2,
+                                  direction: Direction.left,
+                                ),
+                                _buttonBox(
+                                  gameProvider,
+                                  alignment: const Alignment(0.8, -0.75),
+                                  icon: Icons.keyboard_arrow_right_rounded,
+                                  size: bottomSizeY / 2,
+                                  direction: Direction.right,
+                                ),
+                                _buttonBox(
+                                  gameProvider,
+                                  alignment: const Alignment(0, 0.6),
+                                  icon: Icons.keyboard_arrow_down_rounded,
+                                  size: bottomSizeY / 2,
+                                  direction: Direction.down,
+                                ),
+                              ],
                             ),
-                            Expanded(
-                              child: Stack(
-                                children: [
-                                  // Expanded(
-                                  //   child: Container(
-                                  //     color: Colo.yellow,
-                                  //   ),
-                                  // ),
-                                  _buttonBox(
-                                    gameProvider,
-                                    alignment: const Alignment(-0.75, 0.6),
-                                    icon: Icons.rotate_left_rounded,
-                                    size: bottomSizeY / 2.25,
-                                    rotation: Rotation.left,
-                                  ),
-                                  _buttonBox(
-                                    gameProvider,
-                                    alignment: const Alignment(0.75, -0.6),
-                                    icon: Icons.rotate_right_rounded,
-                                    size: bottomSizeY / 2.25,
-                                    rotation: Rotation.right,
-                                  ),
-                                ],
-                              ),
+                          ),
+                          Expanded(
+                            child: Stack(
+                              children: [
+                                _buttonBox(
+                                  gameProvider,
+                                  alignment: const Alignment(-0.75, 0.6),
+                                  icon: Icons.rotate_left_rounded,
+                                  size: bottomSizeY / 2.25,
+                                  rotation: Rotation.left,
+                                ),
+                                _buttonBox(
+                                  gameProvider,
+                                  alignment: const Alignment(0.75, -0.6),
+                                  icon: Icons.rotate_right_rounded,
+                                  size: bottomSizeY / 2.25,
+                                  rotation: Rotation.right,
+                                ),
+                              ],
                             ),
-                          ],
-                        ))
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
                 if (!game.gameRunning)
                   Center(
-                      child: TextButton(
-                    onPressed: () {
-                      gameProvider.startGame();
-                    },
-                    child: Container(
+                    child: TextButton(
+                      onPressed: () {
+                        gameProvider.startGame();
+                      },
+                      child: Container(
                         color: Colors.blue,
-                        child: const Text('Start Game',
-                            style: TextStyle(
-                              color: Colors.black87,
-                              backgroundColor: Colors.blue,
-                            ))),
-                  ))
-              ]);
-            })));
+                        child: const Text(
+                          'Start Game',
+                          style: TextStyle(
+                            color: Colors.black87,
+                            backgroundColor: Colors.blue,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            );
+          },
+        ),
+      ),
+    );
   }
 
   List<Widget> _buildRows(
       {required BuildContext context,
       required GameProvider gameProvider,
-      required double blockSize}) {
+      required double blockSize,
+      required AnimationController controller}) {
     final list = <Widget>[];
-    final grid = gameProvider.state.grid;
     for (var y = Constant.numRows - 1; y >= 0; y--) {
       for (var x = 0; x < Constant.numCols; x++) {
         list.add(
           Positioned(
             bottom: blockSize * y,
             left: blockSize * x,
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(),
-                color: gameProvider.getShapeColorAt(Position(x, y)) ??
-                    Colors.grey[200],
-              ),
+            child: AnimatedBox(
+              color: gameProvider.getShapeColorAt(Position(x, y)) ??
+                  Colors.grey[200]!,
               height: blockSize,
               width: blockSize,
+              controller: controller,
+              lineToClear: gameProvider.isRowToClear(y),
             ),
           ),
         );
@@ -192,30 +209,6 @@ class GamePage extends HookWidget {
     }
     return list;
   }
-
-  // List<Widget> _buildActiveShape({required BuildContext context, required GameProvider gameProvider, required double blockSize}) {
-  //   final list = <Widget>[];
-  //   final positions = gameProvider.getActiveShapePositions();
-  //   for (var pos in positions) {
-  //     if (pos.y < Constant.numRows) {
-  //       list.add(
-  //         Positioned(
-  //           bottom: blockSize * pos.y,
-  //           left: blockSize * pos.x,
-  //           child: Container(
-  //             decoration: BoxDecoration(
-  //               border: Border.all(),
-  //               color: Color(gameProvider.state.activeShape?.color ?? Color.fromARGB(255, 255, 255, 255).value),
-  //             ),
-  //             height: blockSize,
-  //             width: blockSize,
-  //           ),
-  //         ),
-  //       );
-  //     }
-  //   }
-  //   return list;
-  // }
 
   Widget _buttonBox(
     GameProvider gameProvider, {
@@ -279,4 +272,49 @@ class GamePage extends HookWidget {
           ],
         ),
       );
+}
+
+class AnimatedBox extends HookWidget {
+  final double _height;
+  final double _width;
+  final Color _color;
+  final bool _lineToClear;
+  final AnimationController _controller;
+
+  late double _opacityValue;
+
+  AnimatedBox(
+      {required double height,
+      required double width,
+      required Color color,
+      required AnimationController controller,
+      bool lineToClear = false})
+      : _height = height,
+        _width = width,
+        _color = color,
+        _lineToClear = lineToClear,
+        _controller = controller;
+
+  @override
+  Widget build(BuildContext context) {
+    if (_lineToClear) {
+      _opacityValue = _controller.value;
+    } else {
+      _opacityValue = 1;
+    }
+
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, child) => Center(
+        child: Container(
+          decoration: BoxDecoration(
+            color: _color.withOpacity(_opacityValue),
+            border: Border.all(),
+          ),
+          height: _height,
+          width: _width,
+        ),
+      ),
+    );
+  }
 }

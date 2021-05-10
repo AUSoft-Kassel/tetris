@@ -16,7 +16,7 @@ class ShapeO extends Shape {
   ///Constructor
   ShapeO()
       : super(
-          color: 0xFF919191,
+          color: 0xFF2b2b2b,
           relRotatingPositions: _relRotatingPositions,
           rotation: Random().nextInt(_relRotatingPositions.length),
         );
@@ -58,10 +58,10 @@ class ShapeL extends Shape {
       const Position(1, 0),
     ],
     [
-      const Position(0, 0),
-      const Position(0, -1),
-      const Position(1, 0),
-      const Position(2, 0),
+      const Position(-1, 1),
+      const Position(0, 1),
+      const Position(1, 1),
+      const Position(-1, 0),
     ],
     [
       const Position(0, 0),
@@ -80,7 +80,7 @@ class ShapeL extends Shape {
   ///Constructor
   ShapeL()
       : super(
-          color: 0xFFFF5C5C,
+          color: 0xFFd91c1c,
           relRotatingPositions: _relRotatingPositions,
           rotation: Random().nextInt(_relRotatingPositions.length),
         );
@@ -108,10 +108,10 @@ class ShapeJ extends Shape {
       const Position(1, 2),
     ],
     [
-      const Position(0, 0),
-      const Position(0, -1),
-      const Position(-1, 0),
-      const Position(-2, 0),
+      const Position(-1, 1),
+      const Position(0, 1),
+      const Position(1, 1),
+      const Position(1, 0),
     ],
   ];
 
@@ -129,16 +129,28 @@ class ShapeS extends Shape {
   static final List<List<Position>> _relRotatingPositions = [
     [
       const Position(0, 0),
-      const Position(0, 1),
-      const Position(1, 0),
-      const Position(1, -1),
-    ],
-    [
-      const Position(0, 0),
       const Position(1, 0),
       const Position(0, -1),
       const Position(-1, -1),
     ],
+    [
+      const Position(-1, 1),
+      const Position(-1, 0),
+      const Position(0, 0),
+      const Position(0, -1),
+    ],
+    // [
+    //   const Position(0, 1),
+    //   const Position(1, 1),
+    //   const Position(-1, 0),
+    //   const Position(0, 0),
+    // ],
+    // [
+    //   const Position(0, 0),
+    //   const Position(0, 1),
+    //   const Position(1, 0),
+    //   const Position(1, -1),
+    // ],
   ];
 
   ///Constructor
@@ -155,22 +167,34 @@ class ShapeZ extends Shape {
   static final List<List<Position>> _relRotatingPositions = [
     [
       const Position(0, 0),
-      const Position(0, 1),
-      const Position(-1, 0),
-      const Position(-1, -1),
-    ],
-    [
-      const Position(0, 0),
       const Position(-1, 0),
       const Position(0, -1),
       const Position(1, -1),
+    ],
+    // [
+    //   const Position(0, 0),
+    //   const Position(0, 1),
+    //   const Position(-1, 0),
+    //   const Position(-1, -1),
+    // ],
+    // [
+    //   const Position(-1, 1),
+    //   const Position(0, 1),
+    //   const Position(0, 0),
+    //   const Position(1, 0),
+    // ],
+    [
+      const Position(1, 1),
+      const Position(0, 0),
+      const Position(1, 0),
+      const Position(0, -1),
     ],
   ];
 
   ///Constructor
   ShapeZ()
       : super(
-          color: 0xFFD9FFBB,
+          color: 0xFF61bd19,
           relRotatingPositions: _relRotatingPositions,
           rotation: Random().nextInt(_relRotatingPositions.length),
         );
@@ -180,10 +204,10 @@ class ShapeZ extends Shape {
 class ShapeT extends Shape {
   static final List<List<Position>> _relRotatingPositions = [
     [
+      const Position(0, 1),
+      const Position(-1, 0),
       const Position(0, 0),
-      const Position(1, 0),
-      const Position(1, 1),
-      const Position(1, -1),
+      const Position(0, -1),
     ],
     [
       const Position(0, 0),
@@ -208,7 +232,7 @@ class ShapeT extends Shape {
   ///Constructor
   ShapeT()
       : super(
-          color: 0xFFFAFF75,
+          color: 0xFFd9cf16,
           relRotatingPositions: _relRotatingPositions,
           rotation: Random().nextInt(_relRotatingPositions.length),
         );

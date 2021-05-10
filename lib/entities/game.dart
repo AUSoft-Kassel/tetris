@@ -35,7 +35,7 @@ class Game {
         _activeShape = null,
         _activeShapePosition = null,
         _gameRunning = gameRunning,
-        _level = 1,
+        _level = 0,
         _shapesPlaced = 0,
         _linesToBeDeleted = [];
 
@@ -53,7 +53,7 @@ class Game {
     required int level,
     required int shapesPlaced,
     required List<int> linesToBeDeleted,
-  })   : _shapeShop = shapeShop,
+  })  : _shapeShop = shapeShop,
         _activeShape = activeShape,
         _activeShapePosition = activeShapePosition,
         _grid = grid,

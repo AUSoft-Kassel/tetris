@@ -35,7 +35,7 @@ class Game {
         _activeShape = null,
         _activeShapePosition = null,
         _gameRunning = gameRunning,
-        _level = 1,
+        _level = 0,
         _shapesPlaced = 0,
         _linesToBeDeleted = [];
 

@@ -67,6 +67,7 @@ class GameProvider extends StateNotifier<Game> {
     }
   }
 
+  /// Start a Game round
   void startGame() {
     state = Game(true);
     _spawnNextShape();
@@ -163,13 +164,17 @@ class GameProvider extends StateNotifier<Game> {
 
   void _spawnNextShape() {
     // log('SpawnNextShape: 1: ${state.shapeShop.currentBag.length} / ${state.shapeShop.nextBag.length}');
-    var nextShape = state.shapeShop.giveShape();
+    final nextShape = state.shapeShop.giveShape();
     // log('SpawnNextShape: 2: ${state.shapeShop.currentBag.length} / ${state.shapeShop.nextBag.length}');
-    var nextShapesPlaced = state.shapesPlaced + 1;
-    var nextLevel = (nextShapesPlaced ~/ 10) + 1;
-    var nextSpeed = 1.0 + 0.2 * nextLevel;
+    final nextShapesPlaced = state.shapesPlaced + 1;
+    final int nextLevel;
+    if (state.level < Constant.maxLevel)
+      nextLevel = nextShapesPlaced ~/ Constant.shapesPerLevel;
+    else
+      nextLevel = state.level;
+    final nextSpeed = Constant.minSpeed + Constant.speedPerLevel * nextLevel;
+    final nextShapePosition = Constant.spawnPosition;
 
-    var nextShapePosition = Constant.spawnPosition;
     var gameRunning = state.gameRunning;
     if (state.actualSpeed ~/ 1 < nextSpeed ~/ 1) {
       _sounds.playSoundDifficultyUp();
@@ -191,6 +196,7 @@ class GameProvider extends StateNotifier<Game> {
       actualSpeed: nextSpeed,
       gameRunning: gameRunning,
     );
+    // log('SpawnNextShape: 3: ${state.shapeShop.currentBag.length} / ${state.shapeShop.nextBag.length}');
   }
 
   /*--------------------------------------------------------------------------*/
@@ -214,7 +220,7 @@ class GameProvider extends StateNotifier<Game> {
 
   /// Get color of shape at a certain position (or null if no shape is present)
   Color? getShapeColorAt(Position pos) {
-    var shape = getShapeAt(pos);
+    final shape = getShapeAt(pos);
     if (shape == null) return null;
     return Color(shape.color);
   }
@@ -227,12 +233,36 @@ class GameProvider extends StateNotifier<Game> {
   /// for the attributes which are provided as arguments to this method
   ///Checks if a List of Positions are Empty
   bool _arePositionsEmpty(List<Position> positions) {
-    bool isValid;
     for (var pos in positions) {
-      isValid = _isPositionEmpty(pos);
-      if (!isValid) return false;
+      if (_isPositionEmpty(pos) == false) return false;
     }
     return true;
+  }
+
+  Direction _oppositeHorizontalDirection(Position pos) {
+    Direction? dir;
+    if (pos.x > 0) dir = Direction.left;
+    return dir ??= Direction.right;
+  }
+
+  Position _wichPositionIsInvalid(List<Position> positions) {
+    Position? position;
+    for (var pos in positions) {
+      if (_isPositionEmpty(pos) == false) position = pos;
+    }
+
+    for (var pos in positions) {
+      if (pos.x < 0) return position = pos;
+      if (pos.y < 0) return position = pos;
+      if (pos.x >= Constant.numCols) return position = pos;
+      // if (pos.y >= Constant.numRows) return false;
+    }
+    if (position == null) {
+      log('Invalid useage of _wichPositionIsInvalid.');
+      log('Be sure any Position is invalid.');
+      position = const Position(0, 0);
+    }
+    return position;
   }
 
   /// Returns true if every position is still on the grid

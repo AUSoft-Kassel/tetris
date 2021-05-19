@@ -8,11 +8,11 @@ abstract class Constant {
   static const minSpeed = 1.0;
 
   /// Maximum gamespeed
-  static const maxSpeed = 10.0;
+  static const maxSpeed = 5.0;
 
   /// Speed Increse per Level
   static const speedPerLevel =
-      (Constant.minSpeed - Constant.maxSpeed) / Constant.maxLevel;
+      (Constant.maxSpeed - Constant.minSpeed) / Constant.maxLevel;
 
   /// Maximum level
   static const maxLevel = 50;

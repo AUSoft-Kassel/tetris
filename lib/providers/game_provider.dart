@@ -190,7 +190,6 @@ class GameProvider extends StateNotifier<Game> {
     final nextSpeed = Constant.minSpeed + Constant.speedPerLevel * nextLevel;
     final nextShapePosition = Constant.spawnPosition;
 
-    log('$nextSpeed');
     var gameRunning = state.gameRunning;
     if (state.actualSpeed < nextSpeed) {
       _sounds.playSoundDifficultyUp();
@@ -255,31 +254,27 @@ class GameProvider extends StateNotifier<Game> {
     return true;
   }
 
-  // Direction _oppositeHorizontalDirection(Position pos) {
-  //   Direction? dir;
-  //   if (pos.x > 0) dir = Direction.left;
-  //   return dir ??= Direction.right;
-  // }
+  Direction _oppositeHorizontalDirection(Position pos) {
+    Direction? dir;
+    if (pos.x > 0) dir = Direction.left;
+    return dir ??= Direction.right;
+  }
 
-  // Position _wichPositionIsInvalid(List<Position> positions) {
-  //   Position? position;
-  //   for (var pos in positions) {
-  //     if (_isPositionEmpty(pos) == false) position = pos;
-  //   }
+  Position _wichPositionIsInvalid(List<Position> positions) {
+    Position? position;
+    for (var pos in positions) {
+      if (_isPositionEmpty(pos) == false) position = pos;
+    }
 
-  //   for (var pos in positions) {
-  //     if (pos.x < 0) return position = pos;
-  //     if (pos.y < 0) return position = pos;
-  //     if (pos.x >= Constant.numCols) return position = pos;
-  //     // if (pos.y >= Constant.numRows) return false;
-  //   }
-  //   if (position == null) {
-  //     log('Invalid useage of _wichPositionIsInvalid.');
-  //     log('Be sure any Position is invalid.');
-  //     position = const Position(0, 0);
-  //   }
-  //   return position;
-  // }
+    for (var pos in positions) {
+      if (pos.x < 0) return position = pos;
+      if (pos.y < 0) return position = pos;
+      if (pos.x >= Constant.numCols) return position = pos;
+      // if (pos.y >= Constant.numRows) return false;
+    }
+
+    return position ??= const Position(0, 0);
+  }
 
   /// Returns true if every position is still on the grid
   bool _arePositionsInGrid(List<Position> positions) {

@@ -26,15 +26,17 @@ class GamePage extends HookWidget {
           builder: (context, constraints) {
             final maxX = constraints.maxWidth;
             final maxY = constraints.maxHeight;
-            final gridSizeX = maxX * 3 / 4;
+            var gridSizeX = maxX * 3 / 4;
             final gridSizeY = maxY * 4 / 5;
-            final sidebarSizeX = maxX - gridSizeX;
             final bottomSizeY = maxY - gridSizeY;
             final double blockSize;
             if (gridSizeX / Constant.numCols < gridSizeY / Constant.numRows)
               blockSize = gridSizeX / Constant.numCols;
             else
               blockSize = gridSizeY / Constant.numRows;
+            gridSizeX = blockSize * Constant.numCols;
+            final sidebarSizeX = gridSizeX / 3;
+            final completeSizeX = sidebarSizeX + gridSizeX;
             return Stack(
               children: [
                 Flex(
@@ -43,6 +45,7 @@ class GamePage extends HookWidget {
                     // Oberer Bereich
                     Flex(
                       direction: Axis.horizontal,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         //Grid
                         Container(
@@ -82,6 +85,7 @@ class GamePage extends HookWidget {
                     ///Button
                     Container(
                       height: bottomSizeY,
+                      width: completeSizeX,
                       color: Colors.black,
                       child: Flex(
                         direction: Axis.horizontal,
@@ -218,8 +222,7 @@ class GamePage extends HookWidget {
         ),
       );
 
-  Widget _sidebarBox(String title,
-          {String? valueString, int? valueInt, Shape? valueShape}) =>
+  Widget _sidebarBox(String title, {String? valueString, int? valueInt}) =>
       Expanded(
         child: Flex(
           direction: Axis.vertical,
@@ -261,32 +264,33 @@ class GamePage extends HookWidget {
       );
 
   List<Widget> _sidebarNextShapeTiles(Shape next) {
-    var widgets = <Widget>[];
-    widgets.add(
+    final widgets = [
       LayoutBuilder(
         builder: (context, constraints) {
-          var maxH = constraints.maxHeight;
-          var maxW = constraints.maxWidth;
-          var max = maxH < maxW ? maxH : maxW;
+          final maxH = constraints.maxHeight;
+          final maxW = constraints.maxWidth;
+          final max = maxH < maxW ? maxH : maxW;
           return Container(
             height: max,
             width: max,
-            decoration: BoxDecoration(color: Colors.red),
+            decoration: const BoxDecoration(color: Colors.red),
           );
         },
-      ),
-    );
+      )
+    ];
     return widgets;
   }
 }
 
+/// Displays box with animation
 class AnimatedBox extends HookWidget {
   final double _height;
   final double _width;
   final Color _color;
   final bool _lineToClear;
 
-  AnimatedBox(
+  /// Displays box with animation
+  const AnimatedBox(
       {required double height,
       required double width,
       required Color color,
@@ -299,14 +303,13 @@ class AnimatedBox extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final animationController = useAnimationController(
-        duration: const Duration(milliseconds: 1000),
-        lowerBound: 0,
-        upperBound: 255);
+        duration: const Duration(milliseconds: 1000), upperBound: 255);
 
     useValueChanged(_lineToClear, (a, dynamic b) {
       if (_lineToClear) {
         log('Start Animation: $a -> $b');
         animationController.reset();
+        // ignore: cascade_invocations
         animationController.forward();
       }
     });

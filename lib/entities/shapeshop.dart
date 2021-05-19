@@ -1,14 +1,17 @@
+import 'dart:math';
+
 import 'shape.dart';
 import 'shapeform.dart';
-import 'dart:developer' as dev;
-import 'dart:math';
 
 /// ShapeShop is our Shop which is storing shapes and preparing them for the game.
 class ShapeShop {
   List<Shape> _currentBag = [];
   List<Shape> _nextBag = [];
 
+  /// Holds the currently used bag of max. 14 shapes
   List<Shape> get currentBag => _currentBag;
+
+  /// Holds the next used bag of 14 shapes (which will be used after currentBag ist emtied)
   List<Shape> get nextBag => _nextBag;
 
   ///Descriptes a function which is filling our bag with shapes.

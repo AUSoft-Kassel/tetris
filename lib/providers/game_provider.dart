@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tetris/entities/constant.dart';
@@ -110,10 +108,10 @@ class GameProvider extends StateNotifier<Game> {
   /* Use cases (internal): Manipulating state for internal reasons            */
   /*--------------------------------------------------------------------------*/
   void _addActiveShapeToGrid() {
-    var positions = state.activeShape
+    final positions = state.activeShape
             ?.absolutePositions(base: state.activeShapePosition!) ??
         [];
-    var newGrid = <Position, Shape?>{};
+    final newGrid = <Position, Shape?>{};
     state.grid.forEach((pos, shape) {
       newGrid[pos] = shape;
     });
@@ -152,7 +150,7 @@ class GameProvider extends StateNotifier<Game> {
 
       _addPointsForClearedRows(fullRows.length);
 
-      Future.delayed(Duration(milliseconds: 1000), () {
+      Future.delayed(const Duration(milliseconds: 1000), () {
         for (var row in fullRows) {
           _clearFullRow(row);
         }
@@ -257,31 +255,31 @@ class GameProvider extends StateNotifier<Game> {
     return true;
   }
 
-  Direction _oppositeHorizontalDirection(Position pos) {
-    Direction? dir;
-    if (pos.x > 0) dir = Direction.left;
-    return dir ??= Direction.right;
-  }
+  // Direction _oppositeHorizontalDirection(Position pos) {
+  //   Direction? dir;
+  //   if (pos.x > 0) dir = Direction.left;
+  //   return dir ??= Direction.right;
+  // }
 
-  Position _wichPositionIsInvalid(List<Position> positions) {
-    Position? position;
-    for (var pos in positions) {
-      if (_isPositionEmpty(pos) == false) position = pos;
-    }
+  // Position _wichPositionIsInvalid(List<Position> positions) {
+  //   Position? position;
+  //   for (var pos in positions) {
+  //     if (_isPositionEmpty(pos) == false) position = pos;
+  //   }
 
-    for (var pos in positions) {
-      if (pos.x < 0) return position = pos;
-      if (pos.y < 0) return position = pos;
-      if (pos.x >= Constant.numCols) return position = pos;
-      // if (pos.y >= Constant.numRows) return false;
-    }
-    if (position == null) {
-      log('Invalid useage of _wichPositionIsInvalid.');
-      log('Be sure any Position is invalid.');
-      position = const Position(0, 0);
-    }
-    return position;
-  }
+  //   for (var pos in positions) {
+  //     if (pos.x < 0) return position = pos;
+  //     if (pos.y < 0) return position = pos;
+  //     if (pos.x >= Constant.numCols) return position = pos;
+  //     // if (pos.y >= Constant.numRows) return false;
+  //   }
+  //   if (position == null) {
+  //     log('Invalid useage of _wichPositionIsInvalid.');
+  //     log('Be sure any Position is invalid.');
+  //     position = const Position(0, 0);
+  //   }
+  //   return position;
+  // }
 
   /// Returns true if every position is still on the grid
   bool _arePositionsInGrid(List<Position> positions) {
@@ -310,12 +308,8 @@ class GameProvider extends StateNotifier<Game> {
     return true;
   }
 
-  bool isRowToClear(int row) {
-    for (var rowToClear in state.rowsToClear) {
-      if (row == rowToClear) return true;
-    }
-    return false;
-  }
+  /// Checks if a certain row is ready to be deleted because it was filled
+  bool isRowToClear(int row) => state.rowsToClear.contains(row);
 
   ///Returns a List of all parts of the active shape in absPosition
   List<Position>? activeShapePositions() =>

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tetris/gui/game_page.dart';
 import 'package:tetris/gui/startscreen_page.dart';
 
 void main() {

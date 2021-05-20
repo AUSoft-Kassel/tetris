@@ -33,7 +33,8 @@ class GameProvider extends StateNotifier<Game> {
     final absRefPosition = state.activeShapePosition;
     var newAbsRefPosition = absRefPosition;
     if (shape == null || absRefPosition == null) return;
-    final absPositions = shape.absolutePositions(base: absRefPosition, direction: dir);
+    final absPositions =
+        shape.absolutePositions(base: absRefPosition, direction: dir);
     if (_arePositionsInGrid(absPositions)) {
       if (_arePositionsEmpty(absPositions)) {
         newAbsRefPosition = absRefPosition + dir.toPosition;
@@ -52,13 +53,32 @@ class GameProvider extends StateNotifier<Game> {
     final shape = state.activeShape;
     final absRefPosition = state.activeShapePosition;
     if (shape == null || absRefPosition == null) return;
-    final absPositions = shape.absolutePositions(base: absRefPosition, rotation: rotation);
-    if (_arePositionsInGrid(absPositions)) {
-      if (_arePositionsEmpty(absPositions)) {
-        _sounds.playSoundRotate(rotation);
-        shape.rotateShape(rotation);
-        state = state.copyWith();
-      }
+    final absPositions =
+        shape.absolutePositions(base: absRefPosition, rotation: rotation);
+    if (_arePositionsInGrid(absPositions) && _arePositionsEmpty(absPositions)) {
+      _sounds.playSoundRotate(rotation);
+      shape.rotateShape(rotation);
+      state = state.copyWith();
+      return;
+    }
+
+    final altDir =
+        _oppositeHorizontalDirection(_wichPositionIsInvalid(absPositions));
+    final altAbsPositions = shape.absolutePositions(
+      base: absRefPosition,
+      direction: altDir,
+      rotation: rotation,
+    );
+    if (_arePositionsInGrid(altAbsPositions) &&
+        _arePositionsEmpty(altAbsPositions)) {
+      _sounds.playSoundRotate(rotation);
+
+      shape.rotateShape(rotation);
+      state = state.copyWith(
+          activeShapePosition: state.activeShapePosition! + altDir.toPosition);
+
+      //T-Spin!!
+      return;
     }
   }
 
@@ -73,7 +93,8 @@ class GameProvider extends StateNotifier<Game> {
   }
 
   void _gameLoop(int thisGameLoopId) {
-    if (state.gameRunning == false || _currentGameLoopId > thisGameLoopId) return;
+    if (state.gameRunning == false || _currentGameLoopId > thisGameLoopId)
+      return;
 
     moveActiveShape(Direction.down);
     Future.delayed(_getDelay(), () {
@@ -87,7 +108,9 @@ class GameProvider extends StateNotifier<Game> {
   /* Use cases (internal): Manipulating state for internal reasons            */
   /*--------------------------------------------------------------------------*/
   void _addActiveShapeToGrid() {
-    final positions = state.activeShape?.absolutePositions(base: state.activeShapePosition!) ?? [];
+    final positions = state.activeShape
+            ?.absolutePositions(base: state.activeShapePosition!) ??
+        [];
     final newGrid = <Position, Shape?>{};
     state.grid.forEach((pos, shape) {
       newGrid[pos] = shape;
@@ -168,11 +191,12 @@ class GameProvider extends StateNotifier<Game> {
     final nextShapePosition = Constant.spawnPosition;
 
     var gameRunning = state.gameRunning;
-    if (state.actualSpeed ~/ 1 < nextSpeed ~/ 1) {
+    if (state.actualSpeed < nextSpeed) {
       _sounds.playSoundDifficultyUp();
     }
     _addActiveShapeToGrid();
-    if (_arePositionsEmpty(nextShape.absolutePositions(base: nextShapePosition))) {
+    if (_arePositionsEmpty(
+        nextShape.absolutePositions(base: nextShapePosition))) {
       _clearAllFullRows();
       _sounds.playSoundSpawnOfShapes();
     } else if (gameRunning == true) {
@@ -196,12 +220,15 @@ class GameProvider extends StateNotifier<Game> {
   /// Get the shape at a certain position. Returns null if no shape is present.
   Shape? getShapeAt(Position pos) {
     final inactiveShape = state.grid[pos];
-    if (inactiveShape != null) return inactiveShape; // Inactive shape if found at pos
+    if (inactiveShape != null)
+      return inactiveShape; // Inactive shape if found at pos
     final activeShape = state.activeShape;
     if (activeShape == null) return null; // null if no activeShape at all
-    final activeShapePositions = activeShape.absolutePositions(base: state.activeShapePosition!);
+    final activeShapePositions =
+        activeShape.absolutePositions(base: state.activeShapePosition!);
     for (var activeShapePos in activeShapePositions) {
-      if (activeShapePos == pos) return activeShape; // activeShape if found at pos
+      if (activeShapePos == pos)
+        return activeShape; // activeShape if found at pos
     }
     return null; // null if nothing else
   }
@@ -227,31 +254,27 @@ class GameProvider extends StateNotifier<Game> {
     return true;
   }
 
-  // Direction _oppositeHorizontalDirection(Position pos) {
-  //   Direction? dir;
-  //   if (pos.x > 0) dir = Direction.left;
-  //   return dir ??= Direction.right;
-  // }
+  Direction _oppositeHorizontalDirection(Position pos) {
+    Direction? dir;
+    if (pos.x > 0) dir = Direction.left;
+    return dir ??= Direction.right;
+  }
 
-  // Position _wichPositionIsInvalid(List<Position> positions) {
-  //   Position? position;
-  //   for (var pos in positions) {
-  //     if (_isPositionEmpty(pos) == false) position = pos;
-  //   }
+  Position _wichPositionIsInvalid(List<Position> positions) {
+    Position? position;
+    for (var pos in positions) {
+      if (_isPositionEmpty(pos) == false) position = pos;
+    }
 
-  //   for (var pos in positions) {
-  //     if (pos.x < 0) return position = pos;
-  //     if (pos.y < 0) return position = pos;
-  //     if (pos.x >= Constant.numCols) return position = pos;
-  //     // if (pos.y >= Constant.numRows) return false;
-  //   }
-  //   if (position == null) {
-  //     log('Invalid useage of _wichPositionIsInvalid.');
-  //     log('Be sure any Position is invalid.');
-  //     position = const Position(0, 0);
-  //   }
-  //   return position;
-  // }
+    for (var pos in positions) {
+      if (pos.x < 0) return position = pos;
+      if (pos.y < 0) return position = pos;
+      if (pos.x >= Constant.numCols) return position = pos;
+      // if (pos.y >= Constant.numRows) return false;
+    }
+
+    return position ??= const Position(0, 0);
+  }
 
   /// Returns true if every position is still on the grid
   bool _arePositionsInGrid(List<Position> positions) {
@@ -285,5 +308,6 @@ class GameProvider extends StateNotifier<Game> {
 
   ///Returns a List of all parts of the active shape in absPosition
   List<Position>? activeShapePositions() =>
-      state.activeShape?.absolutePositions(base: state.activeShapePosition ?? const Position(0, 0));
+      state.activeShape?.absolutePositions(
+          base: state.activeShapePosition ?? const Position(0, 0));
 }
